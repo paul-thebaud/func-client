@@ -11,7 +11,7 @@ export default defineConfig({
     lib: {
       entry: {
         'model-dot': resolve(__dirname, 'src/core/index.ts'),
-        'model-dot.extensions.json-api': resolve(__dirname, 'src/extensions/json-api/index.ts'),
+        'extensions.json-api': resolve(__dirname, 'src/extensions/json-api/index.ts'),
       },
       fileName: (format, name) => `${name}.${format === 'es' ? 'js' : 'cjs'}`,
     },
