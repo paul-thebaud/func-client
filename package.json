@@ -1,0 +1,66 @@
+{
+  "name": "model-dot",
+  "type": "module",
+  "version": "1.0.0-alpha.1",
+  "license": "MIT",
+  "description": "Typescript strongly typed classes to easily interact with any data source.",
+  "homepage": "https://github.com/paul-thebaud/model-dot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paul-thebaud/model-dot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/paul-thebaud/model-dot/issues"
+  },
+  "keywords": [
+    "typescript",
+    "model",
+    "attribute",
+    "relation",
+    "json",
+    "api",
+    "json:api"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/model-dot.cjs",
+  "module": "./dist/model-dot.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/model-dot.js",
+      "require": "./dist/model-dot.cjs"
+    },
+    "./extensions/json-api": {
+      "import": "./dist/extensions.json-api.js",
+      "require": "./dist/extensions.json-api.cjs"
+    }
+  },
+  "sideEffects": [
+    "*.vue"
+  ],
+  "scripts": {
+    "lint": "eslint --ext .ts src",
+    "build": "tsc --noEmit && vite build --config vite.config.ts",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "@zerollup/ts-transform-paths": "^1.7.18",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-import-resolver-typescript": "^3.2.0",
+    "eslint-plugin-import": "^2.25.4",
+    "tslib": "^2.4.0",
+    "typescript": "^4.0.3",
+    "vite": "^3.0.3",
+    "vite-plugin-dts": "^1.4.0",
+    "vitest": "^0.21.1"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}
