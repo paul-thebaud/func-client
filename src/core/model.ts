@@ -1,9 +1,10 @@
+import BelongsTo from '@/core/attributes/belongsTo';
+import HasMany from '@/core/attributes/hasMany';
+import makeDescriptor from '@/core/attributes/makeDescriptor';
+import Relationship from '@/core/attributes/relationship';
 import Builder from '@/core/builder';
 import BaseConnection from '@/core/connection/baseConnection';
 import { Pagination } from '@/core/pagination/pagination';
-import BelongsTo from '@/core/relationships/belongsTo';
-import HasMany from '@/core/relationships/hasMany';
-import Relationship from '@/core/relationships/relationship';
 import TrackableState from '@/core/state/trackableState';
 import { Transformer } from '@/core/transformers/transformer';
 import { ReactivityFactory } from '@/core/types/reactivity';
@@ -22,6 +23,7 @@ export type AttributeOptions = {
   defaultValue: unknown;
   syncTo: boolean;
   syncFrom: boolean;
+  alias: string | undefined;
 };
 
 export type RelationshipOptions = {
@@ -29,6 +31,7 @@ export type RelationshipOptions = {
   defaultValue: unknown;
   syncTo: boolean;
   syncFrom: boolean;
+  alias: string | undefined;
 };
 
 export default abstract class Model extends TrackableState {
@@ -63,28 +66,20 @@ export default abstract class Model extends TrackableState {
     initValues: Dictionary = {},
     initOptions: Partial<InitOptions> = {},
   ) {
-    return new this(initValues, initOptions);
+    const model = new this(false);
+
+    model.init(initOptions);
+    model.fill(initValues);
+
+    return model;
   }
 
-  public newInstance<M extends Model>(
-    this: M,
-    initValues: Dictionary = {},
-    initOptions: Partial<InitOptions> = {},
-  ) {
-    return new (this.constructor as Constructor<M>)(
-      initValues,
-      initOptions,
-    );
-  }
-
-  public constructor(
-    initValues: Dictionary = {},
-    initOptions: Partial<InitOptions> = {},
-  ) {
+  public constructor(warnAboutNew: boolean = true) {
     super();
 
-    this.init(initOptions);
-    this.fill(initValues);
+    if (warnAboutNew) {
+      console.warn(`[model.] Calling \`new ${this.constructor.name}()\` will not correctly initialize the model. You should use \`${this.constructor.name}.make()\` instead`);
+    }
   }
 
   /*
@@ -115,11 +110,21 @@ export default abstract class Model extends TrackableState {
     this.initSchema();
     this.registerSchema();
 
+    this.initAttributes();
     this.initRelationships();
 
     if (initOptions.noDefaults !== true) {
       this.initValues();
     }
+  }
+
+  private initAttributes() {
+    Object.entries(this.$schema.attributes)
+      .forEach(([key, def]) => this.initAttribute(key, def));
+  }
+
+  private initAttribute(key: string, def: AttributeDef) {
+    Object.defineProperty(this, key, def.makePropertyDescriptor(this));
   }
 
   private initRelationships() {
@@ -128,11 +133,7 @@ export default abstract class Model extends TrackableState {
   }
 
   private initRelationship(key: string, def: RelationshipDef) {
-    const relationship = def.newReference(this);
-
-    this.defineProperty(key, () => relationship, () => {
-      // TODO Throw.
-    });
+    Object.defineProperty(this, key, def.makePropertyDescriptor(this));
   }
 
   private initValues() {
@@ -151,22 +152,6 @@ export default abstract class Model extends TrackableState {
     if (defaultValue !== undefined) {
       this.setValue(key, defaultValue);
     }
-  }
-
-  private defineProperty(
-    key: string,
-    get: (m: Model) => unknown,
-    set: (m: Model, v: unknown) => void,
-  ) {
-    Object.defineProperty(this, key, {
-      get(this: Model) {
-        return get(this);
-      },
-      set(this: Model, value: unknown) {
-        return set(this, value);
-      },
-      configurable: true,
-    });
   }
 
   /*
@@ -224,9 +209,12 @@ export default abstract class Model extends TrackableState {
       defaultValue: options?.defaultValue,
       syncTo: options?.syncTo !== undefined ? options.syncTo : true,
       syncFrom: options?.syncFrom !== undefined ? options.syncFrom : true,
+      alias: options?.alias,
+      makePropertyDescriptor: () => makeDescriptor(
+        (m) => m.getValue(key),
+        (m, v) => m.setValue(key, v),
+      ),
     });
-
-    this.defineProperty(key, (m) => m.getValue(key), (m, v) => m.setValue(key, v));
 
     return this;
   }
@@ -237,11 +225,21 @@ export default abstract class Model extends TrackableState {
     options?: Partial<RelationshipOptions>,
   ) {
     this.registerRelationship(key, {
-      newReference,
       inverse: options?.inverse,
       defaultValue: options?.defaultValue,
       syncTo: options?.syncTo !== undefined ? options.syncTo : true,
       syncFrom: options?.syncFrom !== undefined ? options.syncFrom : true,
+      alias: options?.alias,
+      makePropertyDescriptor: (model) => {
+        const relationshipRef = newReference(model);
+
+        return makeDescriptor(
+          () => relationshipRef,
+          () => {
+            throw new Error('TODO rel setter not available');
+          },
+        );
+      },
     });
 
     return this;

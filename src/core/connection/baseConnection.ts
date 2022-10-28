@@ -3,7 +3,7 @@ import { Connection, ConnectionAction, ConnectionResult, ConnectionResultOrAny }
 import { Converter } from '@/core/converter/converter';
 import type Model from '@/core/model';
 import { Pagination } from '@/core/pagination/pagination';
-import Relationship from '@/core/relationships/relationship';
+import Relationship from '@/core/attributes/relationship';
 import { Store } from '@/core/store/store';
 import { PaginatedQuery, Query } from '@/core/types/query';
 import {

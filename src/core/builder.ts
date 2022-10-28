@@ -1,6 +1,6 @@
 import type Model from '@/core/model';
 import { Pagination } from '@/core/pagination/pagination';
-import { DeepRelationshipsKey } from '@/core/relationships/relationships';
+import { DeepRelationshipsKey } from '@/core/attributes/relationships';
 import { ModelClass } from '@/core/types/model';
 import { PaginatedQuery, Query } from '@/core/types/query';
 import { RecordId } from '@/core/types/record';

@@ -1,5 +1,5 @@
 import type Model from '@/core/model';
-import type Relationship from '@/core/relationships/relationship';
+import type Relationship from '@/core/attributes/relationship';
 import { Prev } from '@/core/types/utilities/prev';
 
 export type RelationshipsKey<T> = {

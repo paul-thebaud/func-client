@@ -1,5 +1,4 @@
 import type Model from '@/core/model';
-import type Relationship from '@/core/relationships/relationship';
 import { Transformer } from '@/core/transformers/transformer';
 import { Dictionary } from '@/core/types/utilities/dictionary';
 
@@ -8,14 +7,17 @@ export type AttributeDef = {
   defaultValue: unknown;
   syncTo: boolean;
   syncFrom: boolean;
+  alias: string | undefined;
+  makePropertyDescriptor: (model: Model) => PropertyDescriptor;
 };
 
 export type RelationshipDef = {
-  newReference: (model: Model) => Relationship;
   inverse: string | undefined | null;
   defaultValue: unknown;
   syncTo: boolean;
   syncFrom: boolean;
+  alias: string | undefined;
+  makePropertyDescriptor: (model: Model) => PropertyDescriptor;
 };
 
 export type RecordSchema = {

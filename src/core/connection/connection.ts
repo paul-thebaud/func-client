@@ -1,6 +1,6 @@
 import type Model from '@/core/model';
 import { Pagination } from '@/core/pagination/pagination';
-import Relationship from '@/core/relationships/relationship';
+import Relationship from '@/core/attributes/relationship';
 import { PaginatedQuery, Query } from '@/core/types/query';
 import { RecordId, RecordType, RelationshipValue } from '@/core/types/record';
 import { Serializable } from '@/core/types/serializable/serializable';

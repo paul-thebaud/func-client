@@ -1,4 +1,4 @@
-import Model from '@/core/model';
+import type Model from '@/core/model';
 import { Store } from '@/core/store/store';
 import { ModelsRegistry } from '@/core/types/model';
 import { RecordId, RecordType } from '@/core/types/record';
