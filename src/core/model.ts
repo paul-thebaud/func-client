@@ -61,11 +61,11 @@ export default abstract class Model extends TrackableState {
     this.$id = id;
   }
 
-  public static make<M extends Constructor<Model>>(
-    this: M,
+  public static make<M extends Model>(
+    this: Constructor<M>,
     initValues: Dictionary = {},
     initOptions: Partial<InitOptions> = {},
-  ) {
+  ): M {
     const model = new this(false);
 
     model.init(initOptions);
@@ -319,8 +319,10 @@ export default abstract class Model extends TrackableState {
 
   public pagination: Pagination | undefined;
 
-  public static query<M extends Model>(this: Constructor<M>) {
-    return new this().newQuery();
+  public static query<M extends Model>(
+    this: typeof Model & Constructor<M>,
+  ) {
+    return this.make().newQuery();
   }
 
   public newQuery<M extends Model>(this: M): Builder<M, M['pagination']> {

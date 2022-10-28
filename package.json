@@ -27,27 +27,13 @@
   ],
   "main": "dist/model-dot.cjs",
   "module": "dist/model-dot.js",
-  "types": "dist-types/core/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "extensions/json-api": [
-        "dist-types/extensions/json-api/index.d.ts"
-      ]
-    }
-  },
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/model-dot.js",
       "require": "./dist/model-dot.cjs"
-    },
-    "./extensions/json-api": {
-      "import": "./dist/extensions.json-api.js",
-      "require": "./dist/extensions.json-api.cjs"
     }
   },
-  "sideEffects": [
-    "*.vue"
-  ],
   "scripts": {
     "lint": "eslint --ext .ts src",
     "build": "rimraf ./dist-types && tsc --noEmit && vite build --config vite.config.ts",

@@ -4,16 +4,13 @@ import dtsPlugin from 'vite-plugin-dts';
 
 export default defineConfig({
   plugins: [
-    dtsPlugin({ outputDir: 'dist-types' }),
+    dtsPlugin({ outputDir: 'dist' }),
   ],
   build: {
-    minify: false,
     lib: {
-      entry: {
-        'model-dot': resolve(__dirname, 'src/core/index.ts'),
-        'extensions.json-api': resolve(__dirname, 'src/extensions/json-api/index.ts'),
-      },
-      fileName: (format, name) => `${name}.${format === 'es' ? 'js' : 'cjs'}`,
+      entry: resolve(__dirname, 'src/index.ts'),
+      fileName: 'model-dot',
+      name: 'ModelDot',
     },
   },
   resolve: {
