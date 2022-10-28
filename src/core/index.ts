@@ -1,7 +1,9 @@
 import composable from '@/core/composable';
+import makeConnection from '@/core/makeConnection';
 import Model from '@/core/model';
 
 export {
-  Model,
   composable,
+  makeConnection,
+  Model,
 };
