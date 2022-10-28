@@ -1,7 +1,7 @@
 {
   "name": "model-dot",
   "type": "module",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "license": "MIT",
   "description": "Typescript strongly typed classes to easily interact with any data source.",
   "homepage": "https://github.com/paul-thebaud/model-dot",
