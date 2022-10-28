@@ -165,6 +165,7 @@ export default abstract class Model extends TrackableState {
       set(this: Model, value: unknown) {
         return set(this, value);
       },
+      configurable: true,
     });
   }
 
