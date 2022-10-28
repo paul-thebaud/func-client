@@ -22,7 +22,8 @@
     "json:api"
   ],
   "files": [
-    "dist"
+    "dist",
+    "dist-types"
   ],
   "main": "dist/model-dot.cjs",
   "module": "dist/model-dot.js",
