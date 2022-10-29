@@ -27,6 +27,7 @@ import type {
   Transformer,
   TransformersRegistry,
 } from '@/core/transformers/transformer';
+import withDefaultTransformers from '@/core/transformers/withDefaultTransformers';
 import type {
   AttributeOptions,
   InitOptions,
@@ -85,6 +86,7 @@ export {
   ClassicTransformer,
   Transformer,
   TransformersRegistry,
+  withDefaultTransformers,
   ModelClass,
   ModelsRegistry,
   Query,

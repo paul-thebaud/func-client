@@ -21,6 +21,7 @@ export default function makeConnection(
   options?.registerTransforms?.(transformsRegistry);
 
   const converter = new BaseConverter(transformsRegistry);
+
   const store = new WeakRefsMapStore(modelsRegistry);
 
   return new BaseConnection(
