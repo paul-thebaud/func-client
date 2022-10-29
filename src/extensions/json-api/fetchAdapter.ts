@@ -187,7 +187,6 @@ export default class FetchAdapter implements Adapter {
       const data = await response.json();
 
       if (response.ok) {
-        // TODO Deserialize document (relationships.data => relationships for example).
         return {
           url,
           request,

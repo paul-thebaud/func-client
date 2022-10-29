@@ -1,5 +1,6 @@
-import Model, { AttributeOptions } from '@/core/model';
+import type Model from '@/core/model';
 import { Transformer } from '@/core/transformers/transformer';
+import { AttributeOptions } from '@/core/types/model';
 
 export default function attr(
   transformer?: Transformer | string,

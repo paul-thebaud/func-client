@@ -4,7 +4,8 @@ import { PaginatedQuery, Query } from '@/core/types/query';
 import {
   ExistingRecordData,
   ExistingRecordIdentifier,
-  NewRecordData, RecordId,
+  NewRecordData,
+  RecordId,
   RecordType,
   RelationshipIdentifier,
   RelationshipValue,
@@ -24,7 +25,6 @@ export type ActionResultOrAny<A extends ConnectionAction, D> = {
   [k: string]: any;
 };
 
-// TODO Support actions all/one.
 export interface Adapter {
   actionAll<A extends ConnectionAction, P extends Pagination>(
     type: RecordType,

@@ -3,13 +3,11 @@ lockfileVersion: 5.4
 specifiers:
   '@typescript-eslint/eslint-plugin': ^5.12.1
   '@typescript-eslint/parser': ^5.12.1
-  '@zerollup/ts-transform-paths': ^1.7.18
   eslint: ^8.10.0
   eslint-config-airbnb-base: ^15.0.0
   eslint-config-airbnb-typescript: ^17.0.0
   eslint-import-resolver-typescript: ^3.2.0
   eslint-plugin-import: ^2.25.4
-  rimraf: ^3.0.2
   tslib: ^2.4.0
   typescript: ^4.0.3
   vite: ^3.0.3
@@ -19,13 +17,11 @@ specifiers:
 devDependencies:
   '@typescript-eslint/eslint-plugin': 5.41.0_huremdigmcnkianavgfk3x6iou
   '@typescript-eslint/parser': 5.41.0_wyqvi574yv7oiwfeinomdzmc3m
-  '@zerollup/ts-transform-paths': 1.7.18_typescript@4.8.4
   eslint: 8.26.0
   eslint-config-airbnb-base: 15.0.0_mynvxvmq5qtyojffiqgev4x7mm
   eslint-config-airbnb-typescript: 17.0.0_yxexh7lkdp6zshkc5735fso3gu
   eslint-import-resolver-typescript: 3.5.2_mynvxvmq5qtyojffiqgev4x7mm
   eslint-plugin-import: 2.26.0_r2te5lumhbgztz2yv5ofo3mkvi
-  rimraf: 3.0.2
   tslib: 2.4.0
   typescript: 4.8.4
   vite: 3.2.0
@@ -359,24 +355,6 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.41.0
       eslint-visitor-keys: 3.3.0
-    dev: true
-
-  /@zerollup/ts-helpers/1.7.18_typescript@4.8.4:
-    resolution: {integrity: sha512-S9zN+y+i5yN/evfWquzSO3lubqPXIsPQf6p9OiPMpRxDx/0totPLF39XoRw48Dav5dSvbIE8D2eAPpXXJxvKwg==}
-    peerDependencies:
-      typescript: '>=3.7.2'
-    dependencies:
-      resolve: 1.22.1
-      typescript: 4.8.4
-    dev: true
-
-  /@zerollup/ts-transform-paths/1.7.18_typescript@4.8.4:
-    resolution: {integrity: sha512-YPVUxvWQVzRx1OBN0Pmkd58+R9FcfUJuwTaPUSoi5rKxuXMtxevTXdfi0w5mEaIH8b0DfL+wg0wFDHiJE+S2zA==}
-    peerDependencies:
-      typescript: '>=3.7.2'
-    dependencies:
-      '@zerollup/ts-helpers': 1.7.18_typescript@4.8.4
-      typescript: 4.8.4
     dev: true
 
   /acorn-jsx/5.3.2_acorn@8.8.1:

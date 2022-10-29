@@ -1,9 +1,9 @@
 import { ActionResult, Adapter } from '@/core/adapter/adapter';
+import Relationship from '@/core/attributes/relationship';
 import { Connection, ConnectionAction, ConnectionResult, ConnectionResultOrAny } from '@/core/connection/connection';
 import { Converter } from '@/core/converter/converter';
 import type Model from '@/core/model';
 import { Pagination } from '@/core/pagination/pagination';
-import Relationship from '@/core/attributes/relationship';
 import { Store } from '@/core/store/store';
 import { PaginatedQuery, Query } from '@/core/types/query';
 import {

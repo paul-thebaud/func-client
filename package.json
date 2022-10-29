@@ -36,19 +36,17 @@
   },
   "scripts": {
     "lint": "eslint --ext .ts src",
-    "build": "rimraf ./dist-types && tsc --noEmit && vite build --config vite.config.ts",
+    "build": "tsc --noEmit && vite build --config vite.config.ts",
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
-    "@zerollup/ts-transform-paths": "^1.7.18",
     "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-import-resolver-typescript": "^3.2.0",
     "eslint-plugin-import": "^2.25.4",
-    "rimraf": "^3.0.2",
     "tslib": "^2.4.0",
     "typescript": "^4.0.3",
     "vite": "^3.0.3",

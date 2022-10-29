@@ -3,41 +3,21 @@ import HasMany from '@/core/attributes/hasMany';
 import makeDescriptor from '@/core/attributes/makeDescriptor';
 import Relationship from '@/core/attributes/relationship';
 import Builder from '@/core/builder';
-import BaseConnection from '@/core/connection/baseConnection';
+import { Connection } from '@/core/connection/connection';
 import { Pagination } from '@/core/pagination/pagination';
 import TrackableState from '@/core/state/trackableState';
 import { Transformer } from '@/core/transformers/transformer';
+import { AttributeOptions, InitOptions, RelationshipOptions } from '@/core/types/model';
 import { ReactivityFactory } from '@/core/types/reactivity';
 import { RecordId, RecordType } from '@/core/types/record';
 import { AttributeDef, RecordSchema, RelationshipDef } from '@/core/types/schema';
 import { Constructor } from '@/core/types/utilities/constructor';
 import { Dictionary } from '@/core/types/utilities/dictionary';
 
-export type InitOptions = {
-  noInit: boolean;
-  noDefaults: boolean;
-};
-
-export type AttributeOptions = {
-  cast: Transformer | string | undefined;
-  defaultValue: unknown;
-  syncTo: boolean;
-  syncFrom: boolean;
-  alias: string | undefined;
-};
-
-export type RelationshipOptions = {
-  inverse: string | null;
-  defaultValue: unknown;
-  syncTo: boolean;
-  syncFrom: boolean;
-  alias: string | undefined;
-};
-
 export default abstract class Model extends TrackableState {
   public static reactivityFactory = undefined as ReactivityFactory | undefined;
 
-  public static connection: BaseConnection;
+  public static connection: Connection;
 
   /**
    * The unique type of model.
