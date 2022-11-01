@@ -1,37 +1,37 @@
 {
-  "name": "model-dot",
+  "name": "func-model",
   "type": "module",
   "version": "1.0.0-alpha.9",
   "license": "MIT",
-  "description": "Typescript strongly typed classes to easily interact with any data source.",
-  "homepage": "https://github.com/paul-thebaud/model-dot",
+  "description": "Typescript strongly typed functional programming oriented API client interactions.",
+  "homepage": "https://github.com/paul-thebaud/func-model",
   "repository": {
     "type": "git",
-    "url": "https://github.com/paul-thebaud/model-dot.git"
+    "url": "https://github.com/paul-thebaud/func-model.git"
   },
   "bugs": {
-    "url": "https://github.com/paul-thebaud/model-dot/issues"
+    "url": "https://github.com/paul-thebaud/func-model/issues"
   },
   "keywords": [
     "typescript",
+    "javascript",
+    "functional programming",
     "model",
-    "attribute",
-    "relation",
-    "json",
     "api",
     "json:api"
   ],
+  "sideEffects": false,
   "files": [
     "dist",
     "dist-types"
   ],
-  "main": "dist/model-dot.cjs",
-  "module": "dist/model-dot.js",
+  "main": "dist/func-model.cjs",
+  "module": "dist/func-model.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/model-dot.js",
-      "require": "./dist/model-dot.cjs"
+      "import": "./dist/func-model.js",
+      "require": "./dist/func-model.cjs"
     }
   },
   "scripts": {

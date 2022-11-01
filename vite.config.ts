@@ -9,8 +9,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      fileName: 'model-dot',
-      name: 'ModelDot',
+      fileName: 'func-model',
+      name: 'FuncModel',
     },
   },
   resolve: {

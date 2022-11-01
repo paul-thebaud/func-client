@@ -15,3 +15,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+# TODO temporary dir when dev
+/src/playground/
+index.html

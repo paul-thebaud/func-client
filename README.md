@@ -1,4 +1,4 @@
-# model.
+# func-model
 
 ## ⚠ Work in progress
 
@@ -12,14 +12,14 @@ Please see [CONTRIBUTING file](CONTRIBUTING.md) for more details.
 
 Informal discussion regarding bugs, new features, and implementation of existing features takes
 place in the
-[GitHub issue page of this repository](https://github.com/paul-thebaud/model-dot/issues).
+[GitHub issue page of this repository](https://github.com/paul-thebaud/func-model/issues).
 
 ## Credits
 
 - [Paul Thébaud](https://github/paul-thebaud)
-- [All Contributors](https://github.com/paul-thebaud/model-dot/graphs/contributors)
+- [All Contributors](https://github.com/paul-thebaud/func-model/graphs/contributors)
 
 ## License
 
-`model-dot` is an open-sourced software licensed under the
+`func-model` is an open-sourced software licensed under the
 [MIT license](https://opensource.org/licenses/MIT).
