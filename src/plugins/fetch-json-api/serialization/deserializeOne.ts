@@ -1,10 +1,11 @@
-import { ActionContext, Store } from '@/core';
-import { WithStoreContext } from '@/core/action/changers/useStore';
-import isModelInstance from '@/core/model/isModelInstance';
-import { ModelInstance } from '@/core/model/types';
+import { isModelInstance } from '@/core';
+import type { WithStoreContext } from '@/core/action/changers/useStore';
+import type { ActionContext } from '@/core/action/types';
+import type { ModelInstance } from '@/core/model/types';
+import type { Store } from '@/core/store/types';
 import isNil from '@/core/utilities/isNil';
-import { JsonApiIncludedMap } from '@/extensions/fetch-json-api/serialization/makeIncludedMap';
-import { JsonApiRecord, JsonApiRecordId, JsonApiRecordRef } from '@/extensions/fetch-json-api/types';
+import { JsonApiIncludedMap } from '@/plugins/fetch-json-api/serialization/makeIncludedMap';
+import { JsonApiRecord, JsonApiRecordId, JsonApiRecordRef } from '@/plugins/fetch-json-api/types';
 
 function includedOfTypeMap(
   recordRef: JsonApiRecordRef,

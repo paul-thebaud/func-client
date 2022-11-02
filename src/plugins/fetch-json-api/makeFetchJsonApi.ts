@@ -1,14 +1,14 @@
-import { ModelInstance } from '@/core';
-import { WithStoreContext } from '@/core/action/changers/useStore';
-import { ActionContext } from '@/core/action/types';
-import { Store } from '@/core/store/types';
-import makeRequestInit from '@/extensions/fetch-json-api/requests/makeRequestInit';
-import makeURL from '@/extensions/fetch-json-api/requests/makeURL';
-import deserializeMany from '@/extensions/fetch-json-api/serialization/deserializeMany';
-import deserializeOne from '@/extensions/fetch-json-api/serialization/deserializeOne';
-import makeIncludedMap from '@/extensions/fetch-json-api/serialization/makeIncludedMap';
-import serializeOne from '@/extensions/fetch-json-api/serialization/serializeOne';
-import { FetchJsonApiFactoryOptions } from '@/extensions/fetch-json-api/types';
+import type { WithStoreContext } from '@/core/action/changers/useStore';
+import type { ActionContext } from '@/core/action/types';
+import type { ModelInstance } from '@/core/model/types';
+import type { Store } from '@/core/store/types';
+import makeRequestInit from '@/plugins/fetch-json-api/requests/makeRequestInit';
+import makeURL from '@/plugins/fetch-json-api/requests/makeURL';
+import deserializeMany from '@/plugins/fetch-json-api/serialization/deserializeMany';
+import deserializeOne from '@/plugins/fetch-json-api/serialization/deserializeOne';
+import makeIncludedMap from '@/plugins/fetch-json-api/serialization/makeIncludedMap';
+import serializeOne from '@/plugins/fetch-json-api/serialization/serializeOne';
+import { FetchJsonApiFactoryOptions } from '@/plugins/fetch-json-api/types';
 
 export default function makeFetchJsonApi(
   options: FetchJsonApiFactoryOptions = {},
@@ -33,8 +33,10 @@ export default function makeFetchJsonApi(
       }
     },
     async serializeOne(
+      context: ActionContext,
       model: ModelInstance,
     ) {
+      console.log(context);
       return serializeOne(model);
     },
     async deserializeOne(

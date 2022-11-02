@@ -22,35 +22,42 @@
   ],
   "sideEffects": false,
   "files": [
-    "dist",
-    "dist-types"
+    "dist/*",
+    "types/*"
   ],
-  "main": "dist/func-model.cjs",
-  "module": "dist/func-model.js",
-  "types": "dist/index.d.ts",
+  "types": "types/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/func-model.js",
-      "require": "./dist/func-model.cjs"
+    "./core": {
+      "import": "./dist/core.js",
+      "require": "./dist/core.cjs"
+    },
+    "./plugins/fetch-json-api": {
+      "import": "./dist/plugins/fetch-json-api.js",
+      "require": "./dist/plugins/fetch-json-api.cjs"
     }
   },
   "scripts": {
     "lint": "eslint --ext .ts src",
-    "build": "tsc --noEmit && vite build --config vite.config.ts",
+    "build:clear": "rimraf ./dist",
+    "build:transpile": "tsc --noEmit && vite build --config vite.config.ts",
+    "build:declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist/ && tsc-alias --directory dist/",
+    "build": "pnpm build:clear && pnpm build:transpile && pnpm build:declaration",
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.12.1",
-    "@typescript-eslint/parser": "^5.12.1",
-    "eslint": "^8.10.0",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "eslint": "^8.26.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-import-resolver-typescript": "^3.2.0",
-    "eslint-plugin-import": "^2.25.4",
-    "tslib": "^2.4.0",
-    "typescript": "^4.0.3",
-    "vite": "^3.0.3",
-    "vite-plugin-dts": "^1.4.0",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
+    "rimraf": "^3.0.2",
+    "tsc-alias": "^1.7.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.8.4",
+    "vite": "^3.2.2",
+    "vite-plugin-dts": "^1.6.6",
     "vitest": "^0.21.1"
   },
   "engines": {

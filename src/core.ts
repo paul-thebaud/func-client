@@ -1,6 +1,7 @@
 import Action from '@/core/action/action';
 import makeAction from '@/core/action/makeAction';
 import type { ActionContext, Adapter } from '@/core/action/types';
+import FuncModelError from '@/core/errors/funcModelError';
 import isModel from '@/core/model/isModel';
 import isModelInstance from '@/core/model/isModelInstance';
 import makeModel from '@/core/model/makeModel';
@@ -30,6 +31,7 @@ export {
   makeAction,
   ActionContext,
   Adapter,
+  FuncModelError,
   attr,
   hasMany,
   hasOne,
