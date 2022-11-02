@@ -1,6 +1,6 @@
-import { Model, ModelId, ModelInstance, ModelSchemaRaw, ModelValues } from '@/core/model/types';
+import { Model, ModelId, ModelInstance, ModelSchema, ModelValues } from '@/core/model/types';
 
-export default function makeModel<S extends ModelSchemaRaw, E = {}>(
+export default function makeModel<S extends ModelSchema<{}>, E = {}>(
   type: string,
   schema: S,
   extensions?: E & ThisType<ModelInstance<S & E>>,

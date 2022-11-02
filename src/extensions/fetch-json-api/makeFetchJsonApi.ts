@@ -1,11 +1,13 @@
+import { ModelInstance } from '@/core';
 import { WithStoreContext } from '@/core/action/changers/useStore';
 import { ActionContext } from '@/core/action/types';
 import { Store } from '@/core/store/types';
-import deserializeMany from '@/extensions/fetch-json-api/deserialization/deserializeMany';
-import deserializeOne from '@/extensions/fetch-json-api/deserialization/deserializeOne';
-import makeIncludedMap from '@/extensions/fetch-json-api/deserialization/makeIncludedMap';
 import makeRequestInit from '@/extensions/fetch-json-api/requests/makeRequestInit';
 import makeURL from '@/extensions/fetch-json-api/requests/makeURL';
+import deserializeMany from '@/extensions/fetch-json-api/serialization/deserializeMany';
+import deserializeOne from '@/extensions/fetch-json-api/serialization/deserializeOne';
+import makeIncludedMap from '@/extensions/fetch-json-api/serialization/makeIncludedMap';
+import serializeOne from '@/extensions/fetch-json-api/serialization/serializeOne';
 import { FetchJsonApiFactoryOptions } from '@/extensions/fetch-json-api/types';
 
 export default function makeFetchJsonApi(
@@ -30,6 +32,11 @@ export default function makeFetchJsonApi(
         throw new Error();
       }
     },
+    async serializeOne(
+      model: ModelInstance,
+    ) {
+      return serializeOne(model);
+    },
     async deserializeOne(
       context: WithStoreContext<ActionContext, Store>,
       response: Response,
@@ -37,7 +44,7 @@ export default function makeFetchJsonApi(
       const body = await response.json();
       const includedMap = makeIncludedMap(body.included || []);
 
-      return deserializeOne(body.data, includedMap, { store: context.store });
+      return deserializeOne(context, body.data, includedMap);
     },
     async deserializeMany(
       context: WithStoreContext<ActionContext, Store>,
@@ -46,7 +53,7 @@ export default function makeFetchJsonApi(
       const body = await response.json();
       const includedMap = makeIncludedMap(body.included || []);
 
-      return deserializeMany(body.data, includedMap, { store: context.store });
+      return deserializeMany(context, body.data, includedMap);
     },
   };
 }

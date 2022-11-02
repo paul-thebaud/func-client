@@ -1,4 +1,6 @@
+import FuncModelError from '@/core/errors/funcModelError';
 import { Model } from '@/core/model/types';
+import { Dictionary } from '@/core/utilities/types';
 
 export default function makeStore() {
   const modelRegistry: Map<string, () => Promise<Model>> = new Map();
@@ -9,13 +11,21 @@ export default function makeStore() {
       if (!modelResolver) {
         const registeredModels = [...modelRegistry.keys()].map((t) => `- ${t}`).join('\n');
 
-        throw new Error(`[model.] Model for type \`${type}\` is not registered. Did you forget registering it?\nRegistered models:\n${registeredModels}`);
+        throw new FuncModelError(`Model for type \`${type}\` is not registered. Did you forget registering it?\nRegistered models:\n${registeredModels}`);
       }
 
       return modelResolver() as Promise<M>;
     },
-    registerModel(model: Model) {
-      modelRegistry.set(model.$type, async () => model);
+    register(models: Model[] | Dictionary<() => Promise<Model>>) {
+      if (Array.isArray(models)) {
+        models.forEach((model) => {
+          modelRegistry.set(model.$type, async () => model);
+        });
+      } else {
+        Object.entries(models).forEach(([type, modelResolver]) => {
+          modelRegistry.set(type, modelResolver);
+        });
+      }
     },
   };
 }

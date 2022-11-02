@@ -1,9 +1,10 @@
+import { ActionContext, Store } from '@/core';
+import { WithStoreContext } from '@/core/action/changers/useStore';
 import isModelInstance from '@/core/model/isModelInstance';
 import { ModelInstance } from '@/core/model/types';
 import isNil from '@/core/utilities/isNil';
-import { JsonApiIncludedMap } from '@/extensions/fetch-json-api/deserialization/makeIncludedMap';
-import { DeserializeOptions } from '@/extensions/fetch-json-api/deserialization/types';
-import { JsonApiRecord, JsonApiRecordRef } from '@/extensions/fetch-json-api/types';
+import { JsonApiIncludedMap } from '@/extensions/fetch-json-api/serialization/makeIncludedMap';
+import { JsonApiRecord, JsonApiRecordId, JsonApiRecordRef } from '@/extensions/fetch-json-api/types';
 
 function includedOfTypeMap(
   recordRef: JsonApiRecordRef,
@@ -19,12 +20,12 @@ function includedOfTypeMap(
 }
 
 async function deserializeRelated(
+  context: WithStoreContext<ActionContext, Store>,
   recordRef: JsonApiRecordRef,
   included: JsonApiIncludedMap,
-  options: DeserializeOptions,
 ) {
   const includedOfType = includedOfTypeMap(recordRef, included);
-  const instanceOrRecord = includedOfType.get(recordRef.id);
+  const instanceOrRecord = includedOfType.get(recordRef.id as JsonApiRecordId);
   if (!instanceOrRecord) {
     // TODO
     throw new Error();
@@ -35,16 +36,16 @@ async function deserializeRelated(
   }
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  return deserializeOne(instanceOrRecord, included, options);
+  return deserializeOne(context, instanceOrRecord, included);
 }
 
 export default async function deserializeOne(
+  context: WithStoreContext<ActionContext, Store>,
   record: JsonApiRecord,
   included: JsonApiIncludedMap,
-  options: DeserializeOptions,
 ) {
   // TODO Retrieve existing from store.
-  const ModelClass = await options.store.modelFor(record.type);
+  const ModelClass = await context.store.modelFor(record.type);
   const instance = new ModelClass();
 
   instance.id = isNil(record.id) ? instance.id : record.id;
@@ -70,10 +71,10 @@ export default async function deserializeOne(
           instance.$values[key] = null;
         } else if (Array.isArray(relatedRefs)) {
           instance.$values[key] = await Promise.all(relatedRefs.map(
-            (recordRef) => deserializeRelated(recordRef, included, options),
+            (recordRef) => deserializeRelated(context, recordRef, included),
           ));
         } else {
-          instance.$values[key] = await deserializeRelated(relatedRefs, included, options);
+          instance.$values[key] = await deserializeRelated(context, relatedRefs, included);
         }
       }
     }

@@ -1,10 +1,11 @@
+import { ModelId } from '@/core/model/types';
 import { Dictionary } from '@/core/utilities/types';
 
-export type JsonApiRecordId = string | number;
+export type JsonApiRecordId = ModelId;
 
 export type JsonApiRecordRef = {
   type: string;
-  id: JsonApiRecordId;
+  id?: JsonApiRecordId;
 };
 
 export type JsonApiRecord = JsonApiRecordRef & {

@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import FuncModelError from '@/core/errors/funcModelError';
 import { Dictionary, UnionToIntersection } from '@/core/utilities/types';
 
 function isObject(obj: unknown): obj is object {
@@ -10,7 +11,7 @@ export default function merge<T extends Dictionary[]>(
 ): UnionToIntersection<T[number]> {
   return objects.reduce((result, current) => {
     if (Array.isArray(current)) {
-      throw new Error('objects are not supported by merge()');
+      throw new FuncModelError('Only objects are supported by merge(). Did you tried to merge non objects action contexts?');
     }
 
     Object.keys(current).forEach((key) => {
