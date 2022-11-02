@@ -1,6 +1,6 @@
 import { ModelInstance } from '@/core/model/types';
 import { Dictionary } from '@/core/utilities/types';
-import { JsonApiRecordRef } from '@/plugins/fetch-json-api/types';
+import { JsonApiRecordRef } from '@/fetch-json-api/types';
 
 function serializeRef(model: ModelInstance): JsonApiRecordRef {
   return {

@@ -2,13 +2,13 @@ import type { WithStoreContext } from '@/core/action/changers/useStore';
 import type { ActionContext } from '@/core/action/types';
 import type { ModelInstance } from '@/core/model/types';
 import type { Store } from '@/core/store/types';
-import makeRequestInit from '@/plugins/fetch-json-api/requests/makeRequestInit';
-import makeURL from '@/plugins/fetch-json-api/requests/makeURL';
-import deserializeMany from '@/plugins/fetch-json-api/serialization/deserializeMany';
-import deserializeOne from '@/plugins/fetch-json-api/serialization/deserializeOne';
-import makeIncludedMap from '@/plugins/fetch-json-api/serialization/makeIncludedMap';
-import serializeOne from '@/plugins/fetch-json-api/serialization/serializeOne';
-import { FetchJsonApiFactoryOptions } from '@/plugins/fetch-json-api/types';
+import makeRequestInit from '@/fetch-json-api/requests/makeRequestInit';
+import makeURL from '@/fetch-json-api/requests/makeURL';
+import deserializeMany from '@/fetch-json-api/serialization/deserializeMany';
+import deserializeOne from '@/fetch-json-api/serialization/deserializeOne';
+import makeIncludedMap from '@/fetch-json-api/serialization/makeIncludedMap';
+import serializeOne from '@/fetch-json-api/serialization/serializeOne';
+import { FetchJsonApiFactoryOptions } from '@/fetch-json-api/types';
 
 export default function makeFetchJsonApi(
   options: FetchJsonApiFactoryOptions = {},

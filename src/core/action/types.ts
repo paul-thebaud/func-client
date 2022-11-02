@@ -1,6 +1,6 @@
 import { ModelId, ModelInstance } from '@/core/model/types';
 import { Dictionary } from '@/core/utilities/types';
-import { JsonApiRecord } from '@/plugins/fetch-json-api/types';
+import { JsonApiRecord } from '@/fetch-json-api/types';
 
 export type ActionMethod =
   | 'get' | 'GET'

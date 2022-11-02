@@ -1,6 +1,6 @@
 import { ModelInstance } from '@/core/model/types';
-import { JsonApiRecord, JsonApiRecordId } from '@/plugins/fetch-json-api/types';
-import getOrSetMap from '@/plugins/fetch-json-api/utilities/getOrSetMap';
+import { JsonApiRecord, JsonApiRecordId } from '@/fetch-json-api/types';
+import getOrSetMap from '@/fetch-json-api/utilities/getOrSetMap';
 
 export type JsonApiIncludedOfTypeMap = Map<JsonApiRecordId, ModelInstance | JsonApiRecord>;
 export type JsonApiIncludedMap = Map<string, JsonApiIncludedOfTypeMap>;

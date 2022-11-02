@@ -8,7 +8,12 @@ export default defineConfig({
     lib: {
       entry: {
         'core': resolve(__dirname, 'src/core.ts'),
-        'plugins/fetch-json-api': resolve(__dirname, 'src/plugins/fetch-json-api.ts'),
+        'fetch-json-api': resolve(__dirname, 'src/fetch-json-api.ts'),
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {},
       },
     },
   },
