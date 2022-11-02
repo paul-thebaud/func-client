@@ -1,5 +1,6 @@
 import isModelInstance from '@/core/model/isModelInstance';
 import { ModelInstance } from '@/core/model/types';
+import isNil from '@/core/utilities/isNil';
 import { JsonApiIncludedMap } from '@/extensions/fetch-json-api/deserialization/makeIncludedMap';
 import { DeserializeOptions } from '@/extensions/fetch-json-api/deserialization/types';
 import { JsonApiRecord, JsonApiRecordRef } from '@/extensions/fetch-json-api/types';
@@ -46,7 +47,7 @@ export default async function deserializeOne(
   const ModelClass = await options.store.modelFor(record.type);
   const instance = new ModelClass();
 
-  instance.id = record.id || instance.id;
+  instance.id = isNil(record.id) ? instance.id : record.id;
 
   const includedOfType = included.get(record.type);
   if (includedOfType) {
