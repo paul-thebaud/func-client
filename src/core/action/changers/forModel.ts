@@ -6,5 +6,5 @@ import { Model, ModelSchemaRaw } from '@/core/model/types';
 export default function forModel<C extends ActionContext, S extends ModelSchemaRaw>(
   model: Model<S>,
 ) {
-  return (a: Action<C>) => a.use(forSchema(model.$rawSchema)).merge({ type: model.$type });
+  return (a: Action<C>) => a.use(forSchema(model.$schema)).merge({ type: model.$type });
 }

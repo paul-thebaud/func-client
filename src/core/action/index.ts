@@ -1,4 +1,5 @@
 import Action from '@/core/action/action';
+import withAction from '@/core/action/changers/action/withAction';
 import withBaseURL from '@/core/action/changers/action/withBaseURL';
 import withId from '@/core/action/changers/action/withId';
 import withMethod from '@/core/action/changers/action/withMethod';
@@ -18,9 +19,8 @@ import all from '@/core/action/runners/read/all';
 import find from '@/core/action/runners/read/find';
 import create from '@/core/action/runners/write/create';
 
-export * from '@/core/action/types';
-
 export {
+  withAction,
   withBaseURL,
   withId,
   withMethod,
