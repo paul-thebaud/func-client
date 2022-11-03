@@ -4,7 +4,7 @@ import joinStrings from '@/fetch-json-api/utilities/joinStrings';
 
 export default function makeEndpoint(baseURL: string, context: ActionContext) {
   return joinStrings([
-    isNil(context.base) ? baseURL : context.base,
+    isNil(context.baseURL) ? baseURL : context.baseURL,
     context.type,
     isNil(context.id) ? undefined : `${context.id}`,
     context.relation,

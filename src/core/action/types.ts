@@ -19,7 +19,7 @@ export type ActionContext = {
   adapter?: Adapter<unknown>;
   schema?: ModelSchemaRaw;
   method?: ActionMethod;
-  base?: string;
+  baseURL?: string;
   type?: string;
   id?: ModelId;
   relation?: string;
