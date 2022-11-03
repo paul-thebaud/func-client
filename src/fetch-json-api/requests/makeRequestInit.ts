@@ -6,6 +6,7 @@ export default function makeRequestInit(context: ActionContext): RequestInit {
     headers: {
       Accept: 'application/vnd.api+json',
       'Content-Type': 'application/vnd.api+json',
+      ...(context.options?.headers || {}),
     },
     body: context.payload !== undefined
       ? JSON.stringify(context.payload)
