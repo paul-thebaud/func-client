@@ -1,3 +1,4 @@
+import AdapterError from '@/core/errors/adapterError';
 import FuncModelError from '@/core/errors/funcModelError';
 import isModel from '@/core/model/isModel';
 import isModelInstance from '@/core/model/isModelInstance';
@@ -15,6 +16,7 @@ export * from '@/core/utilities/types';
 export * from '@/core/action';
 
 export {
+  AdapterError,
   FuncModelError,
   attr,
   hasMany,
