@@ -28,7 +28,7 @@ export default function makeModel<S extends ModelSchema<{}>, E = {}>(
   Object.defineProperty(ModelClass, '$rawSchema', {
     value: () => {
       throw new FuncModelError(
-        '`$rawSchema` cannot be used as it only holds generic raw schema of model',
+        '`Model.$rawSchema` cannot be used as it only holds generic raw schema of model',
       );
     },
   });
