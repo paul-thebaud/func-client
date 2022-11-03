@@ -1,7 +1,4 @@
-import type { WithStoreContext } from '@/core/action/changers/withStore';
-import type { ActionContext } from '@/core/action/types';
-import type { ModelInstance } from '@/core/model/types';
-import type { Store } from '@/core/store/types';
+import type { ModelInstance, WithStoreContext } from '@/core';
 import isNil from '@/core/utilities/isNil';
 import { JsonApiIncludedMap } from '@/fetch-json-api/serialization/makeIncludedMap';
 import { JsonApiRecord, JsonApiRecordId, JsonApiRecordRef } from '@/fetch-json-api/types';
@@ -20,7 +17,7 @@ function includedOfTypeMap(
 }
 
 async function deserializeRelated(
-  context: WithStoreContext<ActionContext, Store>,
+  context: WithStoreContext,
   recordRef: JsonApiRecordRef,
   included: JsonApiIncludedMap,
 ) {
@@ -40,7 +37,7 @@ async function deserializeRelated(
 }
 
 export default async function deserializeOne(
-  context: WithStoreContext<ActionContext, Store>,
+  context: WithStoreContext,
   record: JsonApiRecord,
   included: JsonApiIncludedMap,
 ) {

@@ -1,7 +1,4 @@
-import { ForModelContext } from '@/core/action/changers/forModel';
-import type Action from '@/core/action/action';
-import { ActionContext } from '@/core/action/types';
-import { ModelSchemaRaw, ModelValues } from '@/core/model/types';
+import { Action, ActionContext, ForModelContext, ModelSchemaRaw, ModelValues } from '@/core';
 
 export default function fields<C extends ActionContext, S extends ModelSchemaRaw>(
   ...fieldset: (keyof ModelValues<S>)[]

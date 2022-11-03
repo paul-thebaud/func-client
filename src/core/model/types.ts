@@ -20,18 +20,16 @@ export type ModelSchema<S extends ModelSchemaRaw> = [keyof S] extends [never]
   ? Dictionary<ModelAttribute<any> | ModelRelation<any>>
   : {
     [K in keyof S]: S[K] extends ModelAttribute<any>
-      ? S[K]
-      : S[K] extends ModelRelation<any>
-        ? S[K]
-        : never;
+      ? S[K] : S[K] extends ModelRelation<any>
+        ? S[K] : never;
   };
 
 export type ModelValues<S extends ModelSchemaRaw> = [keyof S] extends [never]
   ? Dictionary
   : {
-    [K in keyof S]: S[K] extends ModelRelation<infer R> ? R
-      : S[K] extends ModelAttribute<infer T> ? T
-        : never;
+    [K in keyof S]: S[K] extends ModelAttribute<infer T>
+      ? T : S[K] extends ModelRelation<infer T>
+        ? T : never;
   };
 
 export type ModelInstance<S extends ModelSchemaRaw = {}> = {
@@ -42,23 +40,22 @@ export type ModelInstance<S extends ModelSchemaRaw = {}> = {
   $original: ModelValues<S>;
   $values: ModelValues<S>;
 } & {
-  [K in keyof S]: S[K] extends ModelRelation<infer T>
-    ? T
-    : S[K] extends ModelAttribute<infer T>
-      ? T
-      : S[K];
+  [K in keyof S]: S[K] extends ModelAttribute<infer T>
+    ? T : S[K] extends ModelRelation<infer T>
+      ? T : S[K];
 };
 
 export type Model<S extends ModelSchemaRaw = {}> = {
   readonly $MODEL_TYPE: 'model';
   readonly $type: string;
+  readonly $rawSchema: S;
   readonly $schema: ModelSchema<S>;
 } & Constructor<ModelInstance<S>>;
 
 export type ModelInferRawSchema<M> = M extends ModelInstance<infer S>
-  ? { [K in keyof S]: S[K] extends ModelProp<any> ? S[K] : never; }
+  ? ModelSchema<S>
   : M extends Model<infer S>
-    ? { [K in keyof S]: S[K] extends ModelProp<any> ? S[K] : never; }
+    ? ModelSchema<S>
     : never;
 
 export type ModelDotRelation<S, D extends number = 5> =

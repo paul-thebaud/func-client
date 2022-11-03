@@ -1,7 +1,4 @@
-import type { WithStoreContext } from '@/core/action/changers/withStore';
-import type { ActionContext } from '@/core/action/types';
-import type { ModelInstance } from '@/core/model/types';
-import type { Store } from '@/core/store/types';
+import type { ActionContext, ModelInstance, WithStoreContext } from '@/core';
 import makeRequestInit from '@/fetch-json-api/requests/makeRequestInit';
 import makeURL from '@/fetch-json-api/requests/makeURL';
 import deserializeMany from '@/fetch-json-api/serialization/deserializeMany';
@@ -40,7 +37,7 @@ export default function makeFetchJsonApi(
       return serializeOne(model);
     },
     async deserializeOne(
-      context: WithStoreContext<ActionContext, Store>,
+      context: WithStoreContext,
       response: Response,
     ) {
       const body = await response.json();
@@ -49,7 +46,7 @@ export default function makeFetchJsonApi(
       return deserializeOne(context, body.data, includedMap);
     },
     async deserializeMany(
-      context: WithStoreContext<ActionContext, Store>,
+      context: WithStoreContext,
       response: Response,
     ) {
       const body = await response.json();

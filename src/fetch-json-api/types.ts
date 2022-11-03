@@ -1,5 +1,4 @@
-import { ModelId } from '@/core/model/types';
-import { Dictionary } from '@/core/utilities/types';
+import { Dictionary, ModelId } from '@/core';
 
 export type JsonApiRecordId = ModelId;
 

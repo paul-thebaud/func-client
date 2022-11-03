@@ -1,6 +1,4 @@
-import Action from '@/core/action/action';
-import { ActionContext } from '@/core/action/types';
-import { Model, ModelSchemaRaw, ModelValues } from '@/core/model/types';
+import { Action, ActionContext, Model, ModelSchemaRaw, ModelValues } from '@/core';
 
 export default function fieldsFor<C extends ActionContext, S extends ModelSchemaRaw>(
   model: Model<S>,

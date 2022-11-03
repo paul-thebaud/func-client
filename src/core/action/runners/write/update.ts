@@ -3,15 +3,14 @@ import withId from '@/core/action/changers/action/withId';
 import withMethod from '@/core/action/changers/action/withMethod';
 import withPayload from '@/core/action/changers/action/withPayload';
 import withType from '@/core/action/changers/action/withType';
-import { WithAdapterResultContext } from '@/core/action/changers/withAdapter';
 import raw from '@/core/action/runners/raw';
-import { ActionContext } from '@/core/action/types';
+import { ActionContext, WithAdapterContext } from '@/core/action/types';
 import { ModelInstance, ModelSchemaRaw } from '@/core/model/types';
 
 export default function update<C extends ActionContext, R, S extends ModelSchemaRaw>(
   model: ModelInstance<S>,
 ) {
-  return async (a: Action<WithAdapterResultContext<C, R>>) => {
+  return async (a: Action<WithAdapterContext<C, R>>) => {
     const result = await a
       .use(withMethod('PATCH'))
       .use(withType(model.constructor.$type))

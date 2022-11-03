@@ -1,5 +1,4 @@
-import Action from '@/core/action/action';
-import { ActionContext } from '@/core/action/types';
+import { Action, ActionContext } from '@/core';
 
 export default function filter<C extends ActionContext>(
   clause: unknown,

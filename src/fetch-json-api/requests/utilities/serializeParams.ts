@@ -1,4 +1,4 @@
-import { Dictionary } from '@/core/utilities/types';
+import { Dictionary } from '@/core';
 
 function appendParam(
   urlSearchParams: URLSearchParams,

@@ -1,4 +1,4 @@
-import { ActionContext } from '@/core/action/types';
+import { ActionContext } from '@/core';
 import isNil from '@/core/utilities/isNil';
 import joinStrings from '@/fetch-json-api/utilities/joinStrings';
 

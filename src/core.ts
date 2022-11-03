@@ -1,6 +1,3 @@
-import Action from '@/core/action/action';
-import makeAction from '@/core/action/makeAction';
-import type { ActionContext, Adapter } from '@/core/action/types';
 import FuncModelError from '@/core/errors/funcModelError';
 import isModel from '@/core/model/isModel';
 import isModelInstance from '@/core/model/isModelInstance';
@@ -24,13 +21,11 @@ import type {
 import makeStore from '@/core/store/makeStore';
 import type { Store } from '@/core/store/types';
 
+export * from '@/core/utilities/types';
+
 export * from '@/core/action';
 
 export {
-  Action,
-  makeAction,
-  ActionContext,
-  Adapter,
   FuncModelError,
   attr,
   hasMany,

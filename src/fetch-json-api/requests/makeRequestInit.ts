@@ -1,4 +1,4 @@
-import { ActionContext } from '@/core/action/types';
+import { ActionContext } from '@/core';
 
 export default function makeRequestInit(context: ActionContext): RequestInit {
   return {

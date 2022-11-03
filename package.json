@@ -28,6 +28,7 @@
     "index.d.ts"
   ],
   "types": "index.d.ts",
+  "main": "./dist/func-model.umd.cjs",
   "exports": {
     "./core": {
       "import": "./dist/core.js",
@@ -41,14 +42,18 @@
   "scripts": {
     "lint": "eslint --ext .ts src",
     "build:clear": "rimraf ./dist",
-    "build:transpile": "tsc --noEmit && vite build --config vite.config.ts",
+    "build:lib:es": "BUILD_FORMAT=es vite build --config vite.config.ts",
+    "build:lib:cjs": "BUILD_FORMAT=cjs vite build --config vite.config.ts",
+    "build:lib:umd": "BUILD_FORMAT=umd vite build --config vite.config.ts",
+    "build:lib": "concurrently \"pnpm build:lib:es\" \"pnpm build:lib:cjs\" \"pnpm build:lib:umd\"",
     "build:declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist/ && tsc-alias --directory dist/",
-    "build": "pnpm build:clear && pnpm build:transpile && pnpm build:declaration",
+    "build": "pnpm build:clear && pnpm build:lib && pnpm build:declaration",
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
+    "concurrently": "^7.5.0",
     "eslint": "^8.26.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",

@@ -1,4 +1,4 @@
-import { ModelInstance } from '@/core/model/types';
+import { ModelInstance } from '@/core';
 import { JsonApiRecord, JsonApiRecordId } from '@/fetch-json-api/types';
 import getOrSetMap from '@/fetch-json-api/utilities/getOrSetMap';
 

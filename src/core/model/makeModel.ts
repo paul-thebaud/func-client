@@ -1,3 +1,4 @@
+import FuncModelError from '@/core/errors/funcModelError';
 import { Model, ModelId, ModelInstance, ModelSchema, ModelValues } from '@/core/model/types';
 
 export default function makeModel<S extends ModelSchema<{}>, E = {}>(
@@ -23,6 +24,12 @@ export default function makeModel<S extends ModelSchema<{}>, E = {}>(
   ModelClass.prototype = extensions || {};
   ModelClass.$type = type;
   ModelClass.$schema = schema;
+
+  Object.defineProperty(ModelClass, '$rawSchema', {
+    get() {
+      throw new FuncModelError('`$rawSchema` cannot be used as it only holds generic raw schema of model');
+    },
+  });
 
   return ModelClass as unknown as Model<S & E>;
 }

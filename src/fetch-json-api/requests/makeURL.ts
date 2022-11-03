@@ -1,4 +1,4 @@
-import { ActionContext } from '@/core/action/types';
+import { ActionContext } from '@/core';
 import makeEndpoint from '@/fetch-json-api/requests/makeEndpoint';
 import makeParams from '@/fetch-json-api/requests/makeParams';
 import joinStrings from '@/fetch-json-api/utilities/joinStrings';
