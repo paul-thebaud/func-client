@@ -1,4 +1,4 @@
-import type { WithStoreContext } from '@/core/action/changers/useStore';
+import type { WithStoreContext } from '@/core/action/changers/withStore';
 import type { ActionContext } from '@/core/action/types';
 import type { Store } from '@/core/store/types';
 import deserializeOne from '@/fetch-json-api/serialization/deserializeOne';

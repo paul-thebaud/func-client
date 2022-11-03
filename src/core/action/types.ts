@@ -1,4 +1,4 @@
-import { ModelId, ModelInstance } from '@/core/model/types';
+import { ModelId, ModelInstance, ModelSchemaRaw } from '@/core/model/types';
 import { Dictionary } from '@/core/utilities/types';
 import { JsonApiRecord } from '@/fetch-json-api/types';
 
@@ -15,7 +15,7 @@ export type ActionMethod =
   | 'unlink' | 'UNLINK';
 
 export type ActionContext = {
-  method: ActionMethod;
+  method?: ActionMethod;
   base?: string;
   type?: string;
   id?: ModelId;
@@ -24,6 +24,8 @@ export type ActionContext = {
   params?: Dictionary;
   payload?: unknown;
   options?: Dictionary;
+  schema?: ModelSchemaRaw;
+  [key: string]: unknown;
 };
 
 export type Adapter<R> = {
@@ -31,7 +33,7 @@ export type Adapter<R> = {
   serializeOne(
     context: ActionContext,
     model: ModelInstance,
-  ): Promise<JsonApiRecord>;
+  ): Promise<JsonApiRecord>; // TODO This should be generic.
   deserializeOne(
     context: ActionContext,
     result: R,

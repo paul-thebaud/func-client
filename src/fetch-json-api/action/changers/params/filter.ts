@@ -1,11 +1,12 @@
-import merge from '@/core/utilities/merge';
-import { Dictionary } from '@/core/utilities/types';
+import Action from '@/core/action/action';
+import { ActionContext } from '@/core/action/types';
 
-export default function filter<C extends Dictionary>(
+export default function filter<C extends ActionContext>(
   clause: unknown,
 ) {
-  return (context: C) => merge(context, {
+  return (a: Action<C>) => a.merge({
     params: {
+      ...a.context.params,
       filter: clause,
     },
   });

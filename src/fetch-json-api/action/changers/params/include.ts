@@ -1,11 +1,11 @@
-import { WithSchemaContext } from '@/core/action/changers/forSchema';
+import { ForSchemaContext } from '@/core/action/changers/forSchema';
+import type Action from '@/core/action/action';
 import { ModelDotRelation, ModelSchemaRaw } from '@/core/model/types';
-import merge from '@/core/utilities/merge';
 
-export default function include<C, S extends ModelSchemaRaw>(
+export default function include<C extends {}, S extends ModelSchemaRaw>(
   ...relations: ModelDotRelation<S>[]
 ) {
-  return (context: WithSchemaContext<C, S>) => merge(context, {
+  return (a: Action<ForSchemaContext<C, S>>) => a.merge({
     params: {
       include: relations.join(','),
     },

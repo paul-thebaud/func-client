@@ -1,14 +1,16 @@
-import { WithModelContext } from '@/core/action/changers/forModel';
+import { ForModelContext } from '@/core/action/changers/forModel';
+import type Action from '@/core/action/action';
+import { ActionContext } from '@/core/action/types';
 import { ModelSchemaRaw, ModelValues } from '@/core/model/types';
-import merge from '@/core/utilities/merge';
 
-export default function fields<C, S extends ModelSchemaRaw>(
+export default function fields<C extends ActionContext, S extends ModelSchemaRaw>(
   ...fieldset: (keyof ModelValues<S>)[]
 ) {
-  return (context: WithModelContext<C, S>) => merge(context, {
+  return (a: Action<ForModelContext<C, S>>) => a.merge({
     params: {
+      ...a.context.params,
       fields: {
-        [context.type]: fieldset.join(','),
+        [a.context.type]: fieldset.join(','),
       },
     },
   });

@@ -24,7 +24,7 @@ import type {
 import makeStore from '@/core/store/makeStore';
 import type { Store } from '@/core/store/types';
 
-export * from '@/core/action/changers';
+export * from '@/core/action';
 
 export {
   Action,

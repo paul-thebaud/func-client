@@ -1,5 +1,4 @@
-import { isModelInstance } from '@/core';
-import type { WithStoreContext } from '@/core/action/changers/useStore';
+import type { WithStoreContext } from '@/core/action/changers/withStore';
 import type { ActionContext } from '@/core/action/types';
 import type { ModelInstance } from '@/core/model/types';
 import type { Store } from '@/core/store/types';
@@ -32,7 +31,7 @@ async function deserializeRelated(
     throw new Error();
   }
 
-  if (isModelInstance(instanceOrRecord)) {
+  if ('$MODEL_TYPE' in instanceOrRecord) {
     return instanceOrRecord;
   }
 

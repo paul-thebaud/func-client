@@ -1,13 +1,14 @@
+import Action from '@/core/action/action';
+import { ActionContext } from '@/core/action/types';
 import { Model, ModelSchemaRaw, ModelValues } from '@/core/model/types';
-import merge from '@/core/utilities/merge';
-import { Dictionary } from '@/core/utilities/types';
 
-export default function fieldsFor<C extends Dictionary, S extends ModelSchemaRaw>(
+export default function fieldsFor<C extends ActionContext, S extends ModelSchemaRaw>(
   model: Model<S>,
   ...fieldset: (keyof ModelValues<S>)[]
 ) {
-  return (context: C) => merge(context, {
+  return (a: Action<C>) => a.merge({
     params: {
+      ...a.context.params,
       fields: {
         [model.$type]: fieldset.join(','),
       },
