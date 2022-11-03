@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [ main ]
 
+defaults:
+  run:
+    working-directory: website
+
 jobs:
   test-deploy:
     name: Test deployment
@@ -18,8 +22,6 @@ jobs:
           node-version: 18
           cache: pnpm
 
-      - name: Move to docs directory
-        run: cd docs
       - name: Install dependencies
         run: pnpm install
       - name: Test build website

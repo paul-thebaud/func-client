@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
 
+defaults:
+  run:
+    working-directory: website
+
 jobs:
   deploy:
     name: Deploy to GitHub Pages
@@ -18,8 +22,6 @@ jobs:
           node-version: 18
           cache: pnpm
 
-      - name: Move to docs directory
-        run: cd docs
       - name: Install dependencies
         run: pnpm install
       - name: Build website

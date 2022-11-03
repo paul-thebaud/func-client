@@ -26,7 +26,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/paul-thebaud/func-model/tree/main/docs/',
+          editUrl: 'https://github.com/paul-thebaud/func-model/tree/main/website/',
         },
         blog: false,
         theme: {
