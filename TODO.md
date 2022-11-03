@@ -9,7 +9,7 @@
 - [ ] Adapters errors (404, etc.)
 - [ ] Solution to Vite chunks when features from core used by adapter extension
 - [ ] Merged params for adapter (fields, include, etc.)
-- [ ] Utilities for models (fill, load relation, etc.)
+- [ ] Utilities for models (fill, reset, load relation, etc.)
 - [ ] Default values of models props (using direct value or supplier)
 - [ ] Model and relations metadata (loaded, loading, etc.)
 - [ ] Reactivity compatibility (for props and metadata)
