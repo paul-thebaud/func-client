@@ -12,7 +12,6 @@ const config = {
   baseUrl: '/func-model/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
   organizationName: 'paul-thebaud',
   projectName: 'func-model',
   i18n: {
@@ -56,7 +55,6 @@ const config = {
         ],
       },
       footer: {
-        style: 'dark',
         links: [
           {
             title: 'Docs',
