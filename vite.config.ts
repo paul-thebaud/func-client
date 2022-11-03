@@ -16,6 +16,7 @@ const makeLibOptions = (format: LibFormat) => ({
 });
 const makeRollupOptions = (ext: 'js' | 'cjs') => ({
   output: {
+    minifyInternalExports: false,
     chunkFileNames: '[name]',
     manualChunks(id: string) {
       if (id.endsWith('func-model.ts')) {
