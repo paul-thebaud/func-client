@@ -11,7 +11,9 @@ export default function makeStore() {
       if (!modelResolver) {
         const registeredModels = [...modelRegistry.keys()].map((t) => `- ${t}`).join('\n');
 
-        throw new FuncModelError(`Model for type \`${type}\` is not registered. Did you forget registering it?\nRegistered models:\n${registeredModels}`);
+        throw new FuncModelError(
+          `Model for type \`${type}\` is not registered. Did you forget registering it?\nRegistered models:\n${registeredModels}`,
+        );
       }
 
       return modelResolver() as Promise<M>;

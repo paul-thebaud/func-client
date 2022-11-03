@@ -41,13 +41,14 @@
   },
   "scripts": {
     "lint": "eslint --ext .ts src",
-    "build:clear": "rimraf ./dist",
+    "build:pre-clear": "rimraf ./dist",
     "build:lib:es": "BUILD_FORMAT=es vite build --config vite.config.ts",
     "build:lib:cjs": "BUILD_FORMAT=cjs vite build --config vite.config.ts",
     "build:lib:umd": "BUILD_FORMAT=umd vite build --config vite.config.ts",
     "build:lib": "concurrently \"pnpm build:lib:es\" \"pnpm build:lib:cjs\" \"pnpm build:lib:umd\"",
     "build:declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist/ && tsc-alias --directory dist/",
-    "build": "pnpm build:clear && pnpm build:lib && pnpm build:declaration",
+    "build:post-clear": "rimraf \"./dist/func-model.@(js|cjs|d.ts)?(.map)\"",
+    "build": "pnpm build:pre-clear && pnpm build:lib && pnpm build:declaration && pnpm build:post-clear",
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {

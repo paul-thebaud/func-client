@@ -48,7 +48,7 @@ export type ModelInstance<S extends ModelSchemaRaw = {}> = {
 export type Model<S extends ModelSchemaRaw = {}> = {
   readonly $MODEL_TYPE: 'model';
   readonly $type: string;
-  readonly $rawSchema: S;
+  readonly $rawSchema: () => S;
   readonly $schema: ModelSchema<S>;
 } & Constructor<ModelInstance<S>>;
 
