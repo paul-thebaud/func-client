@@ -4,119 +4,111 @@ sidebar_position: 1
 
 # Introduction
 
-## What is Func Model?
+## What is FuncModel?
 
-**Func Model** is a simple functional programming oriented API client. It is
+**FuncModel** is a simple functional programming oriented API client. It is
 framework-agnostic and can integrate with any Web app using Javascript or
 Typescript.
 
-- Modular, highly extensible and fully treeshakable
+- Modular, highly extensible and fully tree shakable thanks to functional
+  programming. [See the benefits](#why-are-we-not-using-big-model-and-builder-classes)
 - Ready to use functions to integrate with any [JSON:API](https://jsonapi.org/)
 - Strongly typed everywhere, with generics typings on models, actions, etc.
 - Dependency free (JSON:API adapter is based
   on [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API))
 - (coming soon) Fully linted, tested and documented
 
-## How those it work?
+## Some vocabulary
 
-### Short explanation
-
-Purpose of Func Model is to let you declare models object containing attributes
-and relationships (called a schema). Those model can also contain custom
-getters, setters, methods or properties.
-
-Once your model are defined, you can use them through your declared action
-factory. The action factory is a configured base context for all your API
-interactions which you need to declare (this avoids useless functions or class
-being in your production bundle if you do not use them).
-
-With this action factory, you can run API action (GET, POST, etc.) using context
-changers and runners.
+### Model
 
 ```javascript
-// post.js - We declare a post model with the provided schema and extensions.
 export default makeModel('posts', {
-  // The schema to interact with our API.
   title: attr({ default: '' }),
   description: attr(),
-  comments: hasMany(),
   createdAt: attr(dateTransformer()),
   publishedAt: attr(dateTransformer()),
+  comments: hasMany(),
 }, {
-  // Our extensions function for the model.
   get isPublished() {
     return !!this.publishedAt;
   },
 });
+```
 
-// main.js - We use this post schema through our configured action factory.
-import action from './your/project/action';
-import Post from './your/project/post';
+Models represent the structure of your data. A model is a composed class and can
+be instantiated. Models are composed of four things:
 
+- The **type** which uniquely references the model class.
+- **Relationships** with other models (has one and has many).
+- **Attributes** representing non relationships values (string, date, etc.).
+- **Extensions** which add custom features to your model instances (e.g. full
+  name
+  getter for a `User` model, etc.).
+
+### Action
+
+```javascript
 const posts = await action()
   .use(forModel(Post))
   .use(include('comments'))
   .run(all());
 
-posts[0].title; // "Hello World"
-posts[0].comments; // `Comment` model instances as an array.
-
-await action().run(update(
-  fill(posts[0], { title: 'Hello from Func Model' }),
-));
-
-posts[0].title; // "Hello from Func Model"
+await action()
+  .use(destroy(posts[0]))
+  .run(one());
 ```
 
-### Benefits of functional programming
+Actions are the way you make interaction between your models and an external
+API. There are three steps to an action:
 
-The way you will declare your models and run your action is called functional
-programming. The base model and action objects are very small, and you are
-interacting with those using functions. This way, if you do not use a feature of
-Func Model (such as `HasMany` relations or `fields` JSON:API param), it won't be
-included in your final production bundle thanks to treeshaking.
+- **Creation** using your own action factory (we'll talk about this later).
+- **Use** of context changers to affect the context of the action (change the
+  path, change the affected model, change some query params, etc.).
+- **Run** of context runner to execute the action and retrieve a result.
 
-### For Typescript, strong types works!
+The context of the action can be changed to pretty everything and the typings
+are correctly propagated, making it a secure and easy way of building action
+using Typescript or Javascript.
 
-Keeping types when using functional programming might be a little tricky when
-using Typescript. Func Model is designed with generic types where it is useful,
-allowing your model interaction or action context changes to be strictly typed.
+## FAQ
 
-If we take the previous example and transform it to Typescript, we have a lot of
-benefits:
+### Why are we not using big `Model` and `Builder` classes?
+
+In a lot of frameworks, modeling the data and building the query are done
+through two main classes: the `Model` and the `Builder`.
+
+The goal of FuncModel is to provide a lot of simple function to affect model
+instances or their context. If all of those functions were included in classes,
+it will be in your final production bundle even if you are not using them.
+Thanks to the way FuncModel works, **all unused models helpers or actions
+changers/runners can be tree shaken.**
+
+### Is it strongly typed?
+
+**Yes!** FuncModel makes great use of Typescript generics to provide strongly
+typed models objects and contexts changes.
+
+Here are a short example of the capabilities reusing the previous examples:
 
 ```typescript
-// post.js - We declare the Post model using class to be able to only import
-// types when relating the Post model in other models,
-// such as the following Comment import.
-import type Comment from './your/project/comment';
-
 export default class Post extends makeModel('posts', {
-  // Title attribute is infered as string from default value.
-  title: attr({ default: '' }),
-  // We can also pass a custom type.
-  description: attr<string>(),
-  comments: hasMany<Comment>(),
-  // Infered as `Date` from transformer.
-  createdAt: attr(dateTransformer()),
-  // We may also override the infered type from transformer.
+  title: attr({ default: '' }), // Infered to string.
+  description: attr<string>(), // Custom types are also supported.
+  createdAt: attr(dateTransformer()), // Infered from transformers.
   publishedAt: attr<Date | null>(dateTransformer()),
+  comments: hasMany<Comment>(),
 }, {
+  // `this` context is available and strongly typed in extensions.
   get isPublished() {
-    // `this` context is available with the correct typing in extensions.
-    // Here, `this.publishedAt` is a nullable Date.
     return !!this.publishedAt;
   },
 }) {
+  // `this` context is also available and strongly typed in classes body.
   shortenDescription() {
-    // We can also use a strongly typed `this` inside the class body.
     return this.description.substring(0, 50);
   }
 }
-
-// main.js
-import action from './your/project/action';
-import Post from './your/project/post';
 
 const posts = await action()
   // We are telling the action context is now for the Post model.
@@ -125,15 +117,43 @@ const posts = await action()
   // As an example, `include` is typed for deep dotted relations, such as:
   // "comments", "comments.author", "comments.author.favoritePosts", etc.
   .use(include('comments'))
+  // As an other example, `fields` is typed for direct attributes or relationships of the model.
+  .use(fields('title', 'description', 'comments'))
   .run(all());
-
-posts[0].title; // Type: `string`
-posts[0].comments; // Type: `Comment[]`
-
-// Strong types are available everywhere, even in small helpers such as `fill`.
-await action().run(update(
-  fill(posts[0], { title: 'Hello from Func Model' }),
-));
-
-posts[0].title; // "Hello from Func Model"
 ```
+
+### Why classes are used for models in Typescript?
+
+We extend the `makeModel` call when using Typescript to be able to
+only `import type` of the class type when typing our relations.
+
+**This prevents dependency cycles.**
+
+```typescript
+// comment.ts
+export default class Comment extends makeModel('posts') {
+}
+// post.ts
+import type Comment from './path/to/models/comment';
+
+export default class Post extends makeModel('posts', {
+  comments: hasMany<Comment>(),
+}) {
+}
+```
+
+### What our the downsides of FuncModel approach?
+
+When declaring models, there are no clear downside of the functional
+programming, as `this` context is still available in extensions and classes
+body.
+
+But, since we are not building the action factory for you, you must initialize
+this factory yourself with the things you need: an adapter, a serializer, etc.
+Don't worry, the process is still pretty simple.
+
+In addition, you cannot just use `action().forModel(Post).all()` because those
+function must be imported to be used. We are thinking of a way to simply extends
+the action with reusable function, but that's not currently possible regarding
+the way Typescript manage types (generics of context changers and runners would
+be lost).

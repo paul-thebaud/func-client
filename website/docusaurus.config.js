@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Func Model',
+  title: 'FuncModel',
   tagline: 'Functional programming oriented API client for TS and JS, with strong types capabilities.',
   url: 'https://paul-thebaud.github.io',
   baseUrl: '/func-model/',
@@ -39,13 +39,18 @@ const config = {
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Func Model',
+        title: 'FuncModel',
         items: [
           {
             type: 'doc',
             docId: 'intro',
             position: 'left',
-            label: 'Introduction',
+            label: 'Discover',
+          },
+          {
+            to: '/docs/essentials/getting-started',
+            position: 'left',
+            label: 'Documentation',
           },
           {
             href: 'https://github.com/paul-thebaud/func-model',

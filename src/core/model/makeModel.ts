@@ -3,7 +3,7 @@ import { Model, ModelId, ModelInstance, ModelSchema, ModelValues } from '@/core/
 
 export default function makeModel<S extends ModelSchema<{}>, E = {}>(
   type: string,
-  schema: S,
+  schema?: S,
   extensions?: E & ThisType<ModelInstance<S & E>>,
 ) {
   function ModelClass(this: ModelInstance<S>) {
@@ -11,7 +11,7 @@ export default function makeModel<S extends ModelSchema<{}>, E = {}>(
     this.$original = {} as ModelValues<S>;
     this.$values = {} as ModelValues<S>;
 
-    Object.keys(schema).forEach((key: keyof ModelValues<S>) => {
+    Object.keys(schema || {}).forEach((key: keyof ModelValues<S>) => {
       Object.defineProperty(this, key, {
         get: () => this.$values[key],
         set: (value: ModelValues<S>[typeof key]) => {
@@ -23,7 +23,7 @@ export default function makeModel<S extends ModelSchema<{}>, E = {}>(
 
   ModelClass.prototype = extensions || {};
   ModelClass.$type = type;
-  ModelClass.$schema = schema;
+  ModelClass.$schema = schema || {};
 
   Object.defineProperty(ModelClass, '$rawSchema', {
     value: () => {
