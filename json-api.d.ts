@@ -1,1 +1,1 @@
-export * from './dist/fetch-json-api';
+export * from './dist/json-api';
