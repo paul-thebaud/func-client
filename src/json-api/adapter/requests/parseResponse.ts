@@ -3,9 +3,9 @@ import { JsonApiDocument } from '@/json-api/types';
 
 export default async function parseResponse(
   response: Response,
-): Promise<JsonApiDocument | undefined> {
+): Promise<JsonApiDocument> {
   if (response.status === 204) {
-    return undefined;
+    return {};
   }
 
   try {
