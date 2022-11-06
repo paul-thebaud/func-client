@@ -7,17 +7,24 @@ export default function makeModel<S extends ModelSchema<{}>, E = {}>(
   extensions?: E & ThisType<ModelInstance<S & E>>,
 ) {
   function ModelClass(this: ModelInstance<S>) {
-    this.id = null as unknown as ModelId;
+    this.id = undefined as unknown as ModelId;
     this.$original = {} as ModelValues<S>;
     this.$values = {} as ModelValues<S>;
 
-    Object.keys(schema || {}).forEach((key: keyof ModelValues<S>) => {
+    Object.entries(schema || {}).forEach(([key, def]) => {
       Object.defineProperty(this, key, {
         get: () => this.$values[key],
         set: (value: ModelValues<S>[typeof key]) => {
-          this.$values[key] = value;
+          this.$values[key as keyof ModelValues<S>] = value;
         },
       });
+
+      // TODO Handle object and array default.
+      if (typeof def.default === 'function') {
+        this.$values[key as keyof ModelValues<S>] = def.default();
+      } else if (def.default !== undefined) {
+        this.$values[key as keyof ModelValues<S>] = def.default;
+      }
     });
   }
 

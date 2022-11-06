@@ -1,34 +1,41 @@
+import { Transform } from '@/core/transforms/types';
 import { Constructor, Dictionary, Prev } from '@/core/utilities/types';
+
+export type InternalModelType = 'attribute' | 'relation' | 'model' | 'instance';
 
 export type ModelId = string | number;
 
-export type ModelProp<T> = {
-  default: T | undefined;
+export type DefaultFactory<T> = () => T;
+
+export type ModelProp<T, S> = {
+  default?: T | DefaultFactory<T> | undefined;
+  transformer?: Transform<T | undefined, S> | undefined;
+  alias?: string | undefined;
 };
 
-export type ModelAttribute<T> = ModelProp<T> & {
+export type ModelAttribute<T, S> = ModelProp<T, S> & {
   $MODEL_TYPE: 'attribute';
 };
 
-export type ModelRelation<T> = ModelProp<T> & {
+export type ModelRelation<T, S> = ModelProp<T, S> & {
   $MODEL_TYPE: 'relation';
 };
 
 export type ModelSchemaRaw = Dictionary;
 
 export type ModelSchema<S extends ModelSchemaRaw> = [keyof S] extends [never]
-  ? Dictionary<ModelAttribute<any> | ModelRelation<any>>
+  ? Dictionary<ModelAttribute<any, any> | ModelRelation<any, any>>
   : {
-    [K in keyof S]: S[K] extends ModelAttribute<any>
-      ? S[K] : S[K] extends ModelRelation<any>
+    [K in keyof S]: S[K] extends ModelAttribute<any, any>
+      ? S[K] : S[K] extends ModelRelation<any, any>
         ? S[K] : never;
   };
 
 export type ModelValues<S extends ModelSchemaRaw> = [keyof S] extends [never]
   ? Dictionary
   : {
-    [K in keyof S]: S[K] extends ModelAttribute<infer T>
-      ? T : S[K] extends ModelRelation<infer T>
+    [K in keyof S]: S[K] extends ModelAttribute<infer T, any>
+      ? T : S[K] extends ModelRelation<infer T, any>
         ? T : never;
   };
 
@@ -37,24 +44,28 @@ export type ModelInstance<S extends ModelSchemaRaw = {}> = {
   readonly constructor: Model<S>;
   // FIXME Should the model id be nullable in its type?
   id: ModelId;
-  $original: ModelValues<S>;
-  $values: ModelValues<S>;
+  $original: Partial<ModelValues<S>>;
+  $values: Partial<ModelValues<S>>;
 } & {
-  [K in keyof S]: S[K] extends ModelAttribute<infer T>
-    ? T : S[K] extends ModelRelation<infer T>
+  [K in keyof S]: S[K] extends ModelAttribute<infer T, any>
+    ? T : S[K] extends ModelRelation<infer T, any>
       ? T : S[K];
 };
 
-export type Model<S extends ModelSchemaRaw = {}> = {
+export type ModelClass<S extends ModelSchemaRaw = {}> = {
   readonly $MODEL_TYPE: 'model';
   readonly $type: string;
   readonly $rawSchema: () => S;
   readonly $schema: ModelSchema<S>;
-} & Constructor<ModelInstance<S>>;
+};
+
+export type Model<S extends ModelSchemaRaw = {}, I extends ModelInstance<S> = ModelInstance<S>> =
+  & ModelClass<S>
+  & Constructor<I>;
 
 export type ModelInferRawSchema<M> = M extends ModelInstance<infer S>
   ? ModelSchema<S>
-  : M extends Model<infer S>
+  : M extends ModelClass<infer S>
     ? ModelSchema<S>
     : never;
 
@@ -65,7 +76,7 @@ export type ModelDotRelation<S, D extends number = 5> =
       ? K extends string & keyof S
         ? S[K] extends never
           ? never
-          : S[K] extends ModelRelation<infer T>
+          : S[K] extends ModelRelation<infer T, any>
             ? T extends any[]
               ? K | `${K}.${ModelDotRelation<ModelInferRawSchema<T[number]>, Prev[D]>}`
               : K | `${K}.${ModelDotRelation<ModelInferRawSchema<T>, Prev[D]>}`

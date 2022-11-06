@@ -5,7 +5,7 @@ type LibFormat = 'es' | 'cjs' | 'umd';
 
 const libChunks = [
   { name: 'core', dir: resolve(__dirname, 'src/core') },
-  { name: 'fetch-json-api', dir: resolve(__dirname, 'src/fetch-json-api') },
+  { name: 'json-api', dir: resolve(__dirname, 'src/json-api') },
 ];
 
 const makeLibOptions = (format: LibFormat) => ({
@@ -51,7 +51,7 @@ const buildFormats = {
 const buildFormat = process.env.BUILD_FORMAT as LibFormat | undefined;
 const buildConfig = buildFormat && buildFormats[buildFormat];
 if (!buildConfig) {
-  throw new Error('vite build must be called with BUILD_FORMAT env set to `es` or `umd`');
+  throw new Error('vite build must be called with BUILD_FORMAT env set to `es`, `cjs` or `umd`');
 }
 
 export default defineConfig({

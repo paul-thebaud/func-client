@@ -24,7 +24,7 @@
   "files": [
     "dist/*",
     "core.d.ts",
-    "fetch-json-api.d.ts",
+    "json-api.d.ts",
     "index.d.ts"
   ],
   "types": "index.d.ts",
@@ -34,9 +34,9 @@
       "import": "./dist/core.js",
       "require": "./dist/core.cjs"
     },
-    "./fetch-json-api": {
-      "import": "./dist/fetch-json-api.js",
-      "require": "./dist/fetch-json-api.cjs"
+    "./json-api": {
+      "import": "./dist/json-api.js",
+      "require": "./dist/json-api.cjs"
     }
   },
   "scripts": {

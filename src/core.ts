@@ -1,19 +1,29 @@
 import AdapterError from '@/core/errors/adapterError';
 import FuncModelError from '@/core/errors/funcModelError';
-import isModel from '@/core/model/isModel';
-import isModelInstance from '@/core/model/isModelInstance';
 import makeModel from '@/core/model/makeModel';
 import attr from '@/core/model/props/attr';
 import hasMany from '@/core/model/props/hasMany';
 import hasOne from '@/core/model/props/hasOne';
+import changed from '@/core/model/utilities/changed';
+import changedKeys from '@/core/model/utilities/changedKeys';
+import fill from '@/core/model/utilities/fill';
+import syncOriginal from '@/core/model/utilities/syncOriginal';
+import syncOriginalKeys from '@/core/model/utilities/syncOriginalKeys';
 import makeStore from '@/core/store/makeStore';
+import toBoolean from '@/core/transforms/toBoolean';
+import toDate from '@/core/transforms/toDate';
+import toKebab from '@/core/transforms/toKebab';
+import toNumber from '@/core/transforms/toNumber';
+import toString from '@/core/transforms/toString';
+import useTransform from '@/core/transforms/useTransform';
 
-export * from '@/core/action/types';
+export * from '@/core/actions/types';
 export * from '@/core/model/types';
 export * from '@/core/store/types';
+export * from '@/core/transforms/types';
 export * from '@/core/utilities/types';
 
-export * from '@/core/action';
+export * from '@/core/actions';
 
 export {
   AdapterError,
@@ -21,8 +31,17 @@ export {
   attr,
   hasMany,
   hasOne,
-  isModel,
-  isModelInstance,
+  changed,
+  changedKeys,
+  fill,
+  syncOriginal,
+  syncOriginalKeys,
   makeModel,
   makeStore,
+  toBoolean,
+  toDate,
+  toKebab,
+  toNumber,
+  toString,
+  useTransform,
 };
