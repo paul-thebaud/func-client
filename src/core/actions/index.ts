@@ -7,6 +7,7 @@ import forModel from '@/core/actions/context/changers/forModel';
 import forSchema from '@/core/actions/context/changers/forSchema';
 import withAction from '@/core/actions/context/changers/withAction';
 import all from '@/core/actions/context/runners/all';
+import knownData from '@/core/actions/context/runners/knownData';
 import data from '@/core/actions/context/runners/data';
 import one from '@/core/actions/context/runners/one';
 import raw from '@/core/actions/context/runners/raw';
@@ -23,6 +24,7 @@ export {
   forSchema,
   all,
   data,
+  knownData,
   one,
   raw,
   update,

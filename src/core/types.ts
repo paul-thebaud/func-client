@@ -3,6 +3,7 @@ import type { ModelInstance } from '@/core/model/types';
 
 export type Adapter<R, D> = {
   action(context: ActionContext): Promise<R>;
+  // TODO Non nullable?
   data(result: R): Promise<D | null | undefined>;
 };
 

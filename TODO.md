@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] Move generics of context functions to returned function.
 - [ ] Transform model props (e.g. string to date transform)
 - [ ] Model props aliasing (e.g. "firstName" sent "first-name")
 - [ ] Model relation path aliasing (e.g. "likedPosts" to "liked-posts")

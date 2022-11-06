@@ -1,3 +1,9 @@
+import fields from '@/json-api/actions/context/changers/params/fields';
+import fieldsFor from '@/json-api/actions/context/changers/params/fieldsFor';
+import filter from '@/json-api/actions/context/changers/params/filter';
+import include from '@/json-api/actions/context/changers/params/include';
+import find from '@/json-api/actions/context/shortcuts/find';
+import findOrFail from '@/json-api/actions/context/shortcuts/findOrFail';
 import get from '@/json-api/actions/context/shortcuts/get';
 import post from '@/json-api/actions/context/shortcuts/post';
 import request from '@/json-api/actions/context/shortcuts/request';
@@ -21,6 +27,12 @@ export * from '@/json-api/deserializer/types';
 export * from '@/json-api/serializer/types';
 
 export {
+  fields,
+  fieldsFor,
+  filter,
+  include,
+  find,
+  findOrFail,
   request,
   get,
   post,
