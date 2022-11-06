@@ -18,7 +18,7 @@ export type JsonApiResourceIdentifier = {
 
 export type JsonApiAttributes = Dictionary;
 export type JsonApiRelationships = Dictionary<{
-  data: JsonApiResourceIdentifier[] | JsonApiResourceIdentifier | null;
+  data?: JsonApiResourceIdentifier[] | JsonApiResourceIdentifier | null;
   links?: JsonApiLinks;
   meta?: JsonApiMeta;
 }>;

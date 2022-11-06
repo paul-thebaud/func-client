@@ -16,7 +16,7 @@ export default async function deserializeRelation(
   options: JsonApiDeserializerOptions,
   deserializeOne: DeserializeOne,
 ) {
-  const value = await deserializeProp(def, key, data, options);
+  const value = await deserializeProp(def, key, data.data, options);
 
   if (Array.isArray(value)) {
     return value.map((resourceRef) => deserializeRef(

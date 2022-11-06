@@ -1,7 +1,7 @@
 import { ModelInstance, ModelRelation } from '@/core';
-import type { JsonApiSerializerOptions } from '@/json-api/serializer/types';
 import serializeProp from '@/json-api/serializer/serializeProp';
 import serializeRef from '@/json-api/serializer/serializeRef';
+import type { JsonApiSerializerOptions } from '@/json-api/serializer/types';
 
 export default async function serializeRelation(
   def: ModelRelation<unknown, unknown>,
@@ -16,5 +16,6 @@ export default async function serializeRelation(
     refValue = serializeRef(value as ModelInstance);
   }
 
+  // TODO Data object made here, bad idea?
   return serializeProp(def, key, { data: refValue }, options);
 }
