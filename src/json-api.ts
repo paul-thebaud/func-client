@@ -1,3 +1,6 @@
+import get from '@/json-api/actions/context/shortcuts/get';
+import post from '@/json-api/actions/context/shortcuts/post';
+import request from '@/json-api/actions/context/shortcuts/request';
 import ConflictError from '@/json-api/adapter/errors/conflictError';
 import FetchError from '@/json-api/adapter/errors/fetchError';
 import ForbiddenError from '@/json-api/adapter/errors/forbiddenError';
@@ -18,6 +21,9 @@ export * from '@/json-api/deserializer/types';
 export * from '@/json-api/serializer/types';
 
 export {
+  request,
+  get,
+  post,
   ConflictError,
   FetchError,
   ForbiddenError,

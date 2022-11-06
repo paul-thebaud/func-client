@@ -6,7 +6,7 @@ export default function post<C extends ActionContext, R, D>(
   payload?: BodyInit,
   config?: Omit<RequestConfig, 'method' | 'payload'>,
 ) {
-  return (a: Action<WithAdapterContext<C, R, D>>) => a.run(request(pathOrBaseURL, {
+  return (a: Action<WithAdapterContext<C, R, D>>) => a.use(request(pathOrBaseURL, {
     method: 'POST',
     payload,
     ...config,

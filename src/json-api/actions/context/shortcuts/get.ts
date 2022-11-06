@@ -5,7 +5,7 @@ export default function get<C extends ActionContext, R, D>(
   pathOrBaseURL: string,
   config?: Omit<RequestConfig, 'method'>,
 ) {
-  return (a: Action<WithAdapterContext<C, R, D>>) => a.run(request(pathOrBaseURL, {
+  return (a: Action<WithAdapterContext<C, R, D>>) => a.use(request(pathOrBaseURL, {
     method: 'GET',
     ...config,
   }));

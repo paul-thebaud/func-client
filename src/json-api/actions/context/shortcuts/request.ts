@@ -1,4 +1,4 @@
-import { Action, ActionContext, raw, withAction, WithAdapterContext } from '@/core';
+import { Action, ActionContext, withAction, WithAdapterContext } from '@/core';
 
 export type RequestConfig =
   & Omit<ActionContext, 'baseURL' | 'type' | 'id' | 'relation' | 'path'>
@@ -13,6 +13,6 @@ export default function request<C extends ActionContext, R, D>(
       ? [pathOrBaseURL, undefined]
       : [undefined, pathOrBaseURL];
 
-    return a.use(withAction({ baseURL, path, ...config })).run(raw());
+    return a.use(withAction({ baseURL, path, ...config }));
   };
 }
