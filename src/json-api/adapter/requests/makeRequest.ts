@@ -7,8 +7,13 @@ export default function makeRequest(
   context: ActionContext,
   options: JsonApiAdapterOptions,
 ): JsonApiRequestContext {
-  return {
+  const request = {
     url: makeURL(context, options),
     init: makeRequestInit(context, options),
   };
+  if (options.transformRequest) {
+    return options.transformRequest(request);
+  }
+
+  return request;
 }

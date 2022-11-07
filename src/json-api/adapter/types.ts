@@ -18,4 +18,5 @@ export type JsonApiAdapterOptions = {
   transformRelations?: (localRelation: string) => string;
   transformParamKeys?: (localParam: string) => string;
   transformParamValues?: (localParam: unknown) => string | undefined;
+  transformRequest?: (request: JsonApiRequestContext) => JsonApiRequestContext;
 };
