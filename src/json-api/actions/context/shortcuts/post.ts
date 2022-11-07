@@ -3,7 +3,7 @@ import request, { RequestConfig } from '@/json-api/actions/context/shortcuts/req
 
 export default function post<C extends ActionContext, R, D>(
   pathOrBaseURL: string,
-  payload?: BodyInit,
+  payload?: unknown,
   config?: Omit<RequestConfig, 'method' | 'payload'>,
 ) {
   return (a: Action<WithAdapterContext<C, R, D>>) => a.use(request(pathOrBaseURL, {

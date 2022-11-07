@@ -3,6 +3,7 @@ import ForbiddenError from '@/json-api/adapter/errors/forbiddenError';
 import InvalidError from '@/json-api/adapter/errors/invalidError';
 import NotFoundError from '@/json-api/adapter/errors/notFoundError';
 import ServerError from '@/json-api/adapter/errors/serverError';
+import TooManyRequestsError from '@/json-api/adapter/errors/tooManyRequestsError';
 import UnauthorizedError from '@/json-api/adapter/errors/unauthorizedError';
 import { JsonApiError } from '@/json-api/types';
 
@@ -20,6 +21,8 @@ export default function throwResponseError(
     throw new NotFoundError(response, errors);
   } else if (response.status === 409) {
     throw new ConflictError(response, errors);
+  } else if (response.status === 429) {
+    throw new TooManyRequestsError(response, errors);
   }
 
   throw new InvalidError(response, errors);
