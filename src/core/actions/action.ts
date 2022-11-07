@@ -18,10 +18,6 @@ export default class Action<C extends ActionContext> {
     });
   }
 
-  public replace<NC extends ActionContext>(context: NC): Action<NC> {
-    return new Action(context);
-  }
-
   public use<NC extends ActionContext>(changer: (c: Action<C>) => Action<NC>) {
     return changer(this);
   }

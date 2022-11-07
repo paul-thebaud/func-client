@@ -7,12 +7,13 @@ import forModel from '@/core/actions/context/changers/forModel';
 import forSchema from '@/core/actions/context/changers/forSchema';
 import withAction from '@/core/actions/context/changers/withAction';
 import all from '@/core/actions/context/runners/all';
-import knownData from '@/core/actions/context/runners/knownData';
 import data from '@/core/actions/context/runners/data';
+import knownData from '@/core/actions/context/runners/knownData';
 import one from '@/core/actions/context/runners/one';
 import raw from '@/core/actions/context/runners/raw';
 import update from '@/core/actions/context/shortcuts/update';
 import makeAction from '@/core/actions/makeAction';
+import runHook from '@/core/actions/runHook';
 
 export {
   withAction,
@@ -30,4 +31,5 @@ export {
   update,
   Action,
   makeAction,
+  runHook,
 };

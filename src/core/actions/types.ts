@@ -3,6 +3,8 @@ import { Store } from '@/core/store/types';
 import { Adapter, Deserializer, Serializer } from '@/core/types';
 import { Constructor, Dictionary } from '@/core/utilities/types';
 
+export type ActionHooks = {} & Dictionary<(param: any) => any>;
+
 export type ActionMethod =
   | 'get' | 'GET'
   | 'delete' | 'DELETE'
@@ -16,6 +18,7 @@ export type ActionMethod =
   | 'unlink' | 'UNLINK';
 
 export type ActionContext = {
+  hooks?: Partial<ActionHooks>;
   method?: ActionMethod;
   baseURL?: string;
   type?: string;

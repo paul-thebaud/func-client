@@ -18,7 +18,7 @@ export default async function deserializeRelation(
 ) {
   const value = (await deserializeProp(def, key, data, options)) as JsonApiRelationships;
 
-  if (Array.isArray(value.data)) {
+  if (Array.isArray(value?.data)) {
     return Promise.all(value.data.map((resourceRef) => deserializeRef(
       context,
       resourceRef,
@@ -28,7 +28,7 @@ export default async function deserializeRelation(
     )));
   }
 
-  if (!isNil(value.data)) {
+  if (!isNil(value?.data)) {
     return deserializeRef(
       context,
       value.data as JsonApiResourceIdentifier,
@@ -38,5 +38,5 @@ export default async function deserializeRelation(
     );
   }
 
-  return value;
+  return value?.data;
 }
