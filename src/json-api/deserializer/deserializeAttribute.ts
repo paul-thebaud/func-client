@@ -9,7 +9,7 @@ export default async function deserializeAttribute(
   data: JsonApiAttributes,
   options: JsonApiDeserializerOptions,
 ) {
-  const value = deserializeProp(def, key, data, options);
+  const value = await deserializeProp(def, key, data, options);
   if (value !== undefined) {
     return { [key]: value };
   }
