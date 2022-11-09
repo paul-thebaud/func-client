@@ -5,7 +5,37 @@ import deserializeProp from '@/json-api/deserializer/deserializeProp';
 import deserializeRef from '@/json-api/deserializer/deserializeRef';
 import { JsonApiIncludedMap } from '@/json-api/deserializer/makeIncludedMap';
 import type { JsonApiDeserializerOptions } from '@/json-api/deserializer/types';
-import { JsonApiRelationships, JsonApiResourceIdentifier } from '@/json-api/types';
+import { JsonApiRelationship, JsonApiRelationships, JsonApiResourceIdentifier } from '@/json-api/types';
+
+function deserializeRelationValue(
+  context: ActionContext,
+  data: JsonApiResourceIdentifier[] | JsonApiResourceIdentifier | null,
+  includedMap: JsonApiIncludedMap,
+  options: JsonApiDeserializerOptions,
+  deserializeOne: DeserializeOne,
+) {
+  if (Array.isArray(data)) {
+    return Promise.all(data.map((resourceRef) => deserializeRef(
+      context,
+      resourceRef,
+      includedMap,
+      options,
+      deserializeOne,
+    )));
+  }
+
+  if (!isNil(data)) {
+    return deserializeRef(
+      context,
+      data,
+      includedMap,
+      options,
+      deserializeOne,
+    );
+  }
+
+  return null;
+}
 
 export default async function deserializeRelation(
   context: ActionContext,
@@ -16,27 +46,18 @@ export default async function deserializeRelation(
   options: JsonApiDeserializerOptions,
   deserializeOne: DeserializeOne,
 ) {
-  const value = (await deserializeProp(def, key, data, options)) as JsonApiRelationships;
+  const value = await deserializeProp(def, key, data, options) as JsonApiRelationship | undefined;
+  if (value === undefined || value.data === undefined) {
+    return {};
+  }
 
-  if (Array.isArray(value?.data)) {
-    return Promise.all(value.data.map((resourceRef) => deserializeRef(
+  return {
+    [key]: await deserializeRelationValue(
       context,
-      resourceRef,
+      value.data,
       includedMap,
       options,
       deserializeOne,
-    )));
-  }
-
-  if (!isNil(value?.data)) {
-    return deserializeRef(
-      context,
-      value.data as JsonApiResourceIdentifier,
-      includedMap,
-      options,
-      deserializeOne,
-    );
-  }
-
-  return value?.data;
+    ),
+  };
 }

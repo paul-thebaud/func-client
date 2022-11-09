@@ -1,12 +1,13 @@
-import fields from '@/json-api/actions/context/changers/params/fields';
-import fieldsFor from '@/json-api/actions/context/changers/params/fieldsFor';
-import filter from '@/json-api/actions/context/changers/params/filter';
-import include from '@/json-api/actions/context/changers/params/include';
-import find from '@/json-api/actions/context/shortcuts/find';
-import findOrFail from '@/json-api/actions/context/shortcuts/findOrFail';
-import get from '@/json-api/actions/context/shortcuts/get';
-import post from '@/json-api/actions/context/shortcuts/post';
-import request from '@/json-api/actions/context/shortcuts/request';
+import makeGet from '@/json-api/actions/context/consumers/makeGet';
+import makePost from '@/json-api/actions/context/consumers/makePost';
+import makeRequest from '@/json-api/actions/context/consumers/makeRequest';
+import fields from '@/json-api/actions/context/enhancers/params/fields';
+import fieldsFor from '@/json-api/actions/context/enhancers/params/fieldsFor';
+import filterBy from '@/json-api/actions/context/enhancers/params/filterBy';
+import include from '@/json-api/actions/context/enhancers/params/include';
+import rawFilter from '@/json-api/actions/context/enhancers/params/rawFilter';
+import sortBy from '@/json-api/actions/context/enhancers/params/sortBy';
+import sortByDesc from '@/json-api/actions/context/enhancers/params/sortByDesc';
 import ConflictError from '@/json-api/adapter/errors/conflictError';
 import FetchError from '@/json-api/adapter/errors/fetchError';
 import ForbiddenError from '@/json-api/adapter/errors/forbiddenError';
@@ -29,13 +30,14 @@ export * from '@/json-api/serializer/types';
 export {
   fields,
   fieldsFor,
-  filter,
+  rawFilter,
+  filterBy,
   include,
-  find,
-  findOrFail,
-  request,
-  get,
-  post,
+  sortBy,
+  sortByDesc,
+  makeRequest,
+  makeGet,
+  makePost,
   ConflictError,
   FetchError,
   ForbiddenError,

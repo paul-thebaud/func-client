@@ -1,30 +1,50 @@
-import { ActionContext } from '@/core/actions/types';
+import type { ActionContext, ContextEnhancer } from '@/core/actions/types';
+import { ContextConsumer } from '@/core/actions/types';
+import sequentialPromiseAll from '@/core/utilities/sequentialPromiseAll';
 
 export default class Action<C extends ActionContext> {
-  private readonly $context: C;
+  private $enhancementsQueue: ContextEnhancer<any, any>[];
 
-  public constructor(context: C) {
-    this.$context = context;
+  private $context: C;
+
+  public constructor() {
+    this.$enhancementsQueue = [];
+    this.$context = {} as C;
   }
 
   public get context() {
     return this.$context;
   }
 
-  public merge<NC extends ActionContext>(context: NC): Action<C & NC> {
-    return new Action({
-      ...this.$context,
-      ...context,
-    });
+  public setContext<NC extends ActionContext>(newContext: NC): Action<NC> {
+    this.$context = newContext as any;
+
+    return this as any;
   }
 
-  public use<NC extends ActionContext>(changer: (c: Action<C>) => Action<NC>) {
-    return changer(this);
+  public use<NC extends ActionContext>(enhancer: ContextEnhancer<C, NC>): Action<NC> {
+    this.$enhancementsQueue.push(enhancer);
+
+    return this as any;
   }
 
-  // TODO when() method.
+  public async run<R>(runner: ContextConsumer<C, R>): Promise<R> {
+    await this.dequeueEnhancements();
 
-  public run<R>(runner: (c: Action<C>) => R) {
     return runner(this);
+  }
+
+  private async dequeueEnhancements() {
+    const enhancements = this.$enhancementsQueue.map((e) => async () => {
+      await e(this);
+
+      // Any enhancement might push other enhancement in the queue,
+      // so we must process those too.
+      await this.dequeueEnhancements();
+    });
+
+    this.$enhancementsQueue = [];
+
+    await sequentialPromiseAll(enhancements);
   }
 }

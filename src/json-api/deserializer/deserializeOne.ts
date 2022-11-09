@@ -24,14 +24,14 @@ export default async function deserializeOne(
 
   await Promise.all(Object.entries(instance.constructor.$schema).map(async ([key, def]) => {
     if (def.$MODEL_TYPE === 'attribute') {
-      instance.$values[key] = await deserializeAttribute(
+      Object.assign(instance.$values, await deserializeAttribute(
         def,
         key,
         data.attributes ?? {},
         options,
-      );
+      ));
     } else if (def.$MODEL_TYPE === 'relation') {
-      instance.$values[key] = await deserializeRelation(
+      Object.assign(instance.$values, await deserializeRelation(
         context,
         def,
         key,
@@ -39,7 +39,7 @@ export default async function deserializeOne(
         includedMap,
         options,
         deserializeOne,
-      );
+      ));
     }
   }));
 

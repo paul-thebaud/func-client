@@ -1,15 +1,10 @@
 import { ActionContext, Dictionary } from '@/core';
-import { JsonApiAdapterOptions } from '@/json-api/adapter/types';
 
-export default function makeRequestInit(
-  context: ActionContext,
-  options: JsonApiAdapterOptions,
-) {
+export default function makeRequestInit(context: ActionContext) {
   const method = (context?.method ?? 'GET').toUpperCase();
   const headers: Dictionary = {
     Accept: 'application/vnd.api+json',
     'Content-Type': 'application/vnd.api+json',
-    ...(options.headers ?? {}),
     ...(context.headers ?? {}),
   };
 

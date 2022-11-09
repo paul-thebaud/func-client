@@ -1,15 +1,17 @@
 # TODO
 
-- [ ] Move generics of context functions to returned function.
-- [ ] Transform model props (e.g. string to date transform)
+- [x] Move generics of context functions to returned function.
+- [x] Solution for composable with schema and extensions.
+- [x] Transform model props (e.g. string to date transform)
 - [ ] Model props aliasing (e.g. "firstName" sent "first-name")
-- [ ] Model relation path aliasing (e.g. "likedPosts" to "liked-posts")
+- [ ] Avoid updating if nothing changed
+- [x] Model relation path aliasing (e.g. "likedPosts" to "liked-posts")
 - [ ] Model sync to API or not ("syncTo", "syncFrom" or "sync" for both)
-- [ ] Model props tracking (via originals) and "changed" retrieval helper (used when serializing for example)
+- [x] Model props tracking (via originals) and "changed" retrieval helper (used when serializing for example)
 - [ ] Externalize serialize and deserialize outside of adapter?
-- [ ] Adapters errors (404, etc.)
-- [ ] Solution to Vite chunks when features from core used by adapter extension
-- [ ] Merged params for adapter (fields, include, etc.)
+- [x] Adapters errors (404, etc.)
+- [x] Solution to Vite chunks when features from core used by adapter extension
+- [x] Merged params for adapter (fields, include, etc.)
 - [ ] Utilities for models (fill, reset, load relation, etc.)
 - [ ] Default values of models props (using direct value or supplier)
 - [ ] Model and relations metadata (loaded, loading, etc.)

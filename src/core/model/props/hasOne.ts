@@ -1,13 +1,13 @@
-import prop, { OptionsVariadic, PropOptions } from '@/core/model/props/prop';
+import prop, { PropOptions } from '@/core/model/props/prop';
 import { ModelRelation } from '@/core/model/types';
 
-export type HasOneOptions<T, S> = PropOptions<T, S>;
+export type HasOneOptions<T, S> = Omit<PropOptions<T, S>, 'transformer'>;
 
 export default function hasOne<T, S = T>(
-  ...options: OptionsVariadic<T, S, HasOneOptions<T, S>>
+  options: HasOneOptions<T, S> = {},
 ): ModelRelation<T, S> {
   return {
-    ...prop(...options),
+    ...prop(options),
     $MODEL_TYPE: 'relation',
   };
 }

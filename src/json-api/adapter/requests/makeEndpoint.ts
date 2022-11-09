@@ -1,7 +1,6 @@
-import { ActionContext } from '@/core';
+import { ActionContext, useHook } from '@/core';
 import isNil from '@/core/utilities/isNil';
 import { JsonApiAdapterOptions } from '@/json-api/adapter/types';
-import useTransformIfSet from '@/json-api/useTransformIfSet';
 
 export default function makeEndpoint(context: ActionContext, options: JsonApiAdapterOptions) {
   return [
@@ -10,13 +9,13 @@ export default function makeEndpoint(context: ActionContext, options: JsonApiAda
       : context.baseURL,
     isNil(context.type)
       ? undefined
-      : useTransformIfSet(context.type, options.transformTypes),
+      : useHook(context, 'json-api.transform-request.type', context.type),
     isNil(context.id)
       ? undefined
       : `${context.id}`,
     isNil(context.relation)
       ? undefined
-      : useTransformIfSet(context.relation, options.transformRelations),
+      : useHook(context, 'json-api.transform-request.relation', context.type),
     context.path,
   ];
 }

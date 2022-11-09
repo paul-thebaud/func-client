@@ -9,6 +9,6 @@ export default function makeRequest(
 ): JsonApiRequestContext {
   return {
     url: makeURL(context, options),
-    init: makeRequestInit(context, options),
+    init: makeRequestInit(context),
   };
 }

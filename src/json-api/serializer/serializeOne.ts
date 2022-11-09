@@ -1,5 +1,4 @@
-import { ModelInstance } from '@/core';
-import changed from '@/core/model/utilities/changed';
+import { ModelInstance, wasChangedKeys } from '@/core';
 import serializeAttribute from '@/json-api/serializer/serializeAttribute';
 import serializeRelation from '@/json-api/serializer/serializeRelation';
 import type { JsonApiSerializerOptions } from '@/json-api/serializer/types';
@@ -21,7 +20,7 @@ export default async function serializeOne(
       return;
     }
 
-    if (options.keepUnchanged !== true && !changed(model, key)) {
+    if (options.keepUnchanged !== true && !wasChangedKeys(model, key)) {
       return;
     }
 

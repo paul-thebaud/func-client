@@ -15,6 +15,6 @@ function joinStrings(
 export default function makeURL(context: ActionContext, options: JsonApiAdapterOptions) {
   return joinStrings([
     joinStrings(makeEndpoint(context, options), '/'),
-    makeParams(context, options),
+    makeParams(context),
   ], '?');
 }

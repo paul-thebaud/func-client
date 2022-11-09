@@ -1,14 +1,17 @@
 import AdapterError from '@/core/errors/adapterError';
 import FuncModelError from '@/core/errors/funcModelError';
+import makeComposable from '@/core/model/makeComposable';
 import makeModel from '@/core/model/makeModel';
 import attr from '@/core/model/props/attr';
 import hasMany from '@/core/model/props/hasMany';
 import hasOne from '@/core/model/props/hasOne';
-import changed from '@/core/model/utilities/changed';
-import changedKeys from '@/core/model/utilities/changedKeys';
 import fill from '@/core/model/utilities/fill';
+import reset from '@/core/model/utilities/reset';
+import resetKeys from '@/core/model/utilities/resetKeys';
 import syncOriginal from '@/core/model/utilities/syncOriginal';
 import syncOriginalKeys from '@/core/model/utilities/syncOriginalKeys';
+import wasChanged from '@/core/model/utilities/wasChanged';
+import wasChangedKeys from '@/core/model/utilities/wasChangedKeys';
 import makeStore from '@/core/store/makeStore';
 import toBoolean from '@/core/transforms/toBoolean';
 import toDate from '@/core/transforms/toDate';
@@ -31,11 +34,14 @@ export {
   attr,
   hasMany,
   hasOne,
-  changed,
-  changedKeys,
   fill,
+  reset,
+  resetKeys,
   syncOriginal,
   syncOriginalKeys,
+  wasChanged,
+  wasChangedKeys,
+  makeComposable,
   makeModel,
   makeStore,
   toBoolean,

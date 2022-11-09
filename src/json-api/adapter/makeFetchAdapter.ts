@@ -1,4 +1,5 @@
-import { ActionContext, runHook } from '@/core';
+import { ActionContext, useHook } from '@/core';
+import NotFoundError from '@/json-api/adapter/errors/notFoundError';
 import makeRequest from '@/json-api/adapter/requests/makeRequest';
 import parseResponse from '@/json-api/adapter/requests/parseResponse';
 import runRequest from '@/json-api/adapter/requests/runRequest';
@@ -9,13 +10,13 @@ export default function makeFetchAdapter(options: JsonApiAdapterOptions = {}) {
   return {
     async action(context: ActionContext): Promise<JsonApiResponse> {
       // TODO Transformers?
-      const request = runHook(
+      const request = useHook(
         context,
         'json-api.transform-request',
         makeRequest(context, options),
       );
 
-      const response = runHook(
+      const response = useHook(
         context,
         'json-api.transform-response',
         await runRequest(request, options),
@@ -31,6 +32,9 @@ export default function makeFetchAdapter(options: JsonApiAdapterOptions = {}) {
     },
     async data(result: JsonApiResponse) {
       return result.document;
+    },
+    isNotFound(error: unknown) {
+      return error instanceof NotFoundError;
     },
   };
 }

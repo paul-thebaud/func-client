@@ -1,8 +1,6 @@
-import { ActionContext } from '@/core';
-import { JsonApiAdapterOptions } from '@/json-api/adapter/types';
-import useTransformIfSet from '@/json-api/useTransformIfSet';
+import { ActionContext, useHook } from '@/core';
 
-export default function makeParams(context: ActionContext, options: JsonApiAdapterOptions) {
+export default function makeParams(context: ActionContext) {
   const urlSearchParams = new URLSearchParams();
 
   const appendParam = (key: string, value: unknown) => {
@@ -13,10 +11,12 @@ export default function makeParams(context: ActionContext, options: JsonApiAdapt
         ([subKey, subValue]) => appendParam(`${key}[${subKey}]`, subValue),
       );
     } else {
-      const transformedParamKey = useTransformIfSet(key, options.transformParamKeys);
-      const transformedParamValue = useTransformIfSet(value, options.transformParamValues);
-      if (transformedParamValue !== undefined) {
-        urlSearchParams.set(transformedParamKey, String(transformedParamValue));
+      const finalValue = useHook(context, 'json-api.transform-request.param.value', value);
+      if (finalValue !== undefined) {
+        urlSearchParams.set(
+          useHook(context, 'json-api.transform-request.param.key', key),
+          String(finalValue),
+        );
       }
     }
   };

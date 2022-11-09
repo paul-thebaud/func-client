@@ -1,8 +1,9 @@
+import type Action from '@/core/actions/action';
 import { ModelClass, ModelId, ModelInstance, ModelSchemaRaw } from '@/core/model/types';
-import { Store } from '@/core/store/types';
 import { Adapter, Deserializer, Serializer } from '@/core/types';
 import { Constructor, Dictionary } from '@/core/utilities/types';
 
+// TODO How could we type hooks from other package?
 export type ActionHooks = {} & Dictionary<(param: any) => any>;
 
 export type ActionMethod =
@@ -25,43 +26,33 @@ export type ActionContext = {
   id?: ModelId;
   relation?: string;
   path?: string;
-  params?: Dictionary;
+  params?: Dictionary<any>;
   payload?: unknown;
   [key: string]: unknown;
 };
 
-export type ForSchemaContext<C extends ActionContext = ActionContext,
-  S extends ModelSchemaRaw = ModelSchemaRaw> =
-  & C
-  & { schema: S; };
+export type ContextEnhancer<PC extends ActionContext = {}, NC extends ActionContext = {}> = (
+  a: Action<PC>,
+) => Action<NC> | Promise<Action<NC>>;
 
-export type ForModelContext<C extends ActionContext = ActionContext,
-  S extends ModelSchemaRaw = ModelSchemaRaw, I = ModelInstance<S>> =
-  & ForSchemaContext<C, S>
+export type ContextConsumer<C extends ActionContext = {}, R = unknown> = (
+  a: Action<C>,
+) => R;
+
+export type ConsumeSchema<S extends ModelSchemaRaw = ModelSchemaRaw> = { schema: S; };
+
+export type ConsumeModel<S extends ModelSchemaRaw = ModelSchemaRaw, I = ModelInstance<S>> =
+  & ConsumeSchema<S>
   & { type: string; model: ModelClass<S> & Constructor<I>; };
 
-export type ForInstanceContext<C extends ActionContext = ActionContext,
-  S extends ModelSchemaRaw = ModelSchemaRaw, I = ModelInstance<S>> =
-  & ForModelContext<C, S>
+export type ConsumeInstance<S extends ModelSchemaRaw = ModelSchemaRaw, I = ModelInstance<S>> =
+  & ConsumeModel<S, I>
   & { instance: ModelInstance<S> & I; };
 
-export type WithStoreContext<C extends ActionContext = ActionContext, S extends Store = Store> =
-  & C
-  & { store: S; };
+export type ConsumeId = { id: ModelId };
 
-export type WithAdapterContext<C extends ActionContext = ActionContext, R = unknown, D = unknown> =
-  & C
-  & { adapter: Adapter<R, D>; };
+export type ConsumeAdapter<R = unknown, D = unknown> = { adapter: Adapter<R, D>; };
 
-export type WithSerializerContext<C extends ActionContext = ActionContext, D = unknown> =
-  & C
-  & { serializer: Serializer<D>; };
+export type ConsumeDeserializer<D = unknown> = { deserializer: Deserializer<D> };
 
-export type WithDeserializerContext<C extends ActionContext = ActionContext, D = unknown> =
-  & C
-  & { deserializer: Deserializer<D>; };
-
-export type WithAdapterStack<C extends ActionContext = ActionContext, R = unknown, D = unknown> =
-  & WithAdapterContext<C, R, D>
-  & WithSerializerContext<C, D>
-  & WithDeserializerContext<C, D>;
+export type ConsumeSerializer<D = unknown> = { serializer: Serializer<D> };

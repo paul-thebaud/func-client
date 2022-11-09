@@ -17,11 +17,12 @@ export type JsonApiResourceIdentifier = {
 };
 
 export type JsonApiAttributes = Dictionary;
-export type JsonApiRelationships = Dictionary<{
+export type JsonApiRelationship = {
   data?: JsonApiResourceIdentifier[] | JsonApiResourceIdentifier | null;
   links?: JsonApiLinks;
   meta?: JsonApiMeta;
-}>;
+};
+export type JsonApiRelationships = Dictionary<JsonApiRelationship>;
 
 export type JsonApiAbstractResource = {
   type: string;
