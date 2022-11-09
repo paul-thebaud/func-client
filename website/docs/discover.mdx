@@ -11,11 +11,11 @@ framework-agnostic and can integrate with any Web app using Javascript or
 Typescript.
 
 - Modular, highly extensible and fully tree shakable thanks to functional
-  programming. [See the benefits](#why-are-we-not-using-big-model-and-builder-classes)
+programming. [See the benefits](#why-are-we-not-using-big-model-and-builder-classes)
 - Ready to use functions to integrate with any [JSON:API](https://jsonapi.org/)
 - Strongly typed everywhere, with generics typings on models, actions, etc.
 - Dependency free (JSON:API adapter is based
-  on [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API))
+on [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API))
 - (coming soon) Fully linted, tested and documented
 
 ## Some vocabulary
@@ -43,7 +43,7 @@ be instantiated. Models are composed of four things:
 - **Relationships** with other models (has one and has many).
 - **Attributes** representing non relationships values (string, date, etc.).
 - **Extensions** which add custom features to your model instances (e.g. full
-  name getter for a `User` model, etc.).
+name getter for a `User` model, etc.).
 
 ### Action
 
@@ -63,7 +63,7 @@ API. There are three steps to an action:
 
 - **Creation** using your own action factory (we'll talk about this later).
 - **Use** of context enhancers to affect the context of the action (change the
-  path, change the affected model, change some query params, etc.).
+path, change the affected model, change some query params, etc.).
 - **Run** of a context consumer to execute the action and retrieve a result.
 
 The context of the action can be changed to pretty everything and the typings
@@ -93,7 +93,13 @@ typed models objects and contexts changes.
 
 Here are a short example of the capabilities reusing the previous examples:
 
-```typescript
+```ts title="test.js"
+const test: number = 2;
+```
+
+```ts title="post.ts"
+import { makeModel, attr, hasMany, toDate } from 'func-model/core';
+
 export default class Post extends makeModel('posts', {
   title: attr({ default: '' }), // Infered to string.
   description: attr<string>(), // Custom types are also supported.

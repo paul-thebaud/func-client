@@ -1,36 +1,55 @@
 import FuncModelError from '@/core/errors/funcModelError';
+import compose from '@/core/model/compose';
 import { Model, ModelId, ModelInstance, ModelSchema, ModelValues } from '@/core/model/types';
 
-export default function makeModel<S extends ModelSchema<{}>, E = {}>(
+// TODO Make model variation to allow function in class body.
+
+export default function makeModel<S extends ModelSchema<{}> = {}, E extends object = {}>(
   type: string,
   schema?: S,
-  extensions?: E & ThisType<ModelInstance<S & E>>,
+  extension?: E & ThisType<ModelInstance<S & E>>,
 ) {
-  function ModelClass(this: ModelInstance<S>) {
+  function ModelClass(this: ModelInstance) {
     this.id = undefined as unknown as ModelId;
-    this.$original = {} as ModelValues<S>;
-    this.$values = {} as ModelValues<S>;
+    this.$original = {} as ModelValues<{}>;
+    this.$values = {} as ModelValues<{}>;
 
-    Object.entries(schema || {}).forEach(([key, def]) => {
+    Object.entries(ModelClass.$schema).forEach(([key, def]) => {
       Object.defineProperty(this, key, {
         get: () => this.$values[key],
-        set: (value: ModelValues<S>[typeof key]) => {
-          this.$values[key as keyof ModelValues<S>] = value;
+        set: (value) => {
+          this.$values[key] = value;
         },
       });
 
       // TODO Handle object and array default.
       if (typeof def.default === 'function') {
-        this.$values[key as keyof ModelValues<S>] = def.default();
+        this.$values[key] = def.default();
       } else if (def.default !== undefined) {
-        this.$values[key as keyof ModelValues<S>] = def.default;
+        this.$values[key] = def.default;
       }
     });
   }
 
-  ModelClass.prototype = extensions || {};
   ModelClass.$type = type;
-  ModelClass.$schema = schema || {};
+  ModelClass.$schema = {} as ModelSchema<{}>;
+  ModelClass.prototype = {};
+  ModelClass.schema = (addSchema: object) => {
+    compose(ModelClass.$schema, addSchema);
+
+    return ModelClass;
+  };
+  ModelClass.extension = (addExtension: object) => {
+    compose(ModelClass.prototype, addExtension);
+
+    return ModelClass;
+  };
+  ModelClass.extend = (addSchemaAndExtension: { schema?: object; extension?: object; }) => {
+    ModelClass.schema(addSchemaAndExtension.schema ?? {});
+    ModelClass.extension(addSchemaAndExtension.extension ?? {});
+
+    return ModelClass;
+  };
 
   Object.defineProperty(ModelClass, '$rawSchema', {
     value: () => {
@@ -40,5 +59,13 @@ export default function makeModel<S extends ModelSchema<{}>, E = {}>(
     },
   });
 
-  return ModelClass as unknown as Model<S & E>;
+  if (schema) {
+    ModelClass.schema(schema);
+  }
+
+  if (extension) {
+    ModelClass.extension(extension);
+  }
+
+  return ModelClass as unknown as Model<S & E, ModelInstance<S & E>>;
 }

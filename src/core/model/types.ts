@@ -57,6 +57,15 @@ export type ModelClass<S extends ModelSchemaRaw = {}> = {
   readonly $type: string;
   readonly $rawSchema: () => S;
   readonly $schema: ModelSchema<S>;
+  extend<NS extends ModelSchema<{}>, NE extends object>(
+    addSchemaAndExtension: { schema: NS; extension: NE; },
+  ): Model<S & NS & NE, ModelInstance<S & NS & NE>>;
+  schema<NS extends ModelSchema<{}>>(
+    addSchema: NS,
+  ): Model<S & NS, ModelInstance<S & NS>>;
+  extension<NE extends object>(
+    addExtension: NE & ThisType<ModelInstance<S & NE>>,
+  ): Model<S & NE, ModelInstance<S & NE>>;
 };
 
 export type Model<S extends ModelSchemaRaw = {}, I extends ModelInstance<S> = ModelInstance<S>> =

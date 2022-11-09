@@ -1,5 +1,6 @@
 import AdapterError from '@/core/errors/adapterError';
 import FuncModelError from '@/core/errors/funcModelError';
+import compose from '@/core/model/compose';
 import makeComposable from '@/core/model/makeComposable';
 import makeModel from '@/core/model/makeModel';
 import attr from '@/core/model/props/attr';
@@ -41,6 +42,7 @@ export {
   syncOriginalKeys,
   wasChanged,
   wasChangedKeys,
+  compose,
   makeComposable,
   makeModel,
   makeStore,
