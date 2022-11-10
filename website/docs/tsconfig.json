@@ -15,7 +15,8 @@
     "allowJs": true,
     "checkJs": true,
     "alwaysStrict": false,
-    "baseUrl": "../..",
+    "jsx": "preserve",
+    "baseUrl": "..",
     "paths": {
       "func-model/core": [
         "src/core.ts"

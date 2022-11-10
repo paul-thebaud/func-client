@@ -7,8 +7,6 @@
     "noUnusedParameters": true,
     "importHelpers": true,
     "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "useDefineForClassFields": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,

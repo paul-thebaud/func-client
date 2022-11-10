@@ -18,22 +18,30 @@ programming. [See the benefits](#why-are-we-not-using-big-model-and-builder-clas
 on [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API))
 - (coming soon) Fully linted, tested and documented
 
-## Some vocabulary
+## Concept
 
 ### Model
 
-```javascript
-export default makeModel('posts', {
-  title: attr({ default: 'Hello world!' }),
-  description: attr(),
-  createdAt: attr(toDate()),
+```ts title="models/post.js"
+// file: models/comment.ts noEmit
+import { makeModel } from 'func-model/core';
+export default class Comment extends makeModel('comments') {}
+
+// file: models/post.ts
+import { makeModel, attr, hasMany, toDate } from 'func-model/core';
+import type Comment from './comment'
+
+export default class Post extends makeModel('posts', {
+  title: attr<string>(),
+  description: attr<string>(),
   publishedAt: attr(toDate()),
-  comments: hasMany(),
+  comments: hasMany<Comment>(),
 }, {
-  get isPublished() {
-    return !!this.publishedAt;
+  get isDraft() {
+    return !this.publishedAt;
   },
-});
+}) {
+}
 ```
 
 Models represent the structure of your data. A model is a composed class and can
@@ -48,6 +56,9 @@ name getter for a `User` model, etc.).
 ### Action
 
 ```javascript
+import { forModel, all, raw, destroy } from 'func-model/core';
+import { include } from 'func-model/json-api';
+
 const posts = await action()
   .use(forModel(Post))
   .use(include('comments'))
@@ -61,7 +72,8 @@ await action()
 Actions are the way you make interaction between your models and an external
 API. There are three steps to an action:
 
-- **Creation** using your own action factory (we'll talk about this later).
+- **Creation** using your own action factory with its dependencies (adapter,
+serializer, etc.).
 - **Use** of context enhancers to affect the context of the action (change the
 path, change the affected model, change some query params, etc.).
 - **Run** of a context consumer to execute the action and retrieve a result.
@@ -93,14 +105,10 @@ typed models objects and contexts changes.
 
 Here are a short example of the capabilities reusing the previous examples:
 
-```ts title="test.js"
-const test: number = 2;
-```
-
-```ts title="post.ts"
+```typescript title="post.ts"
 import { makeModel, attr, hasMany, toDate } from 'func-model/core';
 
-export default class Post extends makeModel('posts', {
+class Post extends makeModel('posts', {
   title: attr({ default: '' }), // Infered to string.
   description: attr<string>(), // Custom types are also supported.
   createdAt: attr(toDate()), // Infered from transformers.
@@ -117,7 +125,12 @@ export default class Post extends makeModel('posts', {
     return this.description.substring(0, 50);
   }
 }
+```
 
+Strongly typed models are used by context enhancers to provide strongly typed
+parameters.
+
+```typescript
 const posts = await action()
   // We are telling the action context is now for the Post model.
   .use(forModel(Post))
@@ -137,12 +150,14 @@ only `import type` of the class type when typing our relations.
 
 **This prevents dependency cycles.**
 
-```typescript
-// comment.ts
+```typescript title="comment.ts"
 export default class Comment extends makeModel('posts') {
 }
-// post.ts
-import type Comment from './path/to/models/comment';
+```
+
+```typescript title="post.ts"
+// Notice the `import type` usage instead of simple `import`.
+import type Comment from './comment';
 
 export default class Post extends makeModel('posts', {
   comments: hasMany<Comment>(),

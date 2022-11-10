@@ -2,7 +2,7 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 const { resolve } = require('path');
-const { linkDocblocks } = require('remark-typescript-tools');
+const { transpileCodeblocks } = require('remark-typescript-tools');
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
@@ -26,15 +26,12 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          remarkPlugins: [
-            linkDocblocks,
-            {
-              extractorSettings: {
-                tsconfig: resolve(__dirname, './docs/tsconfig.json'),
-                externalResolutions: {},
-              },
+          remarkPlugins: [[transpileCodeblocks, {
+            compilerSettings: {
+              tsconfig: resolve(__dirname, './docs/tsconfig.json'),
+              externalResolutions: {},
             },
-          ],
+          }]],
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/paul-thebaud/func-model/tree/main/website/',
         },
