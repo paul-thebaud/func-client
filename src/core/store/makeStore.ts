@@ -28,6 +28,8 @@ export default function makeStore() {
           modelRegistry.set(type, modelResolver);
         });
       }
+
+      return this;
     },
   };
 }

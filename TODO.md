@@ -17,5 +17,6 @@
 - [ ] Model and relations metadata (loaded, loading, etc.)
 - [ ] Reactivity compatibility (for props and metadata)
 - [ ] Relations inverse (post related to author)
+- [ ] Cache with weak refs to already fetched models
 - [ ] Docs using docusaurus
 - [ ] Tests using vitest

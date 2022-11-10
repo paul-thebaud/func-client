@@ -6,6 +6,8 @@ sidebar_position: 1
 
 ## Your first model
 
+### Defining a model
+
 To declare a model, you just need to use the `makeModel` function. This function takes 3 arguments:
 
 - The model `type`, which is used by other services to identify your model or interact with an API.
@@ -27,8 +29,8 @@ export default class User extends makeModel('users', {
 ```
 
 :::tip
-When using Javascript, you can just export the `makeModel` returned value instead of creating an
-extended class.
+If you never need to import only a model's type (such as in Typescript to avoid circular deps),
+you can just export the `makeModel` returned value instead of creating an extended class:
 
 ```javascript
 export default makeModel('users', /* your model definition... */);
@@ -37,13 +39,164 @@ export default makeModel('users', /* your model definition... */);
 [Read the FAQ to understand the why.](/docs/discover#why-classes-are-used-for-models-in-typescript)
 :::
 
+### Using models
+
 You can use this model as any Javascript classes (e.g. construct a new instance using `new`). Once
 you have an instance, you can use its schema and extensions as classic classes' properties and
 methods.
 
-```typescript
+```javascript
 const user = new User();
 user.firstName = 'John';
 user.lastName = 'Doe';
 console.log(user.fullName); // "John Doe".
 ```
+
+## Action factory
+
+Once your models are set up, you will probably want to interact with a data store, such as an API.
+For this, you will need an action factory which initialize a preconfigured context
+for all your future action.
+
+The following example of action factory is made for a JSON:API implementation.
+
+:::info
+Currently, FuncModel only have a JSON:API implementation of actions. However, you can easily
+implement your own adapter and/or serialization mechanism to fit your needs.
+
+We are also opened to pull request to propose other implementations.
+:::
+
+### Initializing the dependencies
+
+Each action factory may require initial dependencies to correctly work. Each of those dependencies
+have a dedicated role and is required for only specific cases. Here is an example with all
+the available dependencies initialized.
+
+```javascript title="action.js"
+import { makeAction, makeStore, withAdapter, withDeserializer, withSerializer, withStore } from 'func-model/core';
+import { makeDeserializer, makeFetchAdapter, makeSerializer } from 'func-model/json-api';
+
+// The store allows the deserializer and other dependencies to known
+// which types is associated with which model.
+// It is only required when you are deserializing related models not directly
+// targeted by an action (e.g. comments related to a post you fetch).
+const store = makeStore().register([User, /* Post, Comment */]);
+
+// The serializer allows you to send model instance through your actions.
+// It is only required when you are making create/update operations.
+const serializer = makeSerializer();
+
+// The deserializer allows you to retrieve model instance through your actions.
+// It is only required when you are making read operations.
+const deserializer = makeDeserializer();
+
+// The adapter allows you to run actions.
+const adapter = makeFetchAdapter({
+  // `baseURL` is optional and defaults to "/api".
+  baseURL: 'https://example.com/api/v1',
+});
+```
+
+:::tip
+If you do not need a specific dependencies because you won't use the associated features,
+you can simply omit its initialization and `use` on the action factory.
+:::
+
+### Defining the action factory
+
+Using your dependencies, you can now define your action factory function to preconfigure
+the context for each next action.
+
+```javascript title="action.js"
+import { makeAction, withAdapter, withDeserializer, withSerializer, withStore } from 'func-model/core';
+
+// The action factory is a simple function returning an action
+// with a preconfigured context (avoiding repeating those `use` later).
+export default function action() {
+  return makeAction()
+    .use(withStore(store))
+    .use(withSerializer(serializer))
+    .use(withDeserializer(deserializer))
+    .use(withAdapter(fetchAdapter));
+}
+```
+
+## Running actions
+
+To run action, you can initialize a new action instance by calling your factory.
+With this instance, you can call **context enhancers** through `use` to modify
+the action context.
+When you are ready, you can `run` the action with a given **context consumer**.
+
+```javascript
+import { all, forModel } from 'func-model/core';
+import User from './models/user';
+import action from './action';
+
+const users = await action()
+  .use(forModel(User))
+  .run(all());
+```
+
+Generally in FuncModel, the context enhancers are doing the majority of work to
+customize the action you will run. Context consumers only exists to tell how
+you wish to run the action and retrieve the result (raw response,
+model instance, etc.).
+
+A great example of this is when finding a model using its ID. You'll not use
+a `find` context consumer. Instead, you will need to use a `find` context
+enhancer and a `oneOrFail` context consumer. This way, you are able to do
+a find query and retrieve a raw result when needed.
+
+```javascript
+import { find, oneOrFail, forModel } from 'func-model/core';
+import User from './models/user';
+import action from './action';
+
+const user = await action()
+  .use(forModel(User))
+  .use(find('abc-123'))
+  .run(oneOrFail());
+```
+
+This works the same to send write operations through actions. In the following
+example, we are retrieving a raw adapter response instead of model instances.
+
+```javascript
+import { create, raw, forModel, fill } from 'func-model/core';
+import User from './models/user';
+import action from './action';
+
+const user = fill(new User(), {
+  firstName: 'John',
+  lastName: 'Doe',
+});
+
+const response = await action()
+  .use(create(user))
+  .run(raw());
+```
+
+Finally, you may also want to use FuncModel to make non-standard API calls
+which are unrelated to models.
+
+```javascript
+import { knownData } from 'func-model/core';
+import { makePost } from 'func-model/json-api';
+import action from './action';
+
+// Make a POST call to "https://example.com/api/v1/services/posts/1/publish"
+// Admitting it returns: {"message":"Successfully published post."}
+const data = await action()
+  .use(makePost('services/posts/1/publish'))
+  .run(knownData());
+
+console.log(data.message); // "Successfully published post."
+```
+
+:::info
+`data` consumer will return the adapter response data (for JSON:API, it is a JSON:API document).
+
+`knownData` will return a generic type data (which defaults to any).
+:::
