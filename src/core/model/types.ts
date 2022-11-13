@@ -37,10 +37,6 @@ export type ModelValues<S extends ModelSchemaRaw> = [keyof S] extends [never]
         ? T : never;
   };
 
-// TODO This will replace config.
-export type ModelValueCloneHook<T> = (value: T) => T;
-export type ModelValueCompareHook = (newValue: unknown, prevValue: unknown) => boolean;
-
 export type ModelInstance<S extends ModelSchemaRaw = {}> = {
   readonly $MODEL_TYPE: 'instance';
   readonly constructor: Model<S>;
