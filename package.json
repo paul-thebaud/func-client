@@ -37,6 +37,10 @@
     "./json-api": {
       "import": "./dist/json-api.js",
       "require": "./dist/json-api.cjs"
+    },
+    "./blueprints": {
+      "import": "./dist/blueprints.js",
+      "require": "./dist/blueprints.cjs"
     }
   },
   "scripts": {

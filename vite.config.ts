@@ -6,6 +6,7 @@ type LibFormat = 'es' | 'cjs' | 'umd';
 const libChunks = [
   { name: 'core', dir: resolve(__dirname, 'src/core') },
   { name: 'json-api', dir: resolve(__dirname, 'src/json-api') },
+  { name: 'blueprints', dir: resolve(__dirname, 'src/blueprints') },
 ];
 
 const makeLibOptions = (format: LibFormat) => ({
