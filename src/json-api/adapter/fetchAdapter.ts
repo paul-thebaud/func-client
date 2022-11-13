@@ -22,26 +22,26 @@ export default class FetchAdapter implements AdapterI<JsonApiResponse, JsonApiDo
   }
 
   public async action(context: ActionContext) {
-    const request = await runAffectingHooks(makeRequest(context, this.options), [
+    const request = await runAffectingHooks([
       ...(this.options.transformRequests ?? []),
       ...useHooks<TransformRequestHook>('json-api.transform-request', context),
-    ]);
+    ], makeRequest(context, this.options));
 
     const response = await runRequest(request, this.options);
     const document = await parseResponse(response);
     if (response.ok) {
-      return runAffectingHooks({ response, document }, [
+      return runAffectingHooks([
         ...(this.options.transformResponses ?? []),
         ...useHooks<TransformResponseHook>('json-api.transform-response', context),
-      ]);
+      ], { response, document });
     }
 
     const errors = document.errors ?? [];
 
-    throw await runAffectingHooks(makeResponseError(response, errors), [
+    throw await runAffectingHooks([
       ...(this.options.transformErrors ?? []),
       ...useHooks<TransformErrorHook>('json-api.transform-error', context),
-    ]);
+    ], makeResponseError(response, errors));
   }
 
   public async data(response: JsonApiResponse) {

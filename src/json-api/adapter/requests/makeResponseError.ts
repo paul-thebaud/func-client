@@ -10,20 +10,30 @@ import { JsonApiError } from '@/json-api/types';
 export default function makeResponseError(
   response: Response,
   errors: JsonApiError[],
-): never {
+) {
   if (response.status >= 500) {
-    throw new ServerError(response, errors);
-  } else if (response.status === 401) {
-    throw new UnauthorizedError(response, errors);
-  } else if (response.status === 403) {
-    throw new ForbiddenError(response, errors);
-  } else if (response.status === 404) {
-    throw new NotFoundError(response, errors);
-  } else if (response.status === 409) {
-    throw new ConflictError(response, errors);
-  } else if (response.status === 429) {
-    throw new TooManyRequestsError(response, errors);
+    return new ServerError(response, errors);
   }
 
-  throw new InvalidError(response, errors);
+  if (response.status === 401) {
+    return new UnauthorizedError(response, errors);
+  }
+
+  if (response.status === 403) {
+    return new ForbiddenError(response, errors);
+  }
+
+  if (response.status === 404) {
+    return new NotFoundError(response, errors);
+  }
+
+  if (response.status === 409) {
+    return new ConflictError(response, errors);
+  }
+
+  if (response.status === 429) {
+    return new TooManyRequestsError(response, errors);
+  }
+
+  return new InvalidError(response, errors);
 }

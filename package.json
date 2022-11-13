@@ -25,6 +25,7 @@
     "dist/*",
     "core.d.ts",
     "json-api.d.ts",
+    "blueprints.d.ts",
     "index.d.ts"
   ],
   "types": "index.d.ts",

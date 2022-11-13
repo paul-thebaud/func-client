@@ -1,5 +1,5 @@
 import { AffectingHook } from '@/core/hooks/types';
 
-export default function runAffectingHooks<T>(value: T, hooks: AffectingHook<T>[]) {
+export default function runAffectingHooks<T>(hooks: AffectingHook<T>[], value: T) {
   return hooks.reduce(async (prev, hook) => hook(await prev), Promise.resolve(value));
 }
