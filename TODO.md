@@ -1,5 +1,10 @@
 # TODO
 
+- [ ] Blueprints to create preconfigured actions (full JSON:API, JSON:API read).
+- [ ] Exists state on instances.
+- [ ] Try to always use instance or constructor instead of model schema.
+- [ ] Class instead of factories for implementation (adapter, etc.). This will
+  allow easier override.
 - [x] Move generics of context functions to returned function.
 - [x] Solution for composable with schema and extensions.
 - [x] Transform model props (e.g. string to date transform)
@@ -7,8 +12,9 @@
 - [ ] Avoid updating if nothing changed
 - [x] Model relation path aliasing (e.g. "likedPosts" to "liked-posts")
 - [ ] Model sync to API or not ("syncTo", "syncFrom" or "sync" for both)
-- [x] Model props tracking (via originals) and "changed" retrieval helper (used when serializing for example)
-- [ ] Externalize serialize and deserialize outside of adapter?
+- [x] Model props tracking (via originals) and "changed" retrieval helper (used
+  when serializing for example)
+- [x] Externalize serialize and deserialize outside of adapter?
 - [x] Adapters errors (404, etc.)
 - [x] Solution to Vite chunks when features from core used by adapter extension
 - [x] Merged params for adapter (fields, include, etc.)

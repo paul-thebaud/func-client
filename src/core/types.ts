@@ -1,18 +1,29 @@
 import type { ActionContext } from '@/core/actions/types';
-import type { ModelInstance } from '@/core/model/types';
+import type { Model, ModelId, ModelInstance } from '@/core/model/types';
 
-export type Adapter<R, D> = {
+export type ModelsStoreI = {
+  modelFor(type: string): Promise<Model>;
+};
+
+export type InstancesCacheI = {
+  find(type: string, id: ModelId): Promise<ModelInstance | null>;
+  put(type: string, id: ModelId, instance: ModelInstance): Promise<void>;
+  forget(type: string, id: ModelId): Promise<void>;
+  forgetAll(type: string): Promise<void>;
+};
+
+export type AdapterI<R, D> = {
   action(context: ActionContext): Promise<R>;
   data(result: R): Promise<D>;
   isNotFound(error: unknown): boolean;
 };
 
-export type Serializer<D> = {
-  serializeOne(context: ActionContext, model: ModelInstance): Promise<D>;
-  serializeMany(context: ActionContext, models: ModelInstance[]): Promise<D>;
+export type SerializerI<D> = {
+  serializeMany(context: ActionContext, instances: ModelInstance[]): Promise<D>;
+  serializeOne(context: ActionContext, instance: ModelInstance): Promise<D>;
 };
 
-export type Deserializer<D> = {
-  deserializeOne(context: ActionContext, data: D): Promise<ModelInstance | null | undefined>;
+export type DeserializerI<D> = {
   deserializeMany(context: ActionContext, data: D): Promise<ModelInstance[]>;
+  deserializeOne(context: ActionContext, data: D): Promise<ModelInstance | null | undefined>;
 };

@@ -1,12 +1,16 @@
-import { ModelAttribute } from '@/core';
-import type { JsonApiSerializerOptions } from '@/json-api/serializer/types';
-import serializeProp from '@/json-api/serializer/serializeProp';
+import { ModelAttribute, useTransform } from '@/core';
+import serializedKey from '@/json-api/utilities/serializedKey';
+import type { SerializerOptions } from '@/json-api/serializer/types';
 
 export default async function serializeAttribute(
   def: ModelAttribute<unknown, unknown>,
   key: string,
   value: unknown,
-  options: JsonApiSerializerOptions,
+  options: SerializerOptions,
 ) {
-  return serializeProp(def, key, value, options);
+  const transform = useTransform(def.transformer, 'serialize');
+
+  return {
+    [serializedKey(def, key, options)]: await transform(value),
+  };
 }

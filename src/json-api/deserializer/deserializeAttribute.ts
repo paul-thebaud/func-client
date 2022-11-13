@@ -1,18 +1,13 @@
-import { ModelAttribute } from '@/core';
-import deserializeProp from '@/json-api/deserializer/deserializeProp';
-import type { JsonApiDeserializerOptions } from '@/json-api/deserializer/types';
-import { JsonApiAttributes } from '@/json-api/types';
+import { ModelAttribute, useTransform } from '@/core';
 
 export default async function deserializeAttribute(
   def: ModelAttribute<unknown, unknown>,
   key: string,
-  data: JsonApiAttributes,
-  options: JsonApiDeserializerOptions,
+  value: unknown,
 ) {
-  const value = await deserializeProp(def, key, data, options);
-  if (value !== undefined) {
-    return { [key]: value };
-  }
+  const transform = useTransform(def.transformer, 'deserialize');
 
-  return {};
+  return {
+    [key]: await transform(value),
+  };
 }

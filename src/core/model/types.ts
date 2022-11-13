@@ -1,8 +1,6 @@
 import { Transform } from '@/core/transforms/types';
 import { Constructor, Dictionary, Prev } from '@/core/utilities/types';
 
-export type InternalModelType = 'attribute' | 'relation' | 'model' | 'instance';
-
 export type ModelId = string | number;
 
 export type DefaultFactory<T> = () => T;
@@ -38,6 +36,10 @@ export type ModelValues<S extends ModelSchemaRaw> = [keyof S] extends [never]
       ? T : S[K] extends ModelRelation<infer T, any>
         ? T : never;
   };
+
+// TODO This will replace config.
+export type ModelValueCloneHook<T> = (value: T) => T;
+export type ModelValueCompareHook = (newValue: unknown, prevValue: unknown) => boolean;
 
 export type ModelInstance<S extends ModelSchemaRaw = {}> = {
   readonly $MODEL_TYPE: 'instance';

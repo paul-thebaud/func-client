@@ -28,7 +28,7 @@ export default class Action<C extends ActionContext> {
     return this as any;
   }
 
-  public async run<R>(runner: ContextConsumer<C, R>): Promise<R> {
+  public async run<NR>(runner: ContextConsumer<C, NR>): Promise<NR> {
     await this.dequeueEnhancements();
 
     return runner(this);

@@ -1,4 +1,4 @@
-import { ActionContext, useHook } from '@/core';
+import { ActionContext } from '@/core';
 
 export default function makeParams(context: ActionContext) {
   const urlSearchParams = new URLSearchParams();
@@ -11,12 +11,9 @@ export default function makeParams(context: ActionContext) {
         ([subKey, subValue]) => appendParam(`${key}[${subKey}]`, subValue),
       );
     } else {
-      const finalValue = useHook(context, 'json-api.transform-request.param.value', value);
+      const finalValue = value;
       if (finalValue !== undefined) {
-        urlSearchParams.set(
-          useHook(context, 'json-api.transform-request.param.key', key),
-          String(finalValue),
-        );
+        urlSearchParams.set(key, String(finalValue));
       }
     }
   };

@@ -1,5 +1,4 @@
-import { Action } from '@/core/actions';
-import { ActionContext } from '@/core/actions/types';
+import { Action, ActionContext } from '@/core';
 import sortBy from '@/json-api/actions/context/enhancers/params/sortBy';
 
 export default function sortByDesc(key: string) {

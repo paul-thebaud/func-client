@@ -1,10 +1,11 @@
 import type Action from '@/core/actions/action';
+import { Hook } from '@/core/hooks/types';
 import { ModelClass, ModelId, ModelInstance, ModelSchemaRaw } from '@/core/model/types';
-import { Adapter, Deserializer, Serializer } from '@/core/types';
+import { AdapterI, DeserializerI, SerializerI } from '@/core/types';
 import { Constructor, Dictionary } from '@/core/utilities/types';
 
 // TODO How could we type hooks from other package?
-export type ActionHooks = {} & Dictionary<(param: any) => any>;
+export type ActionHooks = Dictionary<((param: any) => any)[]>;
 
 export type ActionMethod =
   | 'get' | 'GET'
@@ -19,7 +20,7 @@ export type ActionMethod =
   | 'unlink' | 'UNLINK';
 
 export type ActionContext = {
-  hooks?: Partial<ActionHooks>;
+  hooks?: Dictionary<Hook<any, any>[]>;
   method?: ActionMethod;
   baseURL?: string;
   type?: string;
@@ -51,8 +52,8 @@ export type ConsumeInstance<S extends ModelSchemaRaw = ModelSchemaRaw, I = Model
 
 export type ConsumeId = { id: ModelId };
 
-export type ConsumeAdapter<R = unknown, D = unknown> = { adapter: Adapter<R, D>; };
+export type ConsumeAdapter<R = unknown, D = unknown> = { adapter: AdapterI<R, D>; };
 
-export type ConsumeDeserializer<D = unknown> = { deserializer: Deserializer<D> };
+export type ConsumeDeserializer<D = unknown> = { deserializer: DeserializerI<D> };
 
-export type ConsumeSerializer<D = unknown> = { serializer: Serializer<D> };
+export type ConsumeSerializer<D = unknown> = { serializer: SerializerI<D> };

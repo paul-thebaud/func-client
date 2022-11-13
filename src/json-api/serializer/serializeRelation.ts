@@ -1,13 +1,13 @@
 import { ModelInstance, ModelRelation } from '@/core';
-import serializeProp from '@/json-api/serializer/serializeProp';
+import serializedKey from '@/json-api/utilities/serializedKey';
 import serializeRef from '@/json-api/serializer/serializeRef';
-import type { JsonApiSerializerOptions } from '@/json-api/serializer/types';
+import type { SerializerOptions } from '@/json-api/serializer/types';
 
 export default async function serializeRelation(
   def: ModelRelation<unknown, unknown>,
   key: string,
   value: unknown,
-  options: JsonApiSerializerOptions,
+  options: SerializerOptions,
 ) {
   let refValue = null;
   if (Array.isArray(value)) {
@@ -16,5 +16,7 @@ export default async function serializeRelation(
     refValue = serializeRef(value as ModelInstance);
   }
 
-  return serializeProp(def, key, { data: refValue }, options);
+  return {
+    [serializedKey(def, key, options)]: refValue,
+  };
 }

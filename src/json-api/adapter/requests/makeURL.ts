@@ -1,7 +1,7 @@
 import { ActionContext } from '@/core';
 import makeEndpoint from '@/json-api/adapter/requests/makeEndpoint';
 import makeParams from '@/json-api/adapter/requests/makeParams';
-import { JsonApiAdapterOptions } from '@/json-api/adapter/types';
+import { FetchAdapterOptions } from '@/json-api/adapter/types';
 
 function joinStrings(
   parts: (string | undefined)[],
@@ -12,7 +12,7 @@ function joinStrings(
     .join(separator);
 }
 
-export default function makeURL(context: ActionContext, options: JsonApiAdapterOptions) {
+export default function makeURL(context: ActionContext, options: FetchAdapterOptions) {
   return joinStrings([
     joinStrings(makeEndpoint(context, options), '/'),
     makeParams(context),

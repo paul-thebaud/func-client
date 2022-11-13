@@ -1,3 +1,3 @@
-export type JsonApiDeserializerOptions = {
+export type DeserializerOptions = {
   transformKeys?: (localKey: string) => string;
 };

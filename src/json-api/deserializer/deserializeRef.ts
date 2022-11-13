@@ -1,14 +1,14 @@
 import { ActionContext, FuncModelError } from '@/core';
 import type { DeserializeOne } from '@/json-api/deserializer/deserializeOne';
 import { JsonApiIncludedMap } from '@/json-api/deserializer/makeIncludedMap';
-import type { JsonApiDeserializerOptions } from '@/json-api/deserializer/types';
+import type { DeserializerOptions } from '@/json-api/deserializer/types';
 import { JsonApiResourceIdentifier } from '@/json-api/types';
 
 export default function deserializeRef(
   context: ActionContext,
   resourceIdentifier: JsonApiResourceIdentifier,
   includedMap: JsonApiIncludedMap,
-  options: JsonApiDeserializerOptions,
+  options: DeserializerOptions,
   deserializeOne: DeserializeOne,
 ) {
   const includedMapOfType = includedMap.get(resourceIdentifier.type);

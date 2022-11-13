@@ -7,7 +7,7 @@ import TooManyRequestsError from '@/json-api/adapter/errors/tooManyRequestsError
 import UnauthorizedError from '@/json-api/adapter/errors/unauthorizedError';
 import { JsonApiError } from '@/json-api/types';
 
-export default function throwResponseError(
+export default function makeResponseError(
   response: Response,
   errors: JsonApiError[],
 ): never {

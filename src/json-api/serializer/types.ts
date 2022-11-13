@@ -1,4 +1,4 @@
-export type JsonApiSerializerOptions = {
+export type SerializerOptions = {
   transformKeys?: (localKey: string) => string;
   keepUnchanged?: boolean;
 };
