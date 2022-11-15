@@ -14,13 +14,13 @@ export default class Action<C extends ActionContext> {
     this.$context = {} as C;
   }
 
-  public when<T, NC extends ActionContext>(
+  public when<T>(
     condition: T,
-    callback: (action: Action<C>, value: Value<T>) => Action<NC>,
-  ): Action<C> | Action<NC> {
+    callback: (action: Action<C>, value: Value<T>) => unknown,
+  ): Action<C> {
     const conditionResult = value(condition);
     if (conditionResult) {
-      return callback(this, conditionResult);
+      callback(this, conditionResult);
     }
 
     return this;
