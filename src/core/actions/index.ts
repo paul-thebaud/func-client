@@ -6,6 +6,7 @@ import dataUsing from '@/core/actions/context/consumers/dataUsing';
 import knownData from '@/core/actions/context/consumers/knownData';
 import one from '@/core/actions/context/consumers/one';
 import oneOr from '@/core/actions/context/consumers/oneOr';
+import oneOrCurrent from '@/core/actions/context/consumers/oneOrCurrent';
 import oneOrFail from '@/core/actions/context/consumers/oneOrFail';
 import oneOrUsing from '@/core/actions/context/consumers/oneOrUsing';
 import raw from '@/core/actions/context/consumers/raw';
@@ -40,6 +41,7 @@ export {
   one,
   oneOr,
   oneOrFail,
+  oneOrCurrent,
   oneOrUsing,
   raw,
   find,

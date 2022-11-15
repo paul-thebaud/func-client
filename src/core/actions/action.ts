@@ -1,6 +1,8 @@
 import type { ActionContext, ContextEnhancer } from '@/core/actions/types';
 import { ContextConsumer } from '@/core/actions/types';
 import sequentialPromiseAll from '@/core/utilities/sequentialPromiseAll';
+import { Value } from '@/core/utilities/types';
+import value from '@/core/utilities/value';
 
 export default class Action<C extends ActionContext> {
   private $enhancementsQueue: ContextEnhancer<any, any>[];
@@ -10,6 +12,18 @@ export default class Action<C extends ActionContext> {
   public constructor() {
     this.$enhancementsQueue = [];
     this.$context = {} as C;
+  }
+
+  public when<T, NC extends ActionContext>(
+    condition: T,
+    callback: (action: Action<C>, value: Value<T>) => Action<NC>,
+  ): Action<C> | Action<NC> {
+    const conditionResult = value(condition);
+    if (conditionResult) {
+      return callback(this, conditionResult);
+    }
+
+    return this;
   }
 
   public get context() {

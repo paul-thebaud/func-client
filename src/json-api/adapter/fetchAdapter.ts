@@ -8,9 +8,9 @@ import runRequest from '@/json-api/adapter/requests/runRequest';
 import {
   FetchAdapterOptions,
   JsonApiResponse,
-  TransformErrorHook,
-  TransformRequestHook,
-  TransformResponseHook,
+  TransformError,
+  TransformRequest,
+  TransformResponse,
 } from '@/json-api/adapter/types';
 import { JsonApiDocument } from '@/json-api/types';
 
@@ -24,7 +24,7 @@ export default class FetchAdapter implements AdapterI<JsonApiResponse, JsonApiDo
   public async action(context: ActionContext) {
     const request = await runAffectingHooks([
       ...(this.options.transformRequests ?? []),
-      ...useHooks<TransformRequestHook>('json-api.transform-request', context),
+      ...useHooks<TransformRequest>('json-api.transform-request', context),
     ], makeRequest(context, this.options));
 
     const response = await runRequest(request, this.options);
@@ -32,7 +32,7 @@ export default class FetchAdapter implements AdapterI<JsonApiResponse, JsonApiDo
     if (response.ok) {
       return runAffectingHooks([
         ...(this.options.transformResponses ?? []),
-        ...useHooks<TransformResponseHook>('json-api.transform-response', context),
+        ...useHooks<TransformResponse>('json-api.transform-response', context),
       ], { response, document });
     }
 
@@ -40,7 +40,7 @@ export default class FetchAdapter implements AdapterI<JsonApiResponse, JsonApiDo
 
     throw await runAffectingHooks([
       ...(this.options.transformErrors ?? []),
-      ...useHooks<TransformErrorHook>('json-api.transform-error', context),
+      ...useHooks<TransformError>('json-api.transform-error', context),
     ], makeResponseError(response, errors));
   }
 

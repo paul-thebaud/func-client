@@ -15,6 +15,6 @@ function joinStrings(
 export default function makeURL(context: ActionContext, options: FetchAdapterOptions) {
   return joinStrings([
     joinStrings(makeEndpoint(context, options), '/'),
-    makeParams(context),
+    makeParams(context, options),
   ], '?');
 }

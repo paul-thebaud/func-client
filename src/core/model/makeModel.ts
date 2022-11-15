@@ -2,8 +2,6 @@ import FuncModelError from '@/core/errors/funcModelError';
 import compose from '@/core/model/compose';
 import { Model, ModelId, ModelInstance, ModelSchema, ModelValues } from '@/core/model/types';
 
-// TODO Make model variation to allow function in class body.
-
 export default function makeModel<S extends ModelSchema<{}> = {}, E extends object = {}>(
   type: string,
   schema?: S,
@@ -11,6 +9,7 @@ export default function makeModel<S extends ModelSchema<{}> = {}, E extends obje
 ) {
   function ModelClass(this: ModelInstance) {
     this.id = undefined as unknown as ModelId;
+    this.$exists = false;
     this.$original = {} as ModelValues<{}>;
     this.$values = {} as ModelValues<{}>;
 

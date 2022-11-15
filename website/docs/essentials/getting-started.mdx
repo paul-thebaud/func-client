@@ -1,8 +1,15 @@
 ---
 sidebar_position: 1
+description: Defining your first model and action factory, running basic actions.
 ---
 
 # Getting started
+
+:::tip What you'll learn
+- Creating your first model and using it through model instances;
+- Creating your action factory using blueprints for a JSON:API backend;
+- Running basic actions on your models with your action factory;
+:::
 
 ## Your first model
 
@@ -52,79 +59,54 @@ user.lastName = 'Doe';
 console.log(user.fullName); // "John Doe".
 ```
 
-## Action factory
+## Action factory with blueprints
 
 Once your models are set up, you will probably want to interact with a data store, such as an API.
 For this, you will need an action factory which initialize a preconfigured context
-for all your future action.
+for all your future action. Running actions using this action factory will be seen in the next part
+of this guide.
 
-The following example of action factory is made for a JSON:API implementation.
+Blueprints provide a quick initialization of your action factory.
 
-:::info
-Currently, FuncModel only have a JSON:API implementation of actions. However, you can easily
-implement your own adapter and/or serialization mechanism to fit your needs.
-
-We are also opened to pull request to propose other implementations.
-:::
-
-### Initializing the dependencies
-
-Each action factory may require initial dependencies to correctly work. Each of those dependencies
-have a dedicated role and is required for only specific cases. Here is an example with all
-the available dependencies initialized.
+With the complete JSON:API action factory blueprint (named `makeJsonApi`), you can
+set up your action factory for a JSON:API by providing a root URL and the models it
+interacts with.
 
 ```javascript title="action.js"
-import { makeAction, makeStore, withAdapter, withDeserializer, withSerializer, withStore } from 'func-model/core';
-import { makeDeserializer, makeFetchAdapter, makeSerializer } from 'func-model/json-api';
+import { makeJsonApi } from 'func-model/blueprints';
 
-// The store allows the deserializer and other dependencies to known
-// which types is associated with which model.
-// It is only required when you are deserializing related models not directly
-// targeted by an action (e.g. comments related to a post you fetch).
-const store = makeStore().register([User, /* Post, Comment */]);
-
-// The serializer allows you to send model instance through your actions.
-// It is only required when you are making create/update operations.
-const serializer = makeSerializer();
-
-// The deserializer allows you to retrieve model instance through your actions.
-// It is only required when you are making read operations.
-const deserializer = makeDeserializer();
-
-// The adapter allows you to run actions.
-const adapter = makeFetchAdapter({
-  // `baseURL` is optional and defaults to "/api".
+const { makeAction, store } = makeJsonApi({
   baseURL: 'https://example.com/api/v1',
 });
-```
 
-:::tip
-If you do not need a specific dependencies because you won't use the associated features,
-you can simply omit its initialization and `use` on the action factory.
-:::
+// We need to register the models to allow the deserializer to know
+// to which model it should deserialize a JSON:API record.
+store.register([User, /* Post, Comment */]);
 
-### Defining the action factory
-
-Using your dependencies, you can now define your action factory function to preconfigure
-the context for each next action.
-
-```javascript title="action.js"
-import { makeAction, withAdapter, withDeserializer, withSerializer, withStore } from 'func-model/core';
-
-// The action factory is a simple function returning an action
-// with a preconfigured context (avoiding repeating those `use` later).
 export default function action() {
-  return makeAction()
-    .use(withStore(store))
-    .use(withSerializer(serializer))
-    .use(withDeserializer(deserializer))
-    .use(withAdapter(fetchAdapter));
+  return makeAction();
 }
 ```
 
+In this example, `makeJsonApi` will initialize all dependencies to read/write on a JSON:API.
+It must only be called once, because instances may be cached after a read for example.
+`makeAction` is a default preconfigured action factory. It should be called on each new action
+you are making, and not only once, because context enhancers are modifying the action context.
+
+:::caution
+Using blueprints is a simple and quick way to set up an action factory. However, it has some downsides:
+
+- **Only a JSON:API implementation of actions dependencies is available for now;**
+- You may not be able to configure all the behaviors you want;
+- You may increase your bundle size by importing useless actions dependencies;
+
+If you want more control over your action factory and dependencies, you should
+read [the advanced guide on actions dependencies and factories](missing-ref).
+:::
+
 ## Running actions
 
-To run action, you can initialize a new action instance by calling your factory.
+To run an action, you can initialize a new action instance by calling your factory.
 With this instance, you can call **context enhancers** through `use` to modify
 the action context.
 When you are ready, you can `run` the action with a given **context consumer**.
@@ -198,5 +180,6 @@ console.log(data.message); // "Successfully published post."
 :::info
 `data` consumer will return the adapter response data (for JSON:API, it is a JSON:API document).
 
-`knownData` will return a generic type data (which defaults to any).
+`knownData` will the same data but with a generic type (which defaults to any). This can be useful
+when creating non-standard JSON:API services.
 :::

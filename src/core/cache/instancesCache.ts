@@ -1,9 +1,9 @@
-import { InstancesCacheItem, InstancesCacheOptions } from '@/core/cache/types';
+import { InstancesCacheOptions } from '@/core/cache/types';
 import { ModelId, ModelInstance } from '@/core/model/types';
 import { InstancesCacheI } from '@/core/types';
 
 export default class InstancesCache<R = unknown> implements InstancesCacheI {
-  private instancesPerTypesMap: Map<string, Map<ModelId, InstancesCacheItem<R>>>;
+  private instancesPerTypesMap: Map<string, Map<ModelId, R>>;
 
   private options: InstancesCacheOptions<R>;
 
@@ -13,18 +13,12 @@ export default class InstancesCache<R = unknown> implements InstancesCacheI {
   }
 
   public async find(type: string, id: ModelId) {
-    const item = this.useInstancesMap(type).get(id);
-    if (!item) {
+    const ref = this.useInstancesMap(type).get(id);
+    if (!ref) {
       return null;
     }
 
-    if (this.shouldExpire(item)) {
-      await this.forget(type, id);
-
-      return null;
-    }
-
-    const instance = await this.options.mode.deref(item.ref);
+    const instance = await this.options.mode.deref(ref);
     if (!instance) {
       await this.forget(type, id);
 
@@ -35,10 +29,7 @@ export default class InstancesCache<R = unknown> implements InstancesCacheI {
   }
 
   public async put(type: string, id: ModelId, instance: ModelInstance) {
-    this.useInstancesMap(type).set(id, {
-      ref: await this.options.mode.ref(instance),
-      time: new Date().getTime(),
-    });
+    this.useInstancesMap(type).set(id, await this.options.mode.ref(instance));
   }
 
   public async forget(type: string, id: ModelId) {
@@ -47,10 +38,6 @@ export default class InstancesCache<R = unknown> implements InstancesCacheI {
 
   public async forgetAll(type: string) {
     this.useInstancesMap(type).clear();
-  }
-
-  protected shouldExpire(item: InstancesCacheItem<R>) {
-    return this.options.isExpired && this.options.isExpired(item);
   }
 
   private useInstancesMap(type: string) {

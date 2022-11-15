@@ -1,10 +1,10 @@
 # TODO
 
-- [ ] Blueprints to create preconfigured actions (full JSON:API, JSON:API read).
+- [x] Blueprints to create preconfigured actions (full JSON:API, JSON:API read).
 - [ ] Exists state on instances.
-- [ ] Try to always use instance or constructor instead of model schema.
-- [ ] Class instead of factories for implementation (adapter, etc.). This will
-  allow easier override.
+- [ ] HTTP adapter on adapter (fetch or axios).
+- [ ] Hooks for actions only (no global hooks).
+- [ ] Make model with a config (type, baseURL, etc.).
 - [x] Move generics of context functions to returned function.
 - [x] Solution for composable with schema and extensions.
 - [x] Transform model props (e.g. string to date transform)
@@ -23,6 +23,4 @@
 - [ ] Model and relations metadata (loaded, loading, etc.)
 - [ ] Reactivity compatibility (for props and metadata)
 - [ ] Relations inverse (post related to author)
-- [ ] Cache with weak refs to already fetched models
-- [ ] Docs using docusaurus
 - [ ] Tests using vitest

@@ -42,6 +42,8 @@ export type ModelInstance<S extends ModelSchemaRaw = {}> = {
   readonly constructor: Model<S>;
   // FIXME Should the model id be nullable in its type?
   id: ModelId;
+  // FIXME Should be used and updated by actions.
+  $exists: boolean;
   $original: Partial<ModelValues<S>>;
   $values: Partial<ModelValues<S>>;
 } & {

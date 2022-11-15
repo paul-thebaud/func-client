@@ -1,3 +1,4 @@
+import { Dictionary } from '@/core/utilities/types';
 import JsonApiAdapterError from '@/json-api/adapter/errors/jsonApiAdapterError';
 import { JsonApiDocument } from '@/json-api/types';
 
@@ -11,27 +12,23 @@ export type JsonApiResponse = {
   document: JsonApiDocument;
 };
 
-export type JsonApiAdapterOptions = {
-  baseURL?: string;
-  fetch?: typeof fetch;
-};
-
-export type TransformRequestHook = (
+export type TransformRequest = (
   request: JsonApiRequest,
 ) => Promise<JsonApiRequest> | JsonApiRequest;
 
-export type TransformResponseHook = (
+export type TransformResponse = (
   request: JsonApiResponse,
 ) => Promise<JsonApiResponse> | JsonApiResponse;
 
-export type TransformErrorHook = (
+export type TransformError = (
   error: JsonApiAdapterError,
 ) => Promise<JsonApiAdapterError> | JsonApiAdapterError;
 
 export type FetchAdapterOptions = {
   baseURL?: string;
   fetch?: typeof fetch;
-  transformRequests?: TransformRequestHook[];
-  transformResponses?: TransformResponseHook[];
-  transformErrors?: TransformErrorHook[];
+  paramsSerializer?: (params: Dictionary<any> | undefined) => string | undefined,
+  transformRequests?: TransformRequest[];
+  transformResponses?: TransformResponse[];
+  transformErrors?: TransformError[];
 };

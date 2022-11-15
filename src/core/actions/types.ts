@@ -4,9 +4,6 @@ import { ModelClass, ModelId, ModelInstance, ModelSchemaRaw } from '@/core/model
 import { AdapterI, DeserializerI, SerializerI } from '@/core/types';
 import { Constructor, Dictionary } from '@/core/utilities/types';
 
-// TODO How could we type hooks from other package?
-export type ActionHooks = Dictionary<((param: any) => any)[]>;
-
 export type ActionMethod =
   | 'get' | 'GET'
   | 'delete' | 'DELETE'
@@ -20,7 +17,7 @@ export type ActionMethod =
   | 'unlink' | 'UNLINK';
 
 export type ActionContext = {
-  hooks?: Dictionary<Hook<any, any>[]>;
+  hooks?: Partial<Dictionary<Hook<any, any>[]>>;
   method?: ActionMethod;
   baseURL?: string;
   type?: string;
@@ -38,7 +35,7 @@ export type ContextEnhancer<PC extends ActionContext = {}, NC extends ActionCont
 
 export type ContextConsumer<C extends ActionContext = {}, R = unknown> = (
   a: Action<C>,
-) => R;
+) => Promise<R>;
 
 export type ConsumeSchema<S extends ModelSchemaRaw = ModelSchemaRaw> = { schema: S; };
 
