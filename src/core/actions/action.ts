@@ -16,11 +16,14 @@ export default class Action<C extends ActionContext> {
 
   public when<T>(
     condition: T,
-    callback: (action: Action<C>, value: Value<T>) => unknown,
+    truthyCallback: (action: Action<C>, value: Value<T>) => unknown,
+    falsyCallback?: (action: Action<C>, value: Value<T>) => unknown,
   ): Action<C> {
     const conditionResult = value(condition);
     if (conditionResult) {
-      callback(this, conditionResult);
+      truthyCallback(this, conditionResult);
+    } else if (falsyCallback) {
+      falsyCallback(this, conditionResult);
     }
 
     return this;

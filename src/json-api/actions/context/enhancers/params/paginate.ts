@@ -1,6 +1,6 @@
 import { Action, ActionContext, context } from '@/core';
 
-export default function page<P>(pageParam: P) {
+export default function paginate<P>(pageParam: P) {
   return <C extends ActionContext>(a: Action<C>) => a.use(context({
     params: {
       ...a.context.params,
