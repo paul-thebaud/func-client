@@ -1,7 +1,7 @@
 import type { ActionContext, ContextEnhancer } from '@/core/actions/types';
 import { ContextConsumer } from '@/core/actions/types';
 import sequentialPromiseAll from '@/core/utilities/sequentialPromiseAll';
-import { Value } from '@/core/utilities/types';
+import { OnlyFalsy, OnlyTruthy, Value } from '@/core/utilities/types';
 import value from '@/core/utilities/value';
 
 export default class Action<C extends ActionContext> {
@@ -16,14 +16,14 @@ export default class Action<C extends ActionContext> {
 
   public when<T>(
     condition: T,
-    truthyCallback: (action: Action<C>, value: Value<T>) => unknown,
-    falsyCallback?: (action: Action<C>, value: Value<T>) => unknown,
+    truthyCallback: (action: Action<C>, value: OnlyTruthy<Value<T>>) => unknown,
+    falsyCallback?: (action: Action<C>, value: OnlyFalsy<Value<T>>) => unknown,
   ): Action<C> {
     const conditionResult = value(condition);
     if (conditionResult) {
-      truthyCallback(this, conditionResult);
+      truthyCallback(this, conditionResult as OnlyTruthy<Value<T>>);
     } else if (falsyCallback) {
-      falsyCallback(this, conditionResult);
+      falsyCallback(this, conditionResult as OnlyFalsy<Value<T>>);
     }
 
     return this;

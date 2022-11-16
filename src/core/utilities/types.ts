@@ -8,3 +8,9 @@ export type UnionToIntersection<U> =
   (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
 
 export type Value<T> = T extends (...args: any[]) => any ? ReturnType<T> : T;
+
+export type Falsy = null | undefined | false | 0 | -0 | 0n | '';
+
+export type OnlyTruthy<T> = T extends Falsy ? never : T;
+
+export type OnlyFalsy<T> = T extends Falsy ? T : never;
