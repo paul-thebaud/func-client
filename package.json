@@ -1,7 +1,7 @@
 {
   "name": "func-model",
   "type": "module",
-  "version": "1.0.0-alpha.43",
+  "version": "1.0.0-alpha.44",
   "license": "MIT",
   "description": "Typescript strongly typed functional programming oriented API client interactions.",
   "homepage": "https://github.com/paul-thebaud/func-model",
