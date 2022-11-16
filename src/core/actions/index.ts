@@ -4,6 +4,7 @@ import allUsing from '@/core/actions/context/consumers/allUsing';
 import data from '@/core/actions/context/consumers/data';
 import dataUsing from '@/core/actions/context/consumers/dataUsing';
 import knownData from '@/core/actions/context/consumers/knownData';
+import none from '@/core/actions/context/consumers/none';
 import one from '@/core/actions/context/consumers/one';
 import oneOr from '@/core/actions/context/consumers/oneOr';
 import oneOrCurrent from '@/core/actions/context/consumers/oneOrCurrent';
@@ -28,6 +29,8 @@ import withStore from '@/core/actions/context/enhancers/dependency/withStore';
 import forInstance from '@/core/actions/context/enhancers/forInstance';
 import forModel from '@/core/actions/context/enhancers/forModel';
 import forSchema from '@/core/actions/context/enhancers/forSchema';
+import param from '@/core/actions/context/enhancers/params/param';
+import params from '@/core/actions/context/enhancers/params/params';
 
 export {
   toManyInstances,
@@ -38,6 +41,7 @@ export {
   data,
   dataUsing,
   knownData,
+  none,
   one,
   oneOr,
   oneOrFail,
@@ -49,6 +53,8 @@ export {
   update,
   destroy,
   instancePayload,
+  param,
+  params,
   withAdapter,
   withDeserializer,
   withSerializer,

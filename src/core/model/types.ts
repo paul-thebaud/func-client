@@ -1,6 +1,13 @@
 import { Transform } from '@/core/transforms/types';
 import { Constructor, Dictionary, Prev } from '@/core/utilities/types';
 
+export type ModelConfig = {
+  type: string;
+  baseURL?: string;
+  comparator?: (newValue: unknown, prevValue: unknown) => boolean;
+  cloner?: <T = unknown>(value: T) => T;
+};
+
 export type ModelId = string | number;
 
 export type DefaultFactory<T> = () => T;
@@ -54,7 +61,7 @@ export type ModelInstance<S extends ModelSchemaRaw = {}> = {
 
 export type ModelClass<S extends ModelSchemaRaw = {}> = {
   readonly $MODEL_TYPE: 'model';
-  readonly $type: string;
+  readonly $config: ModelConfig;
   readonly $rawSchema: () => S;
   readonly $schema: ModelSchema<S>;
   extend<NS extends ModelSchema<{}>, NE extends object>(

@@ -50,8 +50,7 @@ const config = {
         title: 'FuncModel',
         items: [
           {
-            type: 'doc',
-            docId: 'discover',
+            to: '/docs/discover',
             position: 'left',
             label: 'Discover',
           },

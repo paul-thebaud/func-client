@@ -45,34 +45,38 @@ export default class Post extends makeModel('posts', {
 ```
 
 Models represent the structure of your data. A model is a composed class and can
-be instantiated. Models are composed of four things:
+be instantiated. Models are composed of three things:
 
-- The **type** which uniquely references the model class.
-- **Relationships** with other models (has one and has many).
-- **Attributes** representing non relationships values (string, date, etc.).
-- **Extensions** which add custom features to your model instances (e.g. full
-name getter for a `User` model, etc.).
+- The **configuration**. In most case, it is only the **type** which uniquely
+references the model class.
+- The **schema**. It is an object composed of **relationships** (with other
+models) and **attributes** (primitive or not).
+- The **Extensions** which add custom features to your model instances (e.g.
+full name getter for a `User` model, etc.).
 
 ### Action
 
 ```javascript
-import { forModel, all, raw, destroy } from 'func-model/core';
-import { include } from 'func-model/json-api';
+import { forModel, all, none, destroy } from 'func-model/core';
+import { filter, include } from 'func-model/json-api';
 
+// GET /api/v1/posts?filter[isPublished]=0&include=comments
 const posts = await action()
   .use(forModel(Post))
+  .use(filter('isPublished', '1'))
   .use(include('comments'))
   .run(all());
 
+// DELETE /api/v1/posts/<post-id>
 await action()
   .use(destroy(posts[0]))
-  .run(raw());
+  .run(none());
 ```
 
-Actions are the way you make interaction between your models and an external
-API. There are three steps to an action:
+Actions are the way you make interaction between your models and your backend.
+There are three steps to an action:
 
-- **Creation** using your own action factory with its dependencies (adapter,
+- **Instantiation** using your own action factory with its dependencies (adapter,
 serializer, etc.).
 - **Use** of context enhancers to affect the context of the action (change the
 path, change the affected model, change some query params, etc.).
@@ -80,7 +84,8 @@ path, change the affected model, change some query params, etc.).
 
 The context of the action can be changed to pretty everything and the typings
 are correctly propagated, making it a secure and easy way of building action
-using Typescript or Javascript.
+using Typescript or Javascript. You can use built-in enhancers or write your
+owns easily.
 
 Context enhancers can be async as they are queued until run of the context
 consumer.

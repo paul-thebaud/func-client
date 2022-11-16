@@ -13,7 +13,7 @@ export default async function serializeOne(
   options: SerializerOptions,
 ): Promise<JsonApiResource> {
   const record = {
-    type: instance.constructor.$type,
+    type: instance.constructor.$config.type,
     id: instance.id,
     attributes: {},
     relationships: {},

@@ -7,6 +7,7 @@ export default function wasChangedKeys<S extends ModelSchemaRaw>(
 ) {
   return keys.some(
     (key) => !compareModelValue(
+      instance.constructor,
       instance.$values[key],
       instance.$original[key],
     ),

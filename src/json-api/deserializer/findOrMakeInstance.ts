@@ -22,7 +22,7 @@ export default async function findOrMakeInstance(
       const ModelClass = await context.store.modelFor(resource.type);
 
       instance = new ModelClass();
-    } else if (context.model && context.model.$type === resource.type) {
+    } else if (context.model && context.model.$config.type === resource.type) {
       const ModelClass = context.model;
 
       instance = new ModelClass();

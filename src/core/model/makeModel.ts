@@ -1,9 +1,10 @@
 import FuncModelError from '@/core/errors/funcModelError';
 import compose from '@/core/model/compose';
-import { Model, ModelId, ModelInstance, ModelSchema, ModelValues } from '@/core/model/types';
+import { Model, ModelConfig, ModelId, ModelInstance, ModelSchema, ModelValues } from '@/core/model/types';
+import warn from '@/core/utilities/warn';
 
 export default function makeModel<S extends ModelSchema<{}> = {}, E extends object = {}>(
-  type: string,
+  config: ModelConfig | string,
   schema?: S,
   extension?: E & ThisType<ModelInstance<S & E>>,
 ) {
@@ -26,11 +27,17 @@ export default function makeModel<S extends ModelSchema<{}> = {}, E extends obje
         this.$values[key] = def.default();
       } else if (def.default !== undefined) {
         this.$values[key] = def.default;
+
+        if (def.default && typeof def.default === 'object') {
+          warn('default object values should be defined using a factory function');
+        }
       }
     });
   }
 
-  ModelClass.$type = type;
+  ModelClass.$config = typeof config === 'string' ? {
+    type: config,
+  } : config;
   ModelClass.$schema = {} as ModelSchema<{}>;
   ModelClass.prototype = {};
   ModelClass.schema = (addSchema: object) => {

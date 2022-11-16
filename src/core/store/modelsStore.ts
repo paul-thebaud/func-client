@@ -33,7 +33,7 @@ export default class ModelsStore implements ModelsStoreI {
 
   public registerSync(models: Model[]) {
     models.forEach((model) => {
-      this.modelsMap.set(model.$type, async () => model);
+      this.modelsMap.set(model.$config.type, async () => model);
     });
 
     return this;
