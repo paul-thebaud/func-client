@@ -9,6 +9,7 @@ export default function makeModel<S extends ModelSchema<{}> = {}, E extends obje
   extension?: E & ThisType<ModelInstance<S & E>>,
 ) {
   function ModelClass(this: ModelInstance) {
+    (this.$MODEL_TYPE as any) = 'instance';
     this.id = undefined as unknown as ModelId;
     this.$exists = false;
     this.$original = {} as ModelValues<{}>;
@@ -35,6 +36,7 @@ export default function makeModel<S extends ModelSchema<{}> = {}, E extends obje
     });
   }
 
+  ModelClass.$MODEL_TYPE = 'model';
   ModelClass.$config = typeof config === 'string' ? {
     type: config,
   } : config;
