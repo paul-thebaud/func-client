@@ -3,6 +3,7 @@ import FuncModelError from '@/core/errors/funcModelError';
 import runAffectingHooks from '@/core/hooks/runAffectingHooks';
 import useHooks from '@/core/hooks/useHooks';
 import compose from '@/core/model/compose';
+import isInstance from '@/core/model/guards/isInstance';
 import makeComposable from '@/core/model/makeComposable';
 import makeModel from '@/core/model/makeModel';
 import attr from '@/core/model/props/attr';
@@ -45,6 +46,7 @@ export {
   syncOriginalKeys,
   wasChanged,
   wasChangedKeys,
+  isInstance,
   compose,
   makeComposable,
   makeModel,

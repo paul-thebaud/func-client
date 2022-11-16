@@ -29,8 +29,10 @@ import withStore from '@/core/actions/context/enhancers/dependency/withStore';
 import forInstance from '@/core/actions/context/enhancers/forInstance';
 import forModel from '@/core/actions/context/enhancers/forModel';
 import forSchema from '@/core/actions/context/enhancers/forSchema';
-import param from '@/core/actions/context/enhancers/params/param';
-import params from '@/core/actions/context/enhancers/params/params';
+import fullPath from '@/core/actions/context/enhancers/requests/fullPath';
+import param from '@/core/actions/context/enhancers/requests/param';
+import params from '@/core/actions/context/enhancers/requests/params';
+import path from '@/core/actions/context/enhancers/requests/path';
 
 export {
   toManyInstances,
@@ -53,6 +55,8 @@ export {
   update,
   destroy,
   instancePayload,
+  path,
+  fullPath,
   param,
   params,
   withAdapter,

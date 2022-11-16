@@ -1,6 +1,9 @@
 import allMeta from '@/json-api/actions/context/consumers/allMeta';
+import makeDelete from '@/json-api/actions/context/consumers/makeDelete';
 import makeGet from '@/json-api/actions/context/consumers/makeGet';
+import makePatch from '@/json-api/actions/context/consumers/makePatch';
 import makePost from '@/json-api/actions/context/consumers/makePost';
+import makePut from '@/json-api/actions/context/consumers/makePut';
 import makeRequest from '@/json-api/actions/context/consumers/makeRequest';
 import fields from '@/json-api/actions/context/enhancers/params/fields';
 import fieldsFor from '@/json-api/actions/context/enhancers/params/fieldsFor';
@@ -39,9 +42,12 @@ export {
   sortByDesc,
   paginate,
   allMeta,
-  makeRequest,
   makeGet,
   makePost,
+  makePatch,
+  makePut,
+  makeDelete,
+  makeRequest,
   ConflictError,
   FetchError,
   ForbiddenError,

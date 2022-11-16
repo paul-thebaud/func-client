@@ -10,13 +10,15 @@ export default function makeJsonApi(options: FetchAdapterOptions = {}) {
   const store = makeStore();
   const cache = makeCache();
   const adapter = makeFetchAdapter(options);
+  const serializer = makeSerializer();
+  const deserializer = makeDeserializer();
 
   const makeAction = () => new Action()
     .use(withStore(store))
     .use(withCache(cache))
     .use(withAdapter(adapter))
-    .use(withSerializer(makeSerializer()))
-    .use(withDeserializer(makeDeserializer()));
+    .use(withSerializer(serializer))
+    .use(withDeserializer(deserializer));
 
   return { store, cache, adapter, makeAction };
 }

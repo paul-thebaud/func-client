@@ -2,20 +2,21 @@
 
 ## To do
 
-- [x] Blueprints to create preconfigured actions (full JSON:API, JSON:API read).
 - [ ] Model props aliasing (e.g. "firstName" sent "first-name")
 - [ ] Model sync to API or not ("syncTo", "syncFrom" or "sync" for both)
 - [ ] HTTP adapter on adapter (fetch or axios).
 - [ ] Hooks for actions only (no global hooks).
 - [ ] Exists state on instances.
 - [ ] Avoid updating if nothing changed
-- [ ] Utilities for models (fill, reset, load relation, etc.)
+- [ ] Utilities for models (fill, reset, etc.)
+- [ ] Utilities for relations (load, attach, sync, etc.)
 - [ ] Model and relations metadata (loaded, loading, etc.)
 - [ ] Relations inverse (post related to author)
 - [ ] Tests using vitest
 
 ## Done
 
+- [x] Blueprints to create preconfigured actions (full JSON:API, JSON:API read).
 - [x] Default values of models props (using direct value or supplier)
 - [x] Make model with a config (type, baseURL, etc.).
 - [x] Move generics of context functions to returned function.
