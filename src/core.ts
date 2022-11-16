@@ -1,7 +1,5 @@
 import AdapterError from '@/core/errors/adapterError';
 import FuncModelError from '@/core/errors/funcModelError';
-import runAffectingHooks from '@/core/hooks/runAffectingHooks';
-import useHooks from '@/core/hooks/useHooks';
 import compose from '@/core/model/compose';
 import isInstance from '@/core/model/guards/isInstance';
 import makeComposable from '@/core/model/makeComposable';
@@ -23,7 +21,6 @@ import toString from '@/core/transforms/toString';
 import useTransform from '@/core/transforms/useTransform';
 
 export * from '@/core/actions/types';
-export * from '@/core/hooks/types';
 export * from '@/core/model/types';
 export * from '@/core/transforms/types';
 export * from '@/core/utilities/types';
@@ -34,8 +31,6 @@ export * from '@/core/actions';
 export {
   AdapterError,
   FuncModelError,
-  runAffectingHooks,
-  useHooks,
   attr,
   hasMany,
   hasOne,

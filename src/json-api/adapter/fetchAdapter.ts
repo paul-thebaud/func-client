@@ -1,17 +1,12 @@
-import { AdapterI, runAffectingHooks, useHooks } from '@/core';
+import { AdapterI } from '@/core';
 import { ActionContext } from '@/core/actions/types';
+import sequentialTransform from '@/core/utilities/sequentialTransform';
 import NotFoundError from '@/json-api/adapter/errors/notFoundError';
 import makeRequest from '@/json-api/adapter/requests/makeRequest';
 import makeResponseError from '@/json-api/adapter/requests/makeResponseError';
 import parseResponse from '@/json-api/adapter/requests/parseResponse';
 import runRequest from '@/json-api/adapter/requests/runRequest';
-import {
-  FetchAdapterOptions,
-  JsonApiResponse,
-  TransformError,
-  TransformRequest,
-  TransformResponse,
-} from '@/json-api/adapter/types';
+import { FetchAdapterOptions, JsonApiResponse } from '@/json-api/adapter/types';
 import { JsonApiDocument } from '@/json-api/types';
 
 export default class FetchAdapter implements AdapterI<JsonApiResponse, JsonApiDocument> {
@@ -22,26 +17,27 @@ export default class FetchAdapter implements AdapterI<JsonApiResponse, JsonApiDo
   }
 
   public async action(context: ActionContext) {
-    const request = await runAffectingHooks([
-      ...(this.options.transformRequests ?? []),
-      ...useHooks<TransformRequest>('json-api.transform-request', context),
-    ], makeRequest(context, this.options));
+    const request = await sequentialTransform(
+      this.options.transformRequests ?? [],
+      makeRequest(context, this.options),
+    );
 
     const response = await runRequest(request, this.options);
     const document = await parseResponse(response);
+
     if (response.ok) {
-      return runAffectingHooks([
-        ...(this.options.transformResponses ?? []),
-        ...useHooks<TransformResponse>('json-api.transform-response', context),
-      ], { response, document });
+      return sequentialTransform(
+        this.options.transformResponses ?? [],
+        { response, document },
+      );
     }
 
     const errors = document.errors ?? [];
 
-    throw await runAffectingHooks([
-      ...(this.options.transformErrors ?? []),
-      ...useHooks<TransformError>('json-api.transform-error', context),
-    ], makeResponseError(response, errors));
+    throw await sequentialTransform(
+      this.options.transformErrors ?? [],
+      makeResponseError(response, errors),
+    );
   }
 
   public async data(response: JsonApiResponse) {

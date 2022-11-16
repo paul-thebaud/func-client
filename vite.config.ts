@@ -15,6 +15,7 @@ const makeLibOptions = (format: LibFormat) => ({
   fileName: 'func-model',
   name: 'FuncModel',
 });
+
 const makeRollupOptions = (ext: 'js' | 'cjs') => ({
   output: {
     minifyInternalExports: false,
@@ -48,21 +49,26 @@ const buildFormats = {
   } as BuildOptions,
 };
 
+let build = undefined;
 
 const buildFormat = process.env.BUILD_FORMAT as LibFormat | undefined;
-const buildConfig = buildFormat && buildFormats[buildFormat];
-if (!buildConfig) {
-  throw new Error('vite build must be called with BUILD_FORMAT env set to `es`, `cjs` or `umd`');
-}
+if (buildFormat) {
+  const buildConfig = buildFormat && buildFormats[buildFormat];
+  if (!buildConfig) {
+    throw new Error('vite build must be called with BUILD_FORMAT env set to `es`, `cjs` or `umd`');
+  }
 
-export default defineConfig({
-  build: {
+  build = {
     minify: false,
     sourcemap: true,
     emptyOutDir: false,
     lib: buildConfig.lib,
     rollupOptions: buildConfig.rollupOptions,
-  },
+  };
+}
+
+export default defineConfig({
+  build,
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),

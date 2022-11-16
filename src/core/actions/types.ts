@@ -1,5 +1,4 @@
 import type Action from '@/core/actions/action';
-import { Hook } from '@/core/hooks/types';
 import { ModelClass, ModelId, ModelInstance, ModelSchemaRaw } from '@/core/model/types';
 import { AdapterI, DeserializerI, SerializerI } from '@/core/types';
 import { Constructor, Dictionary } from '@/core/utilities/types';
@@ -17,7 +16,6 @@ export type ActionMethod =
   | 'unlink' | 'UNLINK';
 
 export type ActionContext = {
-  hooks?: Partial<Dictionary<Hook<any, any>[]>>;
   method?: ActionMethod;
   baseURL?: string;
   type?: string;
@@ -27,6 +25,20 @@ export type ActionContext = {
   params?: Dictionary<any>;
   payload?: unknown;
   [key: string]: unknown;
+};
+
+export type ActionRunningEvent<C extends ActionContext> = { context: C };
+export type ActionSuccessEvent<C extends ActionContext> = { context: C, result: unknown };
+export type ActionErrorEvent<C extends ActionContext> = { context: C, error: unknown };
+export type ActionFinallyEvent<C extends ActionContext> = { context: C };
+
+export type ActionHook<E> = (event: E) => Promise<unknown> | unknown;
+
+export type ActionHooks<C extends ActionContext> = {
+  onRunning: ActionHook<ActionRunningEvent<C>>[];
+  onSuccess: ActionHook<ActionSuccessEvent<C>>[];
+  onError: ActionHook<ActionErrorEvent<C>>[];
+  onFinally: ActionHook<ActionFinallyEvent<C>>[];
 };
 
 export type ContextEnhancer<PC extends ActionContext = {}, NC extends ActionContext = {}> = (

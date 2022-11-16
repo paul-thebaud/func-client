@@ -46,6 +46,7 @@
   },
   "scripts": {
     "lint": "eslint --ext .ts src",
+    "dev": "vite --config vite.config.ts",
     "build:pre-clear": "rimraf ./dist",
     "build:lib:es": "BUILD_FORMAT=es vite build --config vite.config.ts",
     "build:lib:cjs": "BUILD_FORMAT=cjs vite build --config vite.config.ts",
