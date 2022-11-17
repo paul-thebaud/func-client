@@ -1,7 +1,7 @@
 import { ModelInstance, ModelRelation } from '@/core';
-import serializedKey from '@/json-api/utilities/serializedKey';
 import serializeRef from '@/json-api/serializer/serializeRef';
 import type { SerializerOptions } from '@/json-api/serializer/types';
+import serializedKey from '@/json-api/utilities/serializedKey';
 
 export default async function serializeRelation(
   def: ModelRelation<unknown, unknown>,
@@ -17,6 +17,6 @@ export default async function serializeRelation(
   }
 
   return {
-    [serializedKey(def, key, options)]: refValue,
+    [serializedKey(def, key, options)]: { data: refValue },
   };
 }
