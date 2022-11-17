@@ -2,6 +2,9 @@
 
 ## To do
 
+- [ ] Use void for callback when not using return value at all
+- [ ] Find with model param instead of forModel + find (and new forId enhancer)
+- [ ] Save enhancers (based on $exists)
 - [ ] Model props aliasing (e.g. "firstName" sent "first-name")
 - [ ] Model sync to API or not ("syncTo", "syncFrom" or "sync" for both)
 - [ ] HTTP adapter on adapter (fetch or axios).
