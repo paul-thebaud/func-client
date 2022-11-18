@@ -2,8 +2,8 @@
 import { ModelInstance, ModelSchemaRaw, ModelValues } from '@/core/model/types';
 import cloneModelValue from '@/core/model/utilities/cloneModelValue';
 
-export default function resetKeys<S extends ModelSchemaRaw>(
-  instance: ModelInstance<S>,
+export default function resetKeys<S extends ModelSchemaRaw, I>(
+  instance: ModelInstance<S> & I,
   ...keys: (keyof ModelValues<S>)[]
 ) {
   keys.forEach((key) => {
@@ -13,4 +13,6 @@ export default function resetKeys<S extends ModelSchemaRaw>(
       delete instance.$values[key];
     }
   });
+
+  return instance as I;
 }

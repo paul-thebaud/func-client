@@ -4,5 +4,5 @@ import wasChangedKeys from '@/core/model/utilities/wasChangedKeys';
 export default function wasChanged<S extends ModelSchemaRaw>(
   instance: ModelInstance<S>,
 ) {
-  wasChangedKeys(instance, ...Object.keys(instance.constructor.$schema));
+  return wasChangedKeys(instance, ...Object.keys(instance.constructor.$schema));
 }
