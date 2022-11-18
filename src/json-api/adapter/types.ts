@@ -1,4 +1,4 @@
-import { Dictionary } from '@/core/utilities/types';
+import { Awaitable, Dictionary } from '@/core/utilities/types';
 import JsonApiAdapterError from '@/json-api/adapter/errors/jsonApiAdapterError';
 import { JsonApiDocument } from '@/json-api/types';
 
@@ -14,15 +14,15 @@ export type JsonApiResponse = {
 
 export type TransformRequest = (
   request: JsonApiRequest,
-) => Promise<JsonApiRequest> | JsonApiRequest;
+) => Awaitable<JsonApiRequest>;
 
 export type TransformResponse = (
   request: JsonApiResponse,
-) => Promise<JsonApiResponse> | JsonApiResponse;
+) => Awaitable<JsonApiResponse>;
 
 export type TransformError = (
   error: JsonApiAdapterError,
-) => Promise<JsonApiAdapterError> | JsonApiAdapterError;
+) => Awaitable<JsonApiAdapterError>;
 
 export type FetchAdapterOptions = {
   baseURL?: string;

@@ -8,6 +8,7 @@ import attr from '@/core/model/props/attr';
 import hasMany from '@/core/model/props/hasMany';
 import hasOne from '@/core/model/props/hasOne';
 import fill from '@/core/model/utilities/fill';
+import isSame from '@/core/model/utilities/isSame';
 import reset from '@/core/model/utilities/reset';
 import resetKeys from '@/core/model/utilities/resetKeys';
 import syncOriginal from '@/core/model/utilities/syncOriginal';
@@ -41,6 +42,7 @@ export {
   syncOriginalKeys,
   wasChanged,
   wasChangedKeys,
+  isSame,
   isInstance,
   compose,
   makeComposable,

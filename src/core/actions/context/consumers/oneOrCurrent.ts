@@ -6,5 +6,5 @@ import { ModelSchemaRaw } from '@/core/model/types';
 export default function oneOrCurrent<R, D, S extends ModelSchemaRaw, I>() {
   return async (
     action: Action<ConsumeAdapter<R, D> & ConsumeDeserializer<D> & ConsumeInstance<S, I>>,
-  ) => action.run(oneOr((context) => context.instance as I));
+  ) => action.run(oneOr((_, context) => context.instance as I));
 }

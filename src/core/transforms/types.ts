@@ -1,8 +1,10 @@
-export type FunctionTransform<T, S> = (value: S) => Promise<T> | T;
+import { Awaitable } from '@/core/utilities/types';
+
+export type FunctionTransform<T, S> = (value: S) => Awaitable<T>;
 
 export type ObjectTransform<T, S> = {
-  serialize(value: T): Promise<S> | S;
-  deserialize(value: S): Promise<T> | T;
+  serialize(value: T): Awaitable<S>;
+  deserialize(value: S): Awaitable<T>;
 };
 
 export type Transform<T, S> =

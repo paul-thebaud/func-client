@@ -11,7 +11,7 @@ export default function makeModel<S extends ModelSchema<{}> = {}, E extends obje
   function ModelClass(this: ModelInstance) {
     (this.$MODEL_TYPE as any) = 'instance';
     this.id = undefined as unknown as ModelId;
-    this.$exists = false;
+    this.exists = false;
     this.$original = {} as ModelValues<{}>;
     this.$values = {} as ModelValues<{}>;
 
@@ -23,7 +23,6 @@ export default function makeModel<S extends ModelSchema<{}> = {}, E extends obje
         },
       });
 
-      // TODO Handle object and array default.
       if (typeof def.default === 'function') {
         this.$values[key] = def.default();
       } else if (def.default !== undefined) {

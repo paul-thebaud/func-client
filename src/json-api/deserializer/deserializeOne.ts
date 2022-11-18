@@ -54,7 +54,7 @@ export default async function deserializeOne(
     }
   }));
 
-  instance.$exists = true;
+  instance.exists = true;
 
   syncOriginal(instance);
 

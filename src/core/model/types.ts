@@ -12,27 +12,31 @@ export type ModelId = string | number;
 
 export type DefaultFactory<T> = () => T;
 
-export type ModelProp<T, S> = {
+export type ModelProp<T> = {
   default?: T | DefaultFactory<T> | undefined;
-  transformer?: Transform<T | undefined, S> | undefined;
   alias?: string | undefined;
 };
 
-export type ModelAttribute<T, S> = ModelProp<T, S> & {
+export type ModelAttribute<T, S> = ModelProp<T> & {
   $MODEL_TYPE: 'attribute';
+  transformer?: Transform<T | undefined, S> | undefined;
 };
 
-export type ModelRelation<T, S> = ModelProp<T, S> & {
+export type ModelRelationType = 'hasOne' | 'hasMany';
+
+export type ModelRelation<T> = ModelProp<T> & {
   $MODEL_TYPE: 'relation';
+  $RELATION_TYPE: ModelRelationType;
+  type?: string;
 };
 
 export type ModelSchemaRaw = Dictionary;
 
 export type ModelSchema<S extends ModelSchemaRaw> = [keyof S] extends [never]
-  ? Dictionary<ModelAttribute<any, any> | ModelRelation<any, any>>
+  ? Dictionary<ModelAttribute<any, any> | ModelRelation<any>>
   : {
     [K in keyof S]: S[K] extends ModelAttribute<any, any>
-      ? S[K] : S[K] extends ModelRelation<any, any>
+      ? S[K] : S[K] extends ModelRelation<any>
         ? S[K] : never;
   };
 
@@ -40,22 +44,31 @@ export type ModelValues<S extends ModelSchemaRaw> = [keyof S] extends [never]
   ? Dictionary
   : {
     [K in keyof S]: S[K] extends ModelAttribute<infer T, any>
-      ? T : S[K] extends ModelRelation<infer T, any>
+      ? T : S[K] extends ModelRelation<infer T>
         ? T : never;
   };
+
+export type ModelInstanceHook =
+  | 'onCreating'
+  | 'onCreated'
+  | 'onUpdating'
+  | 'onUpdated'
+  | 'onSaving'
+  | 'onSaved'
+  | 'onDestroying'
+  | 'onDestroyed';
 
 export type ModelInstance<S extends ModelSchemaRaw = {}> = {
   readonly $MODEL_TYPE: 'instance';
   readonly constructor: Model<S>;
   // FIXME Should the model id be nullable in its type?
   id: ModelId;
-  // FIXME Should be used and updated by actions.
-  $exists: boolean;
+  exists: boolean;
   $original: Partial<ModelValues<S>>;
   $values: Partial<ModelValues<S>>;
 } & {
   [K in keyof S]: S[K] extends ModelAttribute<infer T, any>
-    ? T : S[K] extends ModelRelation<infer T, any>
+    ? T : S[K] extends ModelRelation<infer T>
       ? T : S[K];
 };
 
@@ -92,7 +105,7 @@ export type ModelDotRelation<S, D extends number = 5> =
       ? K extends string & keyof S
         ? S[K] extends never
           ? never
-          : S[K] extends ModelRelation<infer T, any>
+          : S[K] extends ModelRelation<infer T>
             ? T extends any[]
               ? K | `${K}.${ModelDotRelation<ModelInferRawSchema<T[number]>, Prev[D]>}`
               : K | `${K}.${ModelDotRelation<ModelInferRawSchema<T>, Prev[D]>}`

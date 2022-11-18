@@ -1,9 +1,13 @@
 import { ModelProp } from '@/core/model/types';
 
+export type SerializesKeysOptions = {
+  transformKeys?: (localKey: string) => string;
+};
+
 export default function serializedKey(
-  def: ModelProp<unknown, unknown>,
+  def: ModelProp<unknown>,
   key: string,
-  options: { transformKeys?: (localKey: string) => string },
+  options: SerializesKeysOptions,
 ) {
   if (def.alias !== undefined) {
     return def.alias;

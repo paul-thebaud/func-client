@@ -1,3 +1,3 @@
-export type DeserializerOptions = {
-  transformKeys?: (localKey: string) => string;
-};
+import { SerializesKeysOptions } from '@/json-api/utilities/serializedKey';
+
+export type DeserializerOptions = SerializesKeysOptions;

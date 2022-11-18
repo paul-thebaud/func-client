@@ -1,4 +1,5 @@
-export type SerializerOptions = {
-  transformKeys?: (localKey: string) => string;
+import { SerializesKeysOptions } from '@/json-api/utilities/serializedKey';
+
+export type SerializerOptions = SerializesKeysOptions & {
   keepUnchanged?: boolean;
 };

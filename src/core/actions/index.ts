@@ -19,13 +19,14 @@ import create from '@/core/actions/context/enhancers/crud/create';
 import destroy from '@/core/actions/context/enhancers/crud/destroy';
 import find from '@/core/actions/context/enhancers/crud/find';
 import instancePayload from '@/core/actions/context/enhancers/crud/instancePayload';
+import save from '@/core/actions/context/enhancers/crud/save';
 import update from '@/core/actions/context/enhancers/crud/update';
-import deepContext from '@/core/actions/context/enhancers/deepContext';
 import withAdapter from '@/core/actions/context/enhancers/dependency/withAdapter';
 import withCache from '@/core/actions/context/enhancers/dependency/withCache';
 import withDeserializer from '@/core/actions/context/enhancers/dependency/withDeserializer';
 import withSerializer from '@/core/actions/context/enhancers/dependency/withSerializer';
 import withStore from '@/core/actions/context/enhancers/dependency/withStore';
+import forId from '@/core/actions/context/enhancers/forId';
 import forInstance from '@/core/actions/context/enhancers/forInstance';
 import forModel from '@/core/actions/context/enhancers/forModel';
 import forSchema from '@/core/actions/context/enhancers/forSchema';
@@ -53,6 +54,7 @@ export {
   find,
   create,
   update,
+  save,
   destroy,
   instancePayload,
   path,
@@ -65,7 +67,7 @@ export {
   withStore,
   withCache,
   context,
-  deepContext,
+  forId,
   forInstance,
   forModel,
   forSchema,

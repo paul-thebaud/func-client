@@ -1,4 +1,6 @@
-export type SequentialTransform<T> = ((value: T) => Promise<T> | T);
+import { Awaitable } from '@/core/utilities/types';
+
+export type SequentialTransform<T> = ((value: T) => Awaitable<T>);
 
 function sequentialTransform(transformer: SequentialTransform<void>[]): Promise<void>;
 function sequentialTransform<T>(transformer: SequentialTransform<T>[], value: T): Promise<T>;

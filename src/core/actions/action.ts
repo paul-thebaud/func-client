@@ -27,8 +27,8 @@ export default class Action<C extends ActionContext> {
 
   public when<T>(
     condition: T,
-    truthyCallback: (action: Action<C>, value: OnlyTruthy<Value<T>>) => unknown,
-    falsyCallback?: (action: Action<C>, value: OnlyFalsy<Value<T>>) => unknown,
+    truthyCallback: (action: Action<C>, value: OnlyTruthy<Value<T>>) => void,
+    falsyCallback?: (action: Action<C>, value: OnlyFalsy<Value<T>>) => void,
   ) {
     const conditionResult = value(condition);
     if (conditionResult) {

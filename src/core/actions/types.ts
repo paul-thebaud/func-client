@@ -1,7 +1,7 @@
 import type Action from '@/core/actions/action';
 import { ModelClass, ModelId, ModelInstance, ModelSchemaRaw } from '@/core/model/types';
 import { AdapterI, DeserializerI, SerializerI } from '@/core/types';
-import { Constructor, Dictionary } from '@/core/utilities/types';
+import { Awaitable, Constructor, Dictionary } from '@/core/utilities/types';
 
 export type ActionMethod =
   | 'get' | 'GET'
@@ -27,12 +27,13 @@ export type ActionContext = {
   [key: string]: unknown;
 };
 
-export type ActionRunningEvent<C extends ActionContext> = { context: C };
-export type ActionSuccessEvent<C extends ActionContext> = { context: C, result: unknown };
-export type ActionErrorEvent<C extends ActionContext> = { context: C, error: unknown };
-export type ActionFinallyEvent<C extends ActionContext> = { context: C };
+export type ActionEvent<C extends ActionContext> = { context: C; };
+export type ActionRunningEvent<C extends ActionContext> = ActionEvent<C>;
+export type ActionSuccessEvent<C extends ActionContext> = ActionEvent<C> & { result: unknown };
+export type ActionErrorEvent<C extends ActionContext> = ActionEvent<C> & { error: unknown };
+export type ActionFinallyEvent<C extends ActionContext> = ActionEvent<C>;
 
-export type ActionHook<E> = (event: E) => Promise<unknown> | unknown;
+export type ActionHook<E> = (event: E) => Awaitable<void>;
 
 export type ActionHooks<C extends ActionContext> = {
   onRunning: ActionHook<ActionRunningEvent<C>>[];
@@ -43,7 +44,7 @@ export type ActionHooks<C extends ActionContext> = {
 
 export type ContextEnhancer<PC extends ActionContext = {}, NC extends ActionContext = {}> = (
   a: Action<PC>,
-) => Action<NC> | Promise<Action<NC>>;
+) => Awaitable<Action<NC>>;
 
 export type ContextConsumer<C extends ActionContext = {}, R = unknown> = (
   a: Action<C>,
