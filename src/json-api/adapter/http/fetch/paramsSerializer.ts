@@ -1,6 +1,6 @@
 import { Dictionary } from '@/core';
 
-export default function paramsSerializer(params: Dictionary<any> | undefined) {
+export default function paramsSerializer(params: Dictionary<any>) {
   const urlSearchParams = new URLSearchParams();
 
   const appendParam = (key: string, value: unknown) => {

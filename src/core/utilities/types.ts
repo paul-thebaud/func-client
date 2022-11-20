@@ -11,6 +11,8 @@ export type Value<T> = T extends (...args: any[]) => any ? ReturnType<T> : T;
 
 export type Awaitable<T> = T | Promise<T>;
 
+export type ArrayWrappable<T> = T | T[];
+
 export type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 
 export type OnlyTruthy<T> = T extends Falsy ? never : T;

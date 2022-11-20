@@ -15,6 +15,7 @@ export type DefaultFactory<T> = () => T;
 export type ModelProp<T> = {
   default?: T | DefaultFactory<T> | undefined;
   alias?: string | undefined;
+  readonly?: boolean;
 };
 
 export type ModelAttribute<T, S> = ModelProp<T> & {
@@ -30,9 +31,10 @@ export type ModelRelation<T> = ModelProp<T> & {
   type?: string;
 };
 
-export type ModelSchemaRaw = Dictionary;
+// TODO Rename S generics to D.
+export type ModelDefinition = Dictionary;
 
-export type ModelSchema<S extends ModelSchemaRaw> = [keyof S] extends [never]
+export type ModelSchema<S extends ModelDefinition> = [keyof S] extends [never]
   ? Dictionary<ModelAttribute<any, any> | ModelRelation<any>>
   : {
     [K in keyof S]: S[K] extends ModelAttribute<any, any>
@@ -40,7 +42,7 @@ export type ModelSchema<S extends ModelSchemaRaw> = [keyof S] extends [never]
         ? S[K] : never;
   };
 
-export type ModelValues<S extends ModelSchemaRaw> = [keyof S] extends [never]
+export type ModelValues<S extends ModelDefinition> = [keyof S] extends [never]
   ? Dictionary
   : {
     [K in keyof S]: S[K] extends ModelAttribute<infer T, any>
@@ -58,7 +60,7 @@ export type ModelInstanceHook =
   | 'onDestroying'
   | 'onDestroyed';
 
-export type ModelInstance<S extends ModelSchemaRaw = {}> = {
+export type ModelInstance<S extends ModelDefinition = {}> = {
   readonly $MODEL_TYPE: 'instance';
   readonly constructor: Model<S>;
   // FIXME Should the model id be nullable in its type?
@@ -72,7 +74,7 @@ export type ModelInstance<S extends ModelSchemaRaw = {}> = {
       ? T : S[K];
 };
 
-export type ModelClass<S extends ModelSchemaRaw = {}> = {
+export type ModelClass<S extends ModelDefinition = {}> = {
   readonly $MODEL_TYPE: 'model';
   readonly $config: ModelConfig;
   readonly $rawSchema: () => S;
@@ -88,7 +90,7 @@ export type ModelClass<S extends ModelSchemaRaw = {}> = {
   ): Model<S & NE, ModelInstance<S & NE>>;
 };
 
-export type Model<S extends ModelSchemaRaw = {}, I extends ModelInstance<S> = ModelInstance<S>> =
+export type Model<S extends ModelDefinition = {}, I extends ModelInstance<S> = ModelInstance<S>> =
   & ModelClass<S>
   & Constructor<I>;
 

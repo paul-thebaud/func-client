@@ -8,7 +8,7 @@ export default function dataUsing<C extends ActionContext, R, D, ND>(
   return async (
     action: Action<C & ConsumeAdapter<R, D>>,
   ) => transformData(
-    action.context,
+    await action.getContext(),
     await action.run(data()),
   );
 }

@@ -14,7 +14,7 @@ export type InstancesCacheI = {
 
 export type AdapterI<R, D> = {
   action(context: ActionContext): Promise<R>;
-  data(result: R): Promise<D>;
+  data(response: R): Promise<D>;
   isNotFound(error: unknown): boolean;
 };
 

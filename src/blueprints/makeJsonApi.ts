@@ -1,17 +1,53 @@
 import makeCache from '@/blueprints/makeCache';
-import makeDeserializer from '@/blueprints/makeDeserializer';
-import makeFetchAdapter from '@/blueprints/makeFetchAdapter';
-import makeSerializer from '@/blueprints/makeSerializer';
 import makeStore from '@/blueprints/makeStore';
-import { Action, withAdapter, withCache, withDeserializer, withSerializer, withStore } from '@/core';
-import { FetchAdapterOptions } from '@/json-api/adapter/types';
+import toKebab from '@/blueprints/utilities/toKebab';
+import { Action, Dictionary, withAdapter, withCache, withDeserializer, withSerializer, withStore } from '@/core';
+import {
+  Adapter,
+  Deserializer,
+  FetchHttpClient,
+  paramsSerializer,
+  Serializer,
+  TransformError,
+  TransformRequest,
+  TransformResponse,
+} from '@/json-api';
 
-export default function makeJsonApi(options: FetchAdapterOptions = {}) {
+export type MakeJsonApiOptions = {
+  fetch?: typeof fetch;
+  paramsSerializer?: (params: Dictionary) => string | undefined;
+  baseURL?: string;
+  transformRequests?: TransformRequest[];
+  transformResponses?: TransformResponse<Response>[];
+  transformErrors?: TransformError<Response>[];
+  transformTypeInPath?: (type: string) => string;
+  transformRelationInPath?: (relation: string) => string;
+  transformKeys?: (localKey: string) => string;
+};
+
+export default function makeJsonApi(options: MakeJsonApiOptions = {}) {
   const store = makeStore();
+
   const cache = makeCache();
-  const adapter = makeFetchAdapter(options);
-  const serializer = makeSerializer();
-  const deserializer = makeDeserializer();
+
+  const httpClient = new FetchHttpClient({
+    fetch: options.fetch,
+    paramsSerializer: options.paramsSerializer ?? paramsSerializer,
+  });
+
+  const adapter = new Adapter({
+    httpClient,
+    transformTypeInPath: options.transformTypeInPath,
+    transformRelationInPath: options.transformRelationInPath ?? toKebab,
+    ...options,
+  });
+
+  const serializer = new Serializer({
+    transformKeys: options.transformKeys,
+  });
+  const deserializer = new Deserializer({
+    transformKeys: options.transformKeys,
+  });
 
   const makeAction = () => new Action()
     .use(withStore(store))
@@ -20,5 +56,5 @@ export default function makeJsonApi(options: FetchAdapterOptions = {}) {
     .use(withSerializer(serializer))
     .use(withDeserializer(deserializer));
 
-  return { store, cache, adapter, makeAction };
+  return { store, cache, makeAction };
 }

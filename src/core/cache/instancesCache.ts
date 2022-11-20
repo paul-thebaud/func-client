@@ -3,9 +3,9 @@ import { ModelId, ModelInstance } from '@/core/model/types';
 import { InstancesCacheI } from '@/core/types';
 
 export default class InstancesCache<R = unknown> implements InstancesCacheI {
-  private instancesPerTypesMap: Map<string, Map<ModelId, R>>;
+  private readonly instancesPerTypesMap: Map<string, Map<ModelId, R>>;
 
-  private options: InstancesCacheOptions<R>;
+  private readonly options: InstancesCacheOptions<R>;
 
   public constructor(options: InstancesCacheOptions<R>) {
     this.instancesPerTypesMap = new Map();

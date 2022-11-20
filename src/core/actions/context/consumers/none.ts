@@ -5,6 +5,6 @@ export default function none<R, D>() {
   return async (
     action: Action<ConsumeAdapter<R, D>>,
   ) => {
-    await action.context.adapter.action(action.context);
+    await (await action.getContext()).adapter.action(await action.getContext());
   };
 }

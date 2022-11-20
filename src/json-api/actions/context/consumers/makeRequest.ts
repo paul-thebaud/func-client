@@ -1,8 +1,11 @@
-import { Action, ActionContext, ConsumeAdapter, context } from '@/core';
+import { Action, ActionContext, ActionMethod, ConsumeAdapter, context, Dictionary } from '@/core';
 
-export type RequestConfig =
-  & Omit<ActionContext, 'baseURL' | 'type' | 'id' | 'relation' | 'path'>
-  & { headers?: HeadersInit; };
+export type RequestConfig = {
+  method?: ActionMethod;
+  params?: Dictionary<any> | string;
+  headers?: Dictionary<string>;
+  payload?: unknown;
+};
 
 export default function makeRequest<R, D>(
   pathOrBaseURL: string,

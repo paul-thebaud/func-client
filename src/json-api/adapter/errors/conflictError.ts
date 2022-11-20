@@ -1,4 +1,4 @@
 import InvalidError from '@/json-api/adapter/errors/invalidError';
 
-export default class ConflictError extends InvalidError {
+export default class ConflictError<R> extends InvalidError<R> {
 }

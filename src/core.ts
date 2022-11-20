@@ -13,13 +13,14 @@ import reset from '@/core/model/utilities/reset';
 import resetKeys from '@/core/model/utilities/resetKeys';
 import syncOriginal from '@/core/model/utilities/syncOriginal';
 import syncOriginalKeys from '@/core/model/utilities/syncOriginalKeys';
-import wasChanged from '@/core/model/utilities/wasChanged';
-import wasChangedKeys from '@/core/model/utilities/wasChangedKeys';
+import changed from '@/core/model/utilities/changed';
+import changedKeys from '@/core/model/utilities/changedKeys';
 import toBoolean from '@/core/transforms/toBoolean';
 import toDate from '@/core/transforms/toDate';
 import toNumber from '@/core/transforms/toNumber';
 import toString from '@/core/transforms/toString';
 import useTransform from '@/core/transforms/useTransform';
+import when from '@/core/utilities/when';
 
 export * from '@/core/actions/types';
 export * from '@/core/model/types';
@@ -35,13 +36,14 @@ export {
   attr,
   hasMany,
   hasOne,
+  when,
   fill,
   reset,
   resetKeys,
   syncOriginal,
   syncOriginalKeys,
-  wasChanged,
-  wasChangedKeys,
+  changed,
+  changedKeys,
   isSame,
   isInstance,
   compose,

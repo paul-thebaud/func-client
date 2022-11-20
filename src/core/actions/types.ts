@@ -1,6 +1,6 @@
 import type Action from '@/core/actions/action';
-import { ModelClass, ModelId, ModelInstance, ModelSchemaRaw } from '@/core/model/types';
-import { AdapterI, DeserializerI, SerializerI } from '@/core/types';
+import { ModelClass, ModelDefinition, ModelId, ModelInstance } from '@/core/model/types';
+import { AdapterI, DeserializerI, InstancesCacheI, SerializerI } from '@/core/types';
 import { Awaitable, Constructor, Dictionary } from '@/core/utilities/types';
 
 export type ActionMethod =
@@ -22,7 +22,7 @@ export type ActionContext = {
   id?: ModelId;
   relation?: string;
   path?: string;
-  params?: Dictionary<any>;
+  params?: Dictionary<any> | string;
   payload?: unknown;
   [key: string]: unknown;
 };
@@ -48,19 +48,21 @@ export type ContextEnhancer<PC extends ActionContext = {}, NC extends ActionCont
 
 export type ContextConsumer<C extends ActionContext = {}, R = unknown> = (
   a: Action<C>,
-) => Promise<R>;
+) => Awaitable<R>;
 
-export type ConsumeSchema<S extends ModelSchemaRaw = ModelSchemaRaw> = { schema: S; };
+export type ConsumeSchema<S extends ModelDefinition = ModelDefinition> = { schema: S; };
 
-export type ConsumeModel<S extends ModelSchemaRaw = ModelSchemaRaw, I = ModelInstance<S>> =
+export type ConsumeModel<S extends ModelDefinition = ModelDefinition, I = ModelInstance<S>> =
   & ConsumeSchema<S>
   & { type: string; model: ModelClass<S> & Constructor<I>; };
 
-export type ConsumeInstance<S extends ModelSchemaRaw = ModelSchemaRaw, I = ModelInstance<S>> =
+export type ConsumeInstance<S extends ModelDefinition = ModelDefinition, I = ModelInstance<S>> =
   & ConsumeModel<S, I>
   & { instance: ModelInstance<S> & I; };
 
 export type ConsumeId = { id: ModelId };
+
+export type ConsumeCache = { cache: InstancesCacheI; };
 
 export type ConsumeAdapter<R = unknown, D = unknown> = { adapter: AdapterI<R, D>; };
 

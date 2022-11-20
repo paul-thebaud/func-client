@@ -1,23 +1,21 @@
 import { AdapterError } from '@/core';
+import { JsonApiErrorResponse, JsonApiResponse } from '@/json-api/adapter/types';
 import { JsonApiError } from '@/json-api/types';
 
-export default class JsonApiAdapterError extends AdapterError {
-  private readonly response: Response;
+export default class JsonApiAdapterError<R>
+  extends AdapterError implements JsonApiErrorResponse<R> {
+  public response: JsonApiResponse<R>;
 
-  private readonly errors: JsonApiError[];
+  public errors: JsonApiError[];
 
-  public constructor(response: Response, errors: JsonApiError[]) {
-    super(errors[0].detail || errors[0].title || 'Unknown error');
+  public constructor(response: JsonApiResponse<R>) {
+    super(
+      response.document.errors?.[0].detail
+      ?? response.document.errors?.[0].title
+      ?? 'Unknown error',
+    );
 
     this.response = response;
-    this.errors = errors;
-  }
-
-  public getResponse() {
-    return this.response;
-  }
-
-  public getErrors() {
-    return this.errors;
+    this.errors = response.document.errors ?? [];
   }
 }

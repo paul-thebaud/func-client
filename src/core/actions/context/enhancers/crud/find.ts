@@ -1,15 +1,15 @@
 import Action from '@/core/actions/action';
 import forId from '@/core/actions/context/enhancers/forId';
-import forModel from '@/core/actions/context/enhancers/forModel';
+import model from '@/core/actions/context/enhancers/model';
 import { ActionContext } from '@/core/actions/types';
-import { ModelClass, ModelId, ModelSchemaRaw } from '@/core/model/types';
+import { ModelClass, ModelDefinition, ModelId } from '@/core/model/types';
 import { Constructor } from '@/core/utilities/types';
 
-export default function find<S extends ModelSchemaRaw, I>(
-  model: ModelClass<S> & Constructor<I>,
+export default function find<S extends ModelDefinition, I>(
+  modelToUse: ModelClass<S> & Constructor<I>,
   id: ModelId,
 ) {
   return <C extends ActionContext>(a: Action<C>) => a
-    .use(forModel(model))
+    .use(model(modelToUse))
     .use(forId(id));
 }

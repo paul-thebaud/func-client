@@ -4,7 +4,7 @@ import { SerializerOptions } from '@/json-api/serializer/types';
 import { JsonApiDocument } from '@/json-api/types';
 
 export default class Serializer implements SerializerI<JsonApiDocument> {
-  private options: SerializerOptions;
+  private readonly options: SerializerOptions;
 
   public constructor(options: SerializerOptions) {
     this.options = options;

@@ -1,7 +1,9 @@
 import FuncModelError from '@/core/errors/funcModelError';
+import isModel from '@/core/model/guards/isModel';
 import { Model } from '@/core/model/types';
 import { ModelsStoreI } from '@/core/types';
-import { Dictionary } from '@/core/utilities/types';
+import arrayWrap from '@/core/utilities/arrayWrap';
+import { ArrayWrappable, Dictionary } from '@/core/utilities/types';
 
 export default class ModelsStore implements ModelsStoreI {
   private modelsMap: Map<string, () => Promise<Model>>;
@@ -23,16 +25,16 @@ export default class ModelsStore implements ModelsStoreI {
     return modelResolver();
   }
 
-  public register(models: Model[] | Dictionary<() => Promise<Model>>) {
-    if (Array.isArray(models)) {
+  public register(models: ArrayWrappable<Model> | Dictionary<() => Promise<Model>>) {
+    if (isModel(models) || Array.isArray(models)) {
       return this.registerSync(models);
     }
 
     return this.registerAsync(models);
   }
 
-  public registerSync(models: Model[]) {
-    models.forEach((model) => {
+  public registerSync(models: ArrayWrappable<Model>) {
+    arrayWrap(models).forEach((model) => {
       this.modelsMap.set(model.$config.type, async () => model);
     });
 

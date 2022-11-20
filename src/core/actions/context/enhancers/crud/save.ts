@@ -2,9 +2,9 @@ import Action from '@/core/actions/action';
 import create from '@/core/actions/context/enhancers/crud/create';
 import update from '@/core/actions/context/enhancers/crud/update';
 import { ConsumeAdapter, ConsumeInstance, ConsumeSerializer } from '@/core/actions/types';
-import { ModelInstance, ModelSchemaRaw } from '@/core/model/types';
+import { ModelInstance, ModelDefinition } from '@/core/model/types';
 
-export default function save<R, D, S extends ModelSchemaRaw, I>(
+export default function save<R, D, S extends ModelDefinition, I>(
   instance: ModelInstance<S> & I,
 ) {
   return <C extends ConsumeAdapter<R, D> & ConsumeSerializer<D>>(a: Action<C>) => (

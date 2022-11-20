@@ -1,12 +1,14 @@
 /* eslint-disable no-param-reassign */
-import { ModelInstance, ModelSchemaRaw, ModelValues } from '@/core/model/types';
+import { ModelDefinition, ModelInstance, ModelValues } from '@/core/model/types';
 import cloneModelValue from '@/core/model/utilities/cloneModelValue';
+import arrayWrap from '@/core/utilities/arrayWrap';
+import { ArrayWrappable } from '@/core/utilities/types';
 
-export default function resetKeys<S extends ModelSchemaRaw, I>(
+export default function resetKeys<S extends ModelDefinition, I>(
   instance: ModelInstance<S> & I,
-  ...keys: (keyof ModelValues<S>)[]
+  keys: ArrayWrappable<keyof ModelValues<S>>,
 ) {
-  keys.forEach((key) => {
+  arrayWrap(keys).forEach((key) => {
     if (key in instance.$original) {
       instance.$values[key] = cloneModelValue(instance.constructor, instance.$original[key]);
     } else {

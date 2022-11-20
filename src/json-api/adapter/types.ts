@@ -1,34 +1,49 @@
+import { ActionMethod } from '@/core/actions/types';
 import { Awaitable, Dictionary } from '@/core/utilities/types';
-import JsonApiAdapterError from '@/json-api/adapter/errors/jsonApiAdapterError';
-import { JsonApiDocument } from '@/json-api/types';
+import { JsonApiDocument, JsonApiError } from '@/json-api/types';
 
 export type JsonApiRequest = {
-  url: string;
-  init: RequestInit;
+  endpoint: string;
+  method?: ActionMethod;
+  params?: Dictionary<any> | string;
+  headers?: Dictionary<string>;
+  payload?: unknown;
 };
 
-export type JsonApiResponse = {
-  response: Response;
+export type JsonApiResponse<R> = {
+  ok: boolean;
+  status: number;
+  response: R;
   document: JsonApiDocument;
+};
+
+export type JsonApiErrorResponse<R> = {
+  response: JsonApiResponse<R>;
+  errors: JsonApiError[];
+};
+
+export type HttpClient<R> = {
+  request(request: JsonApiRequest): Promise<JsonApiResponse<R>>;
 };
 
 export type TransformRequest = (
   request: JsonApiRequest,
 ) => Awaitable<JsonApiRequest>;
 
-export type TransformResponse = (
-  request: JsonApiResponse,
-) => Awaitable<JsonApiResponse>;
+export type TransformResponse<R> = (
+  request: JsonApiResponse<R>,
+) => Awaitable<JsonApiResponse<R>>;
 
-export type TransformError = (
-  error: JsonApiAdapterError,
-) => Awaitable<JsonApiAdapterError>;
+export type TransformError<R> = (
+  error: JsonApiErrorResponse<R>,
+) => Awaitable<JsonApiErrorResponse<R>>;
 
-export type FetchAdapterOptions = {
+export type AdapterOptions<R> = {
+  httpClient: HttpClient<R>;
   baseURL?: string;
-  fetch?: typeof fetch;
-  paramsSerializer?: (params: Dictionary<any> | undefined) => string | undefined,
+  transformTypeInPath?: (type: string) => string;
+  transformRelationInPath?: (relation: string) => string;
   transformRequests?: TransformRequest[];
-  transformResponses?: TransformResponse[];
-  transformErrors?: TransformError[];
+  transformResponses?: TransformResponse<R>[];
+  transformErrors?: TransformError<R>[];
 };

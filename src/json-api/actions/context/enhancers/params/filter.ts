@@ -1,8 +1,9 @@
 import { Action, ActionContext, param } from '@/core';
+import previousParams from '@/core/actions/context/utilities/previousParams';
 
 export default function filter(key: string, value: unknown) {
-  return <C extends ActionContext>(a: Action<C>) => a.use(param('filter', {
-    ...a.context.params?.filter,
+  return async <C extends ActionContext>(a: Action<C>) => a.use(param('filter', {
+    ...previousParams(await a.getContext())?.filter,
     [key]: value,
   }));
 }

@@ -4,8 +4,8 @@ import { ActionContext } from '@/core/actions/types';
 export default function context<NC extends Partial<ActionContext>>(
   contextToMerge: NC,
 ) {
-  return <C extends ActionContext>(a: Action<C>) => a.setContext({
-    ...a.context,
+  return async <C extends ActionContext>(a: Action<C>) => a.setContext({
+    ...(await a.getContext()),
     ...contextToMerge,
   });
 }

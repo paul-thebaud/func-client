@@ -8,7 +8,7 @@ import { DeserializerOptions } from '@/json-api/deserializer/types';
 import { JsonApiDocument } from '@/json-api/types';
 
 export default class Deserializer implements DeserializerI<JsonApiDocument> {
-  private options: DeserializerOptions;
+  private readonly options: DeserializerOptions;
 
   public constructor(options: DeserializerOptions) {
     this.options = options;

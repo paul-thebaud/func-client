@@ -2,7 +2,7 @@ import type { ActionContext, ActionHooks, ContextEnhancer } from '@/core/actions
 import { ContextConsumer } from '@/core/actions/types';
 import sequentialTransform from '@/core/utilities/sequentialTransform';
 import { OnlyFalsy, OnlyTruthy, Value } from '@/core/utilities/types';
-import value from '@/core/utilities/value';
+import when from '@/core/utilities/when';
 
 export default class Action<C extends ActionContext> {
   private $enhancementsQueue: ContextEnhancer<any, any>[];
@@ -25,17 +25,16 @@ export default class Action<C extends ActionContext> {
     this.$hooksEnabled = true;
   }
 
-  public when<T>(
-    condition: T,
-    truthyCallback: (action: Action<C>, value: OnlyTruthy<Value<T>>) => void,
-    falsyCallback?: (action: Action<C>, value: OnlyFalsy<Value<T>>) => void,
+  public when<E>(
+    expression: E,
+    truthyCallback: (action: Action<C>, exprValue: OnlyTruthy<Value<E>>) => void,
+    falsyCallback?: (action: Action<C>, exprValue: OnlyFalsy<Value<E>>) => void,
   ) {
-    const conditionResult = value(condition);
-    if (conditionResult) {
-      truthyCallback(this, conditionResult as OnlyTruthy<Value<T>>);
-    } else if (falsyCallback) {
-      falsyCallback(this, conditionResult as OnlyFalsy<Value<T>>);
-    }
+    when(
+      expression,
+      (exprValue) => truthyCallback(this, exprValue),
+      falsyCallback ? (exprValue) => falsyCallback(this, exprValue) : undefined,
+    );
 
     return this;
   }
@@ -75,6 +74,12 @@ export default class Action<C extends ActionContext> {
     return this.$context;
   }
 
+  public async getContext() {
+    await this.dequeueEnhancements();
+
+    return this.$context;
+  }
+
   public setContext<NC extends ActionContext>(newContext: NC): Action<NC> {
     this.$context = newContext as any;
 
@@ -88,13 +93,13 @@ export default class Action<C extends ActionContext> {
   }
 
   public async run<NR>(consumer: ContextConsumer<C, NR>): Promise<NR> {
-    await this.dequeueEnhancements();
+    const context = await this.getContext();
 
     // Some enhancements might disable hooks, so store the hooks state only
     // after dequeuing all.
     const hooksEnabled = this.$hooksEnabled;
 
-    await this.runHooks('onRunning', { context: this.context });
+    await this.runHooks('onRunning', { context });
 
     try {
       // Context consumer might use other context consumers, so we must disable
@@ -105,17 +110,17 @@ export default class Action<C extends ActionContext> {
 
       await this
         .when(hooksEnabled, (a) => a.withHooks())
-        .runHooks('onSuccess', { context: this.context, result });
+        .runHooks('onSuccess', { context, result });
 
       return result;
     } catch (error) {
       await this
         .when(hooksEnabled, (a) => a.withHooks())
-        .runHooks('onError', { context: this.context, error });
+        .runHooks('onError', { context, error });
 
       throw error;
     } finally {
-      await this.runHooks('onFinally', { context: this.context });
+      await this.runHooks('onFinally', { context });
     }
   }
 

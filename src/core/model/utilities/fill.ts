@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { ModelInstance, ModelSchemaRaw, ModelValues } from '@/core/model/types';
+import { ModelInstance, ModelDefinition, ModelValues } from '@/core/model/types';
 
-export default function fill<S extends ModelSchemaRaw, I>(
+export default function fill<S extends ModelDefinition, I>(
   instance: ModelInstance<S> & I,
   values: Partial<ModelValues<S>>,
 ) {

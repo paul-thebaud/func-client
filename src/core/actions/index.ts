@@ -1,6 +1,10 @@
 import Action from '@/core/actions/action';
 import all from '@/core/actions/context/consumers/all';
 import allUsing from '@/core/actions/context/consumers/allUsing';
+import cached from '@/core/actions/context/consumers/cached';
+import cachedOr from '@/core/actions/context/consumers/cachedOr';
+import cachedOrFail from '@/core/actions/context/consumers/cachedOrFail';
+import cachedOrUsing from '@/core/actions/context/consumers/cachedOrUsing';
 import data from '@/core/actions/context/consumers/data';
 import dataUsing from '@/core/actions/context/consumers/dataUsing';
 import knownData from '@/core/actions/context/consumers/knownData';
@@ -27,8 +31,8 @@ import withDeserializer from '@/core/actions/context/enhancers/dependency/withDe
 import withSerializer from '@/core/actions/context/enhancers/dependency/withSerializer';
 import withStore from '@/core/actions/context/enhancers/dependency/withStore';
 import forId from '@/core/actions/context/enhancers/forId';
-import forInstance from '@/core/actions/context/enhancers/forInstance';
-import forModel from '@/core/actions/context/enhancers/forModel';
+import instance from '@/core/actions/context/enhancers/instance';
+import model from '@/core/actions/context/enhancers/model';
 import forSchema from '@/core/actions/context/enhancers/forSchema';
 import fullPath from '@/core/actions/context/enhancers/requests/fullPath';
 import param from '@/core/actions/context/enhancers/requests/param';
@@ -50,6 +54,10 @@ export {
   oneOrFail,
   oneOrCurrent,
   oneOrUsing,
+  cached,
+  cachedOr,
+  cachedOrFail,
+  cachedOrUsing,
   raw,
   find,
   create,
@@ -68,8 +76,8 @@ export {
   withCache,
   context,
   forId,
-  forInstance,
-  forModel,
+  instance,
+  model,
   forSchema,
   Action,
 };
