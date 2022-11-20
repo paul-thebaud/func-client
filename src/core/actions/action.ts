@@ -1,8 +1,6 @@
 import type { ActionContext, ActionHooks, ContextEnhancer } from '@/core/actions/types';
 import { ContextConsumer } from '@/core/actions/types';
 import sequentialTransform from '@/core/utilities/sequentialTransform';
-import { OnlyFalsy, OnlyTruthy, Value } from '@/core/utilities/types';
-import when from '@/core/utilities/when';
 
 export default class Action<C extends ActionContext> {
   private $enhancementsQueue: ContextEnhancer<any, any>[];
@@ -23,20 +21,6 @@ export default class Action<C extends ActionContext> {
       onFinally: [],
     };
     this.$hooksEnabled = true;
-  }
-
-  public when<E>(
-    expression: E,
-    truthyCallback: (action: Action<C>, exprValue: OnlyTruthy<Value<E>>) => void,
-    falsyCallback?: (action: Action<C>, exprValue: OnlyFalsy<Value<E>>) => void,
-  ) {
-    when(
-      expression,
-      (exprValue) => truthyCallback(this, exprValue),
-      falsyCallback ? (exprValue) => falsyCallback(this, exprValue) : undefined,
-    );
-
-    return this;
   }
 
   public hook<K extends keyof ActionHooks<C>>(
@@ -104,19 +88,25 @@ export default class Action<C extends ActionContext> {
     try {
       // Context consumer might use other context consumers, so we must disable
       // hooks at this point to avoid multiple hooks runs.
-      this.when(hooksEnabled, (a) => a.withoutHooks());
+      if (hooksEnabled) {
+        this.withoutHooks();
+      }
 
       const result = await consumer(this);
 
-      await this
-        .when(hooksEnabled, (a) => a.withHooks())
-        .runHooks('onSuccess', { context, result });
+      if (hooksEnabled) {
+        this.withHooks();
+      }
+
+      await this.runHooks('onSuccess', { context, result });
 
       return result;
     } catch (error) {
-      await this
-        .when(hooksEnabled, (a) => a.withHooks())
-        .runHooks('onError', { context, error });
+      if (hooksEnabled) {
+        this.withHooks();
+      }
+
+      await this.runHooks('onError', { context, error });
 
       throw error;
     } finally {

@@ -3,12 +3,15 @@
 ## General features
 
 - [ ] Avoid updating if nothing changed.
-- [ ] Unify between variadic and array params (probably array or singular with a
-  wrap helper).
+- [ ] Change utils functions named keys to optional keys params (defaults to all
+  instance keys).
 - [ ] Model and relations metadata (loaded, loading, etc.)
 - [ ] Tests using vitest
 
 ## Conditional consumer
+
+> Note: new when function is done. I should now do helpers
+> like `saveWhenChanged`, etc.
 
 Those new consumers will allow to conditionally run actions.
 

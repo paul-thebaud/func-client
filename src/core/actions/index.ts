@@ -38,6 +38,7 @@ import fullPath from '@/core/actions/context/enhancers/requests/fullPath';
 import param from '@/core/actions/context/enhancers/requests/param';
 import params from '@/core/actions/context/enhancers/requests/params';
 import path from '@/core/actions/context/enhancers/requests/path';
+import when from '@/core/actions/when';
 
 export {
   toManyInstances,
@@ -79,5 +80,6 @@ export {
   instance,
   model,
   forSchema,
+  when,
   Action,
 };
