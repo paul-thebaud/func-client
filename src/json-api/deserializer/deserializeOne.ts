@@ -2,6 +2,7 @@ import { ActionContext, FuncModelError, ModelInstance, syncOriginal } from '@/co
 import isAttributeDef from '@/core/model/guards/isAttributeDef';
 import isInstance from '@/core/model/guards/isInstance';
 import isRelationDef from '@/core/model/guards/isRelationDef';
+import runInstanceHooks from '@/core/model/hooks/runInstanceHooks';
 import deserializeAttribute from '@/json-api/deserializer/deserializeAttribute';
 import deserializeRelation from '@/json-api/deserializer/deserializeRelation';
 import findOrMakeInstance from '@/json-api/deserializer/findOrMakeInstance';
@@ -52,11 +53,14 @@ export default async function deserializeOne(
     } else {
       throw new FuncModelError(`Cannot deserialize non attribute or relation key \`${key}\``);
     }
+
+    instance.$loaded[key] = true;
   }));
 
   instance.exists = true;
 
   syncOriginal(instance);
+  runInstanceHooks(instance, 'onRetrieved');
 
   return instance;
 }

@@ -1,18 +1,16 @@
 import Action from '@/core/actions/action';
 import { ActionEvent, ActionHooks, ConsumeInstance } from '@/core/actions/types';
+import runInstanceHooks from '@/core/model/hooks/runInstanceHooks';
 import { ModelInstanceHook } from '@/core/model/types';
+import { ArrayWrappable } from '@/core/utilities/types';
 
 export default function triggerInstanceHook(
-  actionHook: keyof ActionHooks<any>,
-  instanceHooks: ModelInstanceHook[],
+  onActionHook: keyof ActionHooks<any>,
+  hooks: ArrayWrappable<ModelInstanceHook>,
 ) {
   return <C extends ConsumeInstance<any, any>>(
     action: Action<C>,
-  ) => action.hook(actionHook, (event: ActionEvent<C>) => {
-    instanceHooks.forEach((instanceHook) => {
-      if (typeof event.context.instance[instanceHook] === 'function') {
-        event.context.instance[instanceHook]();
-      }
-    });
+  ) => action.hook(onActionHook, (event: ActionEvent<C>) => {
+    runInstanceHooks(event.context.instance, hooks);
   });
 }

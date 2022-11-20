@@ -51,6 +51,7 @@ export type ModelValues<S extends ModelDefinition> = [keyof S] extends [never]
   };
 
 export type ModelInstanceHook =
+  | 'onRetrieved'
   | 'onCreating'
   | 'onCreated'
   | 'onUpdating'
@@ -66,6 +67,7 @@ export type ModelInstance<S extends ModelDefinition = {}> = {
   // FIXME Should the model id be nullable in its type?
   id: ModelId;
   exists: boolean;
+  $loaded: Dictionary<true>;
   $original: Partial<ModelValues<S>>;
   $values: Partial<ModelValues<S>>;
 } & {
@@ -100,7 +102,16 @@ export type ModelInferRawSchema<M> = M extends ModelInstance<infer S>
     ? ModelSchema<S>
     : never;
 
-export type ModelDotRelation<S, D extends number = 5> =
+export type ModelRelationKey<S> =
+  keyof S extends infer K
+    ? K extends string & keyof S
+      ? S[K] extends never
+        ? never
+        : S[K] extends ModelRelation<unknown>
+          ? S[K]
+          : never : never : never;
+
+export type ModelRelationDotKey<S, D extends number = 5> =
   [D] extends [0]
     ? never
     : keyof S extends infer K
@@ -109,6 +120,6 @@ export type ModelDotRelation<S, D extends number = 5> =
           ? never
           : S[K] extends ModelRelation<infer T>
             ? T extends any[]
-              ? K | `${K}.${ModelDotRelation<ModelInferRawSchema<T[number]>, Prev[D]>}`
-              : K | `${K}.${ModelDotRelation<ModelInferRawSchema<T>, Prev[D]>}`
+              ? K | `${K}.${ModelRelationDotKey<ModelInferRawSchema<T[number]>, Prev[D]>}`
+              : K | `${K}.${ModelRelationDotKey<ModelInferRawSchema<T>, Prev[D]>}`
             : never : never : never;

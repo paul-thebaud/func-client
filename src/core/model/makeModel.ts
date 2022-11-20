@@ -12,6 +12,7 @@ export default function makeModel<S extends ModelSchema<{}> = {}, E extends obje
     (this.$MODEL_TYPE as any) = 'instance';
     this.id = undefined as unknown as ModelId;
     this.exists = false;
+    this.$loaded = {};
     this.$original = {} as ModelValues<{}>;
     this.$values = {} as ModelValues<{}>;
 
