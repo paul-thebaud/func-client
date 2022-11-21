@@ -3,7 +3,7 @@ import { ActionContext } from '@/core/actions/types';
 import { OnlyFalsy, OnlyTruthy, Value } from '@/core/utilities/types';
 import value from '@/core/utilities/value';
 
-export default function when<C extends ActionContext, E, TR, FR = Action<C>>(
+export default function when<C extends ActionContext, E, TR, FR = void>(
   expression: E,
   truthyCallback: (action: Action<C>, value: OnlyTruthy<Value<E>>) => TR,
   falsyCallback?: (action: Action<C>, value: OnlyFalsy<Value<E>>) => FR,
@@ -18,6 +18,6 @@ export default function when<C extends ActionContext, E, TR, FR = Action<C>>(
       return falsyCallback(action, exprValue as OnlyFalsy<Value<E>>);
     }
 
-    return action as any;
+    return undefined as any;
   };
 }

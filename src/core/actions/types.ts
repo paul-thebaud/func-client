@@ -42,11 +42,11 @@ export type ActionHooks<C extends ActionContext> = {
   onFinally: ActionHook<ActionFinallyEvent<C>>[];
 };
 
-export type ContextEnhancer<PC extends ActionContext = {}, NC extends ActionContext = {}> = (
+export type ContextEnhancer<PC extends ActionContext, NC extends ActionContext> = (
   a: Action<PC>,
-) => Awaitable<Action<NC>>;
+) => Awaitable<Action<NC> | void>;
 
-export type ContextConsumer<C extends ActionContext = {}, R = unknown> = (
+export type ContextConsumer<C extends ActionContext, R> = (
   a: Action<C>,
 ) => Awaitable<R>;
 

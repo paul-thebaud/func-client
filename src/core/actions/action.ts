@@ -1,5 +1,4 @@
-import type { ActionContext, ActionHooks, ContextEnhancer } from '@/core/actions/types';
-import { ContextConsumer } from '@/core/actions/types';
+import type { ActionContext, ActionHooks, ContextConsumer, ContextEnhancer } from '@/core/actions/types';
 import sequentialTransform from '@/core/utilities/sequentialTransform';
 
 export default class Action<C extends ActionContext> {
@@ -70,7 +69,9 @@ export default class Action<C extends ActionContext> {
     return this as any;
   }
 
-  public use<NC extends ActionContext>(enhancer: ContextEnhancer<C, NC>): Action<NC> {
+  public use<NC extends ActionContext = C>(
+    enhancer: ContextEnhancer<C, NC>,
+  ): Action<NC> {
     this.$enhancementsQueue.push(enhancer);
 
     return this as any;
