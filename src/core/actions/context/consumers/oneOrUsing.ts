@@ -19,14 +19,25 @@ export default function oneOrUsing<C extends ActionContext, R, D,
 ) {
   return async (
     action: Action<C & ConsumeAdapter<R, D> & ConsumeDeserializer<D> & ConsumeModel<S, I>>,
-  ) => action.run(dataUsing(
-    async (context, realData) => {
-      const data = await toOneInstance(context, realData);
-      if (isNil(data)) {
+  ) => {
+    try {
+      return await action.run(dataUsing(
+        async (context, realData) => {
+          const data = await toOneInstance(context, realData);
+          if (isNil(data)) {
+            // TODO Try catch error is not found.
+            return action.run(nilConsumer);
+          }
+
+          return transformData(data, realData, context);
+        },
+      ));
+    } catch (error) {
+      if ((await action.getContext()).adapter.isNotFound(error)) {
         return action.run(nilConsumer);
       }
 
-      return transformData(data, realData, context);
-    },
-  ));
+      throw error;
+    }
+  };
 }

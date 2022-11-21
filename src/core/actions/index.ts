@@ -16,7 +16,6 @@ import oneOrFail from '@/core/actions/context/consumers/oneOrFail';
 import oneOrUsing from '@/core/actions/context/consumers/oneOrUsing';
 import raw from '@/core/actions/context/consumers/raw';
 import toManyInstances from '@/core/actions/context/consumers/transformers/toManyInstances';
-import toModelNotFoundError from '@/core/actions/context/consumers/transformers/toModelNotFoundError';
 import toOneInstance from '@/core/actions/context/consumers/transformers/toOneInstance';
 import context from '@/core/actions/context/enhancers/context';
 import create from '@/core/actions/context/enhancers/crud/create';
@@ -31,9 +30,9 @@ import withDeserializer from '@/core/actions/context/enhancers/dependency/withDe
 import withSerializer from '@/core/actions/context/enhancers/dependency/withSerializer';
 import withStore from '@/core/actions/context/enhancers/dependency/withStore';
 import forId from '@/core/actions/context/enhancers/forId';
+import forSchema from '@/core/actions/context/enhancers/forSchema';
 import instance from '@/core/actions/context/enhancers/instance';
 import model from '@/core/actions/context/enhancers/model';
-import forSchema from '@/core/actions/context/enhancers/forSchema';
 import fullPath from '@/core/actions/context/enhancers/requests/fullPath';
 import param from '@/core/actions/context/enhancers/requests/param';
 import params from '@/core/actions/context/enhancers/requests/params';
@@ -43,7 +42,6 @@ import when from '@/core/actions/when';
 export {
   toManyInstances,
   toOneInstance,
-  toModelNotFoundError,
   all,
   allUsing,
   data,

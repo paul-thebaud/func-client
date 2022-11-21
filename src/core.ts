@@ -1,6 +1,6 @@
 import AdapterError from '@/core/errors/adapterError';
 import FuncModelError from '@/core/errors/funcModelError';
-import ModelNotFoundError from '@/core/errors/modelNotFoundError';
+import RunFailureError from '@/core/errors/runFailureError';
 import compose from '@/core/model/compose';
 import isInstance from '@/core/model/guards/isInstance';
 import makeComposable from '@/core/model/makeComposable';
@@ -33,7 +33,7 @@ export * from '@/core/actions';
 export {
   AdapterError,
   FuncModelError,
-  ModelNotFoundError,
+  RunFailureError,
   attr,
   hasMany,
   hasOne,

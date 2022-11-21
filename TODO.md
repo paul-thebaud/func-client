@@ -5,7 +5,7 @@
 - [ ] Avoid updating if nothing changed.
 - [ ] Change utils functions named keys to optional keys params (defaults to all
   instance keys).
-- [ ] Model and relations metadata (loaded, loading, etc.)
+- [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Tests using vitest
 
 ## Conditional consumer
@@ -32,8 +32,8 @@ Provide relations related helpers and actions enhancers/consumers.
 ### Helpers
 
 ```ts
-// Check if the post instance has its author relation loaded.
-loaded(post, 'author');
+// Check if the post instance has its author relation missing.
+missing(post, 'author');
 ```
 
 ### Read actions

@@ -1,6 +1,5 @@
-import { ActionContext, FuncModelError, ModelInstance, syncOriginal } from '@/core';
+import { ActionContext, FuncModelError, isInstance, ModelInstance, syncOriginal } from '@/core';
 import isAttributeDef from '@/core/model/guards/isAttributeDef';
-import isInstance from '@/core/model/guards/isInstance';
 import isRelationDef from '@/core/model/guards/isRelationDef';
 import runInstanceHooks from '@/core/model/hooks/runInstanceHooks';
 import deserializeAttribute from '@/json-api/deserializer/deserializeAttribute';

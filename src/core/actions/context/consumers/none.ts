@@ -1,10 +1,11 @@
 import Action from '@/core/actions/action';
+import raw from '@/core/actions/context/consumers/raw';
 import { ConsumeAdapter } from '@/core/actions/types';
 
 export default function none<R, D>() {
   return async (
     action: Action<ConsumeAdapter<R, D>>,
   ) => {
-    await (await action.getContext()).adapter.action(await action.getContext());
+    await action.run(raw());
   };
 }

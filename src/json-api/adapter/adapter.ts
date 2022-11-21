@@ -1,5 +1,4 @@
-import { AdapterI } from '@/core';
-import { ActionContext } from '@/core/actions/types';
+import { ActionContext, AdapterI } from '@/core';
 import sequentialTransform from '@/core/utilities/sequentialTransform';
 import NotFoundError from '@/json-api/adapter/errors/notFoundError';
 import makeError from '@/json-api/adapter/makeError';

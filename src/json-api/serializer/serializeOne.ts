@@ -1,5 +1,4 @@
-import { ModelInstance, changedKeys } from '@/core';
-import FuncModelError from '@/core/errors/funcModelError';
+import { changedKeys, FuncModelError, ModelInstance } from '@/core';
 import isAttributeDef from '@/core/model/guards/isAttributeDef';
 import isRelationDef from '@/core/model/guards/isRelationDef';
 import mapSchema from '@/core/utilities/mapSchema';

@@ -1,4 +1,4 @@
-import { ModelProp } from '@/core/model/types';
+import { ModelProp } from '@/core';
 
 export type SerializesKeysOptions = {
   transformKeys?: (localKey: string) => string;

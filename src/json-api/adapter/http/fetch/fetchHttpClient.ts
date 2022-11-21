@@ -23,7 +23,7 @@ export default class FetchHttpClient implements HttpClient<Response> {
 
     try {
       const response = await (this.options.fetch ?? window.fetch)(requestURL, requestInit);
-      const document = await response.json();
+      const document = response.status === 204 ? {} : await response.json();
 
       return {
         ok: response.ok,
