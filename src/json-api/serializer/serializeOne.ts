@@ -1,4 +1,4 @@
-import { changedKeys, FuncModelError, ModelInstance } from '@/core';
+import { changed, FuncModelError, ModelInstance } from '@/core';
 import isAttributeDef from '@/core/model/guards/isAttributeDef';
 import isRelationDef from '@/core/model/guards/isRelationDef';
 import mapSchema from '@/core/utilities/mapSchema';
@@ -19,7 +19,7 @@ export default async function serializeOne(
   };
 
   await Promise.all(mapSchema(instance.constructor.$schema, async (def, key) => {
-    if (options.keepUnchanged !== true && !changedKeys(instance, key)) {
+    if (options.keepUnchanged !== true && !changed(instance, key)) {
       return;
     }
 

@@ -1,7 +1,6 @@
 import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
 import instancePayload from '@/core/actions/context/enhancers/crud/instancePayload';
-import forId from '@/core/actions/context/enhancers/forId';
 import changeExistence from '@/core/actions/context/enhancers/hooks/changeExistence';
 import triggerInstanceHook from '@/core/actions/context/enhancers/hooks/triggerInstanceHook';
 import instance from '@/core/actions/context/enhancers/instance';
@@ -13,7 +12,6 @@ export default function update<R, D, S extends ModelDefinition, I>(
 ) {
   return <C extends ConsumeAdapter<R, D> & ConsumeSerializer<D>>(a: Action<C>) => a
     .use(instance(instanceToUpdate))
-    .use(forId(instanceToUpdate.id))
     .use(instancePayload(instanceToUpdate))
     .use(context({ method: 'PATCH' }))
     .use(changeExistence(true))

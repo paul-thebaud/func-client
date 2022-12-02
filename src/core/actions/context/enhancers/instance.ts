@@ -1,5 +1,6 @@
 import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
+import forId from '@/core/actions/context/enhancers/forId';
 import model from '@/core/actions/context/enhancers/model';
 import { ActionContext } from '@/core/actions/types';
 import { ModelClass, ModelDefinition, ModelInstance } from '@/core/model/types';
@@ -10,5 +11,6 @@ export default function instance<S extends ModelDefinition, I>(
 ) {
   return <C extends ActionContext>(a: Action<C>) => a
     .use(model<S, I>(instanceToUse.constructor as ModelClass<S> & Constructor<I>))
-    .use(context({ instance: instanceToUse }));
+    .use(context({ instance: instanceToUse }))
+    .use(forId(instanceToUse.id));
 }

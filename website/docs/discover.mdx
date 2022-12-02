@@ -29,7 +29,7 @@ export default class Comment extends makeModel('comments') {}
 
 // file: models/post.ts
 import { makeModel, attr, hasMany, toDate } from 'func-model/core';
-import type Comment from './comment'
+import type Comment from './comment';
 
 export default class Post extends makeModel('posts', {
   title: attr<string>(),
@@ -54,15 +54,37 @@ models) and **attributes** (primitive or not).
 - The **Extensions** which add custom features to your model instances (e.g.
 full name getter for a `User` model, etc.).
 
-### Action
+### Action factory
 
 ```javascript
-import { forModel, all, none, destroy } from 'func-model/core';
+import { makeJsonApi } from 'func-model/blueprints';
+import Post from './post';
+import Comment from './comment';
+
+const { makeAction, store } = makeJsonApi({
+  baseURL: 'https://example.com/api/v1',
+});
+
+store.register([Post, Comment]);
+
+export default function action() {
+  return makeAction();
+}
+```
+
+Action factory is function which creates a new action with a preconfigured
+context. The context of an action will impact the action sent data and result:
+it may impact the serialization, the request, etc.
+
+### Actions
+
+```javascript
+import { model, all, none, destroy } from 'func-model/core';
 import { filter, include } from 'func-model/json-api';
 
 // GET /api/v1/posts?filter[isPublished]=0&include=comments
 const posts = await action()
-  .use(forModel(Post))
+  .use(model(Post))
   .use(filter('isPublished', '1'))
   .use(include('comments'))
   .run(all());
@@ -138,7 +160,7 @@ parameters.
 ```typescript
 const posts = await action()
   // We are telling the action context is now for the Post model.
-  .use(forModel(Post))
+  .use(model(Post))
   // We can now use this action context to strongly type context enhancer params.
   // As an example, `include` is typed for deep dotted relations, such as:
   // "comments", "comments.author", "comments.author.favoritePosts", etc.
@@ -180,7 +202,7 @@ But, since we are not building the action factory for you, you must initialize
 this factory yourself with the things you need: an adapter, a serializer, etc.
 Don't worry, the process is still pretty simple.
 
-In addition, you cannot just use `action().forModel(Post).all()` because those
+In addition, you cannot just use `action().model(Post).all()` because those
 function must be imported to be used. We are thinking of a way to simply extends
 the action with reusable function, but that's not currently possible regarding
 the way Typescript manage types (generics of context enhancers and consumers

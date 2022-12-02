@@ -2,11 +2,39 @@
 
 ## General features
 
+- [ ] Extendable base model (to always make timestamped models, etc.).
 - [ ] Avoid updating if nothing changed.
-- [ ] Change utils functions named keys to optional keys params (defaults to all
-  instance keys).
 - [ ] Model and relations metadata (missing, loading, etc.)
+- [ ] Manage errors when users are bypassing types (relations not found, etc.)
+- [ ] Rename one letter parameters to real name (`a` to `action`)
 - [ ] Tests using vitest
+
+## Documentation
+
+Planned plan for documentation:
+
+- Discover
+- Installation
+  - Yarn
+  - PNPM
+  - NPM
+  - UMD?
+  - Notes?
+- Essentials
+  - Getting started
+  - Models
+    - Model factory
+    - Schema
+      - Attributes
+        - Configuration
+        - Transform
+      - Relations
+    - Extensions
+- Advanced
+  - Configuration
+    - Model configuration
+  - Models composition
+  - Custom transformers
 
 ## Conditional consumer
 
@@ -18,11 +46,15 @@ Those new consumers will allow to conditionally run actions.
 ```ts
 await action()
   .use(save(post))
-  .run(runWhenChanged(oneOrFail()));
+  .run(whenChanged(oneOrFail()));
 
 await action()
   .use(save(post))
-  .run(runWhen(expression, oneOrFail(), defaultValue));
+  .run(when(changed(post), oneOrFail()));
+
+await action()
+  .use(save(post))
+  .run(when(expression, oneOrFail(), defaultValue));
 ```
 
 ## Relations interactions
@@ -33,7 +65,7 @@ Provide relations related helpers and actions enhancers/consumers.
 
 ```ts
 // Check if the post instance has its author relation missing.
-missing(post, 'author');
+loaded(post, 'author'); // True or false
 ```
 
 ### Read actions
@@ -47,7 +79,7 @@ const user = await action()
   .run(oneOrFail());
 
 // Load a relation value on model.
-await action().run(load(post, 'author', 'tags'));
+await action().run(load(post, ['author', 'tags']));
 await action().run(loadMissing(post, 'author', 'tags'));
 ```
 

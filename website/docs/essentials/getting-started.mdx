@@ -21,15 +21,23 @@ To declare a model, you just need to use the `makeModel` function. This function
 - The model `schema` (optional), which contains your attributes and relations definitions.
 - The model `extension` (optional), which contains additional properties and methods.
 
-```ts title="models/user.js"
-import { makeModel, attr } from 'func-model/core';
+```ts title="models/post.js"
+// file: models/comment.ts noEmit
+import { makeModel } from 'func-model/core';
+export default class Comment extends makeModel('comments') {}
 
-export default class User extends makeModel('users', {
-  firstName: attr<string>(),
-  lastName: attr<string>(),
+// file: models/post.ts
+import { makeModel, attr, hasMany, toDate } from 'func-model/core';
+import type Comment from './comment';
+
+export default class Post extends makeModel('posts', {
+  title: attr<string>(),
+  description: attr<string>(),
+  publishedAt: attr(toDate()),
+  comments: hasMany<Comment>(),
 }, {
-  get fullName() {
-    return `${this.firstName} ${this.lastName}`;
+  get isDraft() {
+    return !this.publishedAt;
   },
 }) {
 }
@@ -40,7 +48,7 @@ If you never need to import only a model's type (such as in Typescript to avoid 
 you can just export the `makeModel` returned value instead of creating an extended class:
 
 ```javascript
-export default makeModel('users', /* your model definition... */);
+export default makeModel('posts', /* your model definition... */);
 ```
 
 [Read the FAQ to understand the why.](/docs/discover#why-classes-are-used-for-models-in-typescript)
@@ -53,10 +61,10 @@ you have an instance, you can use its schema and extensions as classic classes' 
 methods.
 
 ```javascript
-const user = new User();
-user.firstName = 'John';
-user.lastName = 'Doe';
-console.log(user.fullName); // "John Doe".
+const post = new Post();
+post.title = 'Hello World!';
+console.log(post.title); // "Hello World!"
+console.log(post.isDraft); // true
 ```
 
 ## Action factory with blueprints
@@ -81,7 +89,7 @@ const { makeAction, store } = makeJsonApi({
 
 // We need to register the models to allow the deserializer to know
 // to which model it should deserialize a JSON:API record.
-store.register([User, /* Post, Comment */]);
+store.register([Comment, Post, /* User, Tag */]);
 
 export default function action() {
   return makeAction();
@@ -112,12 +120,12 @@ the action context.
 When you are ready, you can `run` the action with a given **context consumer**.
 
 ```javascript
-import { all, forModel } from 'func-model/core';
-import User from './models/user';
+import { all, model } from 'func-model/core';
+import Post from './models/post';
 import action from './action';
 
-const users = await action()
-  .use(forModel(User))
+const posts = await action()
+  .use(model(Post))
   .run(all());
 ```
 
@@ -132,13 +140,12 @@ enhancer and a `oneOrFail` context consumer. This way, you are able to do
 a find query and retrieve a raw result when needed.
 
 ```javascript
-import { find, oneOrFail, forModel } from 'func-model/core';
-import User from './models/user';
+import { find, oneOrFail } from 'func-model/core';
+import Post from './models/post';
 import action from './action';
 
-const user = await action()
-  .use(forModel(User))
-  .use(find('abc-123'))
+const post = await action()
+  .use(find(Post, 'abc-123'))
   .run(oneOrFail());
 ```
 
@@ -146,17 +153,17 @@ This works the same to send write operations through actions. In the following
 example, we are retrieving a raw adapter response instead of model instances.
 
 ```javascript
-import { create, raw, forModel, fill } from 'func-model/core';
-import User from './models/user';
+import { create, raw, fill } from 'func-model/core';
+import Post from './models/post';
 import action from './action';
 
-const user = fill(new User(), {
-  firstName: 'John',
-  lastName: 'Doe',
+const post = fill(new Post(), {
+  title: 'Hello World!',
+  description: 'Your first post',
 });
 
 const response = await action()
-  .use(create(user))
+  .use(create(post))
   .run(raw());
 ```
 
@@ -164,14 +171,19 @@ Finally, you may also want to use FuncModel to make non-standard API calls
 which are unrelated to models.
 
 ```javascript
-import { knownData } from 'func-model/core';
+import { instance, knownData } from 'func-model/core';
 import { makePost } from 'func-model/json-api';
 import action from './action';
+
+const post = await action()
+  .use(find(Post, 'abc-123'))
+  .run(oneOrFail());
 
 // Make a POST call to "https://example.com/api/v1/services/posts/1/publish"
 // Admitting it returns: {"message":"Successfully published post."}
 const data = await action()
-  .use(makePost('services/posts/1/publish'))
+  .use(instance(post))
+  .use(makePost('publish'))
   .run(knownData());
 
 console.log(data.message); // "Successfully published post."

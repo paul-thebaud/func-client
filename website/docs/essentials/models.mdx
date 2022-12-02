@@ -4,4 +4,177 @@ sidebar_position: 2
 
 # Models
 
-TODO
+:::tip What you'll learn
+- Defining basic models with attributes and relationships;
+- Extending your models with extensions and classes;
+:::
+
+## Model factory
+
+```javascript
+import { makeModel } from 'func-model/core';
+
+makeModel('type', { /* schema */ }, { /* extensions */ })
+```
+
+`makeModel` is a model factory function to use when you wish to define your
+models. It takes 3 arguments:
+
+- The string `type` or a configuration.
+- The optional `schema` of the model: an object map containing attributes and
+relations definition.
+- The optional `extensions` of the model: some custom properties you wish to add
+to your model to extends its features.
+
+### Extending a model class
+
+`makeModel` will return a model class which can be extended by an ES6 class.
+
+```javascript
+export default class Post extends makeModel('Post') {}
+```
+
+The returned model class also provides static methods to extend the schema and
+extensions already provided to `makeModel`.
+
+```javascript
+makeModel('Post')
+  .schema({ /* additional schema */ })
+  .extension({ /* additional extension */ })
+  .extend({
+    schema: {/* additional schema */ },
+    extension: {/* additional extension */ },
+  });
+```
+
+:::tip
+This can be useful when sharing common features across models: creation
+timestamps, client side ID generation, etc.
+
+If you wish to learn more about the composition capabilities of models,
+you should read the
+[advanced guide about models composition](/docs/advanced/models-composition).
+:::
+
+## Schema
+
+### Attributes
+
+`attr` is an attribute definition factory function to use when you wish to
+define your model's attributes. It may take 0 to 2 arguments, depending on
+what you want to do.
+
+```ts
+import { attr, toDate } from 'func-model/core';
+
+attr<string>(); // Without options.
+attr(toDate()); // With a transformer.
+attr({ default: '', transformer: toDate() }); // With options.
+attr(toDate(), { readonly: true }); // With a transformer and options.
+```
+
+#### Configuration
+
+You may customize your attribute with the following options:
+
+| Key           | Type           | Defaults    | Description                                                                           |
+|---------------|----------------|-------------|---------------------------------------------------------------------------------------|
+| `transformer` | `Transform<T>` | `undefined` | The transformer for the prop's value when interacting with your backend.              |
+| `default`     | `T`            | `undefined` | The default value for the prop when initializing a model instance.                    |
+| `readonly`    | `boolean`      | `false`     | The value won't be serialized when sending the data to your backend.                  |
+| `alias`       | `string`       | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend. |
+
+#### Transform
+
+You can use a transform to convert an attribute value when (de)serializing from/to your backend.
+There are two types or transformer within Func Model:
+
+- `FunctionTransform`: a function to call to transform the value whether we are serializing or deserializing it.
+- `ObjectTransform`: an object with two methods: `serialize` and `deserialize`.
+
+Func Model propose you 4 transformers out of the box: `toDate`, `toNumber`, `toBoolean` and `toString`.
+
+:::tip
+You may need other transformers in your implementation, for example when you
+are using a library to manage dates (momentjs, dayjs, etc.).
+
+You may read the
+[advanced guide on transformers](/docs/advanced/custom-transformers)
+to learn more about those.
+:::
+
+### Relations
+
+`hasMany` and `hasOne` are relation definition factory function to use when
+you wish to define your model's relations. As suggested by their names,
+`hasMany` represents a relation to a list of model and `hasOne` represents a
+relation to a single model.
+It may take 0 to 1 argument, depending on what you want to do.
+
+```ts
+// file: models/user.ts noEmit
+import { makeModel } from 'func-model/core';
+export default class User extends makeModel('users') {}
+
+// file: models/comment.ts noEmit
+import { makeModel } from 'func-model/core';
+export default class Comment extends makeModel('comments') {}
+
+// file: models/example.ts
+import { hasOne, hasMany } from 'func-model/core';
+import type User from './user';
+import type Comment from './comment';
+
+hasOne<User>(); // Without options.
+hasOne<User>({ readonly: true }); // With options.
+
+hasMany<Comment>(); // Without options.
+hasMany<Comment>({ readonly: true }); // With options.
+```
+
+:::tip
+When using TypeScript, you should define the type of the relation to get a
+fully strongly typed model. We suggest you to use `import type` to avoid
+creating circular dependencies when having circular model relations.
+:::
+
+#### Configuration
+
+You may customize your relation with the following options:
+
+| Key           | Type           | Defaults    | Description                                                                           |
+|---------------|----------------|-------------|---------------------------------------------------------------------------------------|
+| `default`     | `T`            | `undefined` | The default value for the prop when initializing a model instance.                    |
+| `readonly`    | `boolean`      | `false`     | The value won't be serialized when sending the data to your backend.                  |
+| `alias`       | `string`       | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend. |
+
+## Extensions
+
+Sometimes, a model is not only composed by attributes and relations. As an
+example, a `User` model may have first name and last name attributes, and a
+convenience method to retrieve the full name.
+
+To solve this, you may extend the model class created by `makeModel`, or pass
+an extension as the `makeModel` call third arguments.
+
+```javascript
+// Using an extension.
+export default makeModel('users', {
+  firstName: attr(),
+  lastName: attr(),
+}, {
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`
+  }
+});
+
+// Using an ES6 class.
+export default class User extends makeModel('users', {
+  firstName: attr(),
+  lastName: attr(),
+}) {
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`
+  }
+}
+```

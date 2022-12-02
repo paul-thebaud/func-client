@@ -1,4 +1,4 @@
-import { ActionContext, FuncModelError, InstancesCacheI, Model, ModelInstance, ModelsStoreI } from '@/core';
+import { ActionContext, FuncModelError, InstancesCacheI, isInstance, Model, ModelInstance, ModelsStoreI } from '@/core';
 import isNil from '@/core/utilities/isNil';
 import { JsonApiIncludedMap } from '@/json-api/deserializer/makeIncludedMap';
 import { NewJsonApiResource } from '@/json-api/types';
@@ -10,10 +10,14 @@ export default async function findOrMakeInstance(
 ) {
   let instance: ModelInstance | undefined;
 
-  if (context.cache && !isNil(resource.id)) {
-    const cachedInstance = await context.cache.find(resource.type, resource.id);
-    if (cachedInstance) {
-      instance = cachedInstance;
+  if (!isNil(resource.id)) {
+    if (isInstance(context.instance) && context.instance.id === resource.id) {
+      instance = context.instance;
+    } else if (context.cache && !isNil(resource.id)) {
+      const cachedInstance = await context.cache.find(resource.type, resource.id);
+      if (cachedInstance) {
+        instance = cachedInstance;
+      }
     }
   }
 

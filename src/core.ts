@@ -9,13 +9,11 @@ import attr from '@/core/model/props/attr';
 import hasMany from '@/core/model/props/hasMany';
 import hasOne from '@/core/model/props/hasOne';
 import changed from '@/core/model/utilities/changed';
-import changedKeys from '@/core/model/utilities/changedKeys';
 import fill from '@/core/model/utilities/fill';
 import isSame from '@/core/model/utilities/isSame';
+import loaded from '@/core/model/utilities/loaded';
 import reset from '@/core/model/utilities/reset';
-import resetKeys from '@/core/model/utilities/resetKeys';
 import syncOriginal from '@/core/model/utilities/syncOriginal';
-import syncOriginalKeys from '@/core/model/utilities/syncOriginalKeys';
 import toBoolean from '@/core/transforms/toBoolean';
 import toDate from '@/core/transforms/toDate';
 import toNumber from '@/core/transforms/toNumber';
@@ -37,13 +35,11 @@ export {
   attr,
   hasMany,
   hasOne,
+  loaded,
   fill,
   reset,
-  resetKeys,
   syncOriginal,
-  syncOriginalKeys,
   changed,
-  changedKeys,
   isSame,
   isInstance,
   compose,

@@ -1,6 +1,5 @@
 import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
-import forId from '@/core/actions/context/enhancers/forId';
 import changeExistence from '@/core/actions/context/enhancers/hooks/changeExistence';
 import triggerInstanceHook from '@/core/actions/context/enhancers/hooks/triggerInstanceHook';
 import instance from '@/core/actions/context/enhancers/instance';
@@ -12,7 +11,6 @@ export default function destroy<R, D, S extends ModelDefinition, I>(
 ) {
   return <C extends ConsumeAdapter<R, D> & ConsumeSerializer<D>>(a: Action<C>) => a
     .use(instance(instanceToDestroy))
-    .use(forId(instanceToDestroy.id))
     .use(context({ method: 'DELETE' }))
     .use(changeExistence(false))
     .use(triggerInstanceHook('onRunning', ['onDestroying']))
