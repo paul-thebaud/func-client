@@ -77,7 +77,7 @@ export default class Action<C extends ActionContext> {
     return this as any;
   }
 
-  public async run<NR>(consumer: ContextConsumer<C, NR>): Promise<NR> {
+  public async run<NR>(consumer: ContextConsumer<C, NR>): Promise<Awaited<NR>> {
     const context = await this.getContext();
 
     // Some enhancements might disable hooks, so store the hooks state only

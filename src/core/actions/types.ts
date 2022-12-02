@@ -48,7 +48,7 @@ export type ContextEnhancer<PC extends ActionContext, NC extends ActionContext> 
 
 export type ContextConsumer<C extends ActionContext, R> = (
   a: Action<C>,
-) => Awaitable<R>;
+) => R;
 
 export type ConsumeSchema<S extends ModelDefinition = ModelDefinition> = { schema: S; };
 
