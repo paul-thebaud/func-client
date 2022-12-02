@@ -2,6 +2,7 @@
 
 ## General features
 
+- [ ] Rename package to `func-api-client` or something like this.
 - [ ] Extendable base model (to always make timestamped models, etc.).
 - [ ] Avoid updating if nothing changed.
 - [ ] Model and relations metadata (missing, loading, etc.)

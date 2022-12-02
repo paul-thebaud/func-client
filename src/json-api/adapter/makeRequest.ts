@@ -1,5 +1,6 @@
 import { ActionContext, Dictionary } from '@/core';
 import makeEndpoint from '@/json-api/adapter/makeEndpoint';
+import makeParams from '@/json-api/adapter/makeParams';
 import { AdapterOptions, JsonApiRequest } from '@/json-api/adapter/types';
 
 export default function makeRequest<R>(
@@ -9,7 +10,7 @@ export default function makeRequest<R>(
   return {
     endpoint: makeEndpoint(context, options),
     method: context.method,
-    params: context.params,
+    params: makeParams(context),
     headers: {
       Accept: 'application/vnd.api+json',
       'Content-Type': 'application/vnd.api+json',

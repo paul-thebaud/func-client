@@ -21,6 +21,7 @@ export type ActionContext = {
   type?: string;
   id?: ModelId;
   relation?: string;
+  includes?: string[];
   path?: string;
   params?: Dictionary<any> | string;
   payload?: unknown;

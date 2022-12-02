@@ -38,22 +38,28 @@ export default async function deserializeOne(
     const resourceKey = serializedKey(def, key, options);
 
     if (isAttributeDef(def)) {
-      Object.assign(instance.$values, await deserializeAttribute(
-        def,
-        key,
-        resource.attributes?.[resourceKey],
-      ));
+      const value = resource.attributes?.[resourceKey];
+      if (value !== undefined) {
+        Object.assign(
+          instance.$values,
+          await deserializeAttribute(def, key, value),
+        );
+
+        instance.$loaded[key] = true;
+      }
     } else if (isRelationDef(def)) {
-      Object.assign(instance.$values, await deserializeRelation(
-        key,
-        resource.relationships?.[resourceKey],
-        deserializeIncluded,
-      ));
+      const value = resource.relationships?.[resourceKey];
+      if (value !== undefined) {
+        Object.assign(
+          instance.$values,
+          await deserializeRelation(key, value, deserializeIncluded),
+        );
+
+        instance.$loaded[key] = true;
+      }
     } else {
       throw new FuncModelError(`Cannot deserialize non attribute or relation key \`${key}\``);
     }
-
-    instance.$loaded[key] = true;
   }));
 
   instance.exists = true;

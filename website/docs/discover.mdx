@@ -79,8 +79,8 @@ it may impact the serialization, the request, etc.
 ### Actions
 
 ```javascript
-import { model, all, none, destroy } from 'func-model/core';
-import { filter, include } from 'func-model/json-api';
+import { model, include, all, none, destroy } from 'func-model/core';
+import { filter } from 'func-model/json-api';
 
 // GET /api/v1/posts?filter[isPublished]=0&include=comments
 const posts = await action()

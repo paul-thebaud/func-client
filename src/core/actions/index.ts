@@ -31,6 +31,7 @@ import withSerializer from '@/core/actions/context/enhancers/dependency/withSeri
 import withStore from '@/core/actions/context/enhancers/dependency/withStore';
 import forId from '@/core/actions/context/enhancers/forId';
 import forSchema from '@/core/actions/context/enhancers/forSchema';
+import include from '@/core/actions/context/enhancers/include';
 import instance from '@/core/actions/context/enhancers/instance';
 import model from '@/core/actions/context/enhancers/model';
 import fullPath from '@/core/actions/context/enhancers/requests/fullPath';
@@ -75,9 +76,10 @@ export {
   withCache,
   context,
   forId,
+  forSchema,
   instance,
   model,
-  forSchema,
+  include,
   when,
   Action,
 };

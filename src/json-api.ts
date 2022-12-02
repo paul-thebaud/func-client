@@ -8,7 +8,6 @@ import makeRequest from '@/json-api/actions/context/consumers/makeRequest';
 import fields from '@/json-api/actions/context/enhancers/params/fields';
 import fieldsFor from '@/json-api/actions/context/enhancers/params/fieldsFor';
 import filter from '@/json-api/actions/context/enhancers/params/filter';
-import include from '@/json-api/actions/context/enhancers/params/include';
 import paginate from '@/json-api/actions/context/enhancers/params/paginate';
 import rawFilter from '@/json-api/actions/context/enhancers/params/rawFilter';
 import sortBy from '@/json-api/actions/context/enhancers/params/sortBy';
@@ -38,7 +37,6 @@ export {
   fieldsFor,
   rawFilter,
   filter,
-  include,
   sortBy,
   sortByDesc,
   paginate,
