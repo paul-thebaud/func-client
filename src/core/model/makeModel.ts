@@ -1,6 +1,6 @@
 import FuncModelError from '@/core/errors/funcModelError';
 import compose from '@/core/model/compose';
-import { Model, ModelConfig, ModelId, ModelInstance, ModelSchema, ModelValues } from '@/core/model/types';
+import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
 import warn from '@/core/utilities/warn';
 
 export default function makeModel<S extends ModelSchema<{}> = {}, E extends object = {}>(
@@ -9,12 +9,17 @@ export default function makeModel<S extends ModelSchema<{}> = {}, E extends obje
   extension?: E & ThisType<ModelInstance<S & E>>,
 ) {
   function ModelClass(this: ModelInstance) {
-    (this.$MODEL_TYPE as any) = 'instance';
-    this.id = undefined as unknown as ModelId;
-    this.exists = false;
-    this.$loaded = {};
-    this.$original = {} as ModelValues<{}>;
-    this.$values = {} as ModelValues<{}>;
+    Object.defineProperty(this, '$MODEL_TYPE', { writable: true, value: 'instance' });
+    Object.defineProperty(this, 'exists', { writable: true, value: false });
+    Object.defineProperty(this, '$loaded', { writable: true, value: {} });
+    Object.defineProperty(this, '$original', { writable: true, value: {} });
+    Object.defineProperty(this, '$values', { writable: true, value: {} });
+
+    Object.defineProperty(this, 'id', {
+      writable: true,
+      enumerable: true,
+      value: undefined,
+    });
 
     Object.entries(ModelClass.$schema).forEach(([key, def]) => {
       Object.defineProperty(this, key, {
