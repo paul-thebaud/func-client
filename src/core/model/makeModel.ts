@@ -18,6 +18,7 @@ export default function makeModel<S extends ModelSchema<{}> = {}, E extends obje
 
     Object.entries(ModelClass.$schema).forEach(([key, def]) => {
       Object.defineProperty(this, key, {
+        enumerable: true,
         get: () => this.$values[key],
         set: (value) => {
           this.$values[key] = value;
