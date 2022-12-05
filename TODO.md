@@ -2,6 +2,7 @@
 
 ## General features
 
+- [ ] Enumerable and other props on model attributes.
 - [ ] Rename package to `func-api-client` or something like this.
 - [ ] Extendable base model (to always make timestamped models, etc.).
 - [ ] Avoid updating if nothing changed.
@@ -36,27 +37,6 @@ Planned plan for documentation:
     - Model configuration
   - Models composition
   - Custom transformers
-
-## Conditional consumer
-
-> Note: new when function is done. I should now do helpers
-> like `saveWhenChanged`, etc.
-
-Those new consumers will allow to conditionally run actions.
-
-```ts
-await action()
-  .use(save(post))
-  .run(whenChanged(oneOrFail()));
-
-await action()
-  .use(save(post))
-  .run(when(changed(post), oneOrFail()));
-
-await action()
-  .use(save(post))
-  .run(when(expression, oneOrFail(), defaultValue));
-```
 
 ## Relations interactions
 

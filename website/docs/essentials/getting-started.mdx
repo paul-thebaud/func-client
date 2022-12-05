@@ -153,7 +153,7 @@ This works the same to send write operations through actions. In the following
 example, we are retrieving a raw adapter response instead of model instances.
 
 ```javascript
-import { create, raw, fill } from 'func-model/core';
+import { create, one, fill } from 'func-model/core';
 import Post from './models/post';
 import action from './action';
 
@@ -164,7 +164,7 @@ const post = fill(new Post(), {
 
 const response = await action()
   .use(create(post))
-  .run(raw());
+  .run(one());
 ```
 
 Finally, you may also want to use FuncModel to make non-standard API calls
