@@ -5,6 +5,7 @@ import compose from '@/core/model/compose';
 import isInstance from '@/core/model/guards/isInstance';
 import makeComposable from '@/core/model/makeComposable';
 import makeModel from '@/core/model/makeModel';
+import makeModelFactory from '@/core/model/makeModelFactory';
 import attr from '@/core/model/props/attr';
 import hasMany from '@/core/model/props/hasMany';
 import hasOne from '@/core/model/props/hasOne';
@@ -45,6 +46,7 @@ export {
   compose,
   makeComposable,
   makeModel,
+  makeModelFactory,
   toBoolean,
   toDate,
   toNumber,
