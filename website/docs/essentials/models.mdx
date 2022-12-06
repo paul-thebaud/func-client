@@ -5,8 +5,8 @@ sidebar_position: 2
 # Models
 
 :::tip What you'll learn
-- Defining basic models with attributes and relationships;
-- Extending your models with extensions and classes;
+- Defining basic models with attributes and relationships
+- Extending your models with extensions and classes
 :::
 
 ## Model factory
@@ -25,6 +25,8 @@ models. It takes 3 arguments:
 relations definition.
 - The optional `extensions` of the model: some custom properties you wish to add
 to your model to extends its features.
+
+The `schema` and `extension` represent the `definition` of the model.
 
 ### Extending a model class
 
@@ -87,12 +89,12 @@ You may customize your attribute with the following options:
 #### Transform
 
 You can use a transform to convert an attribute value when (de)serializing from/to your backend.
-There are two types or transformer within Func Model:
+There are two types or transformer within FuncModel:
 
 - `FunctionTransform`: a function to call to transform the value whether we are serializing or deserializing it.
 - `ObjectTransform`: an object with two methods: `serialize` and `deserialize`.
 
-Func Model propose you 4 transformers out of the box: `toDate`, `toNumber`, `toBoolean` and `toString`.
+FuncModel propose you 4 transformers out of the box: `toDate`, `toNumber`, `toBoolean` and `toString`.
 
 :::tip
 You may need other transformers in your implementation, for example when you
@@ -178,3 +180,7 @@ export default class User extends makeModel('users', {
   }
 }
 ```
+
+## Hooks
+
+<span class="chip chip--primary">Work in progress</span>

@@ -6,9 +6,9 @@ description: Defining your first model and action factory, running basic actions
 # Getting started
 
 :::tip What you'll learn
-- Creating your first model and using it through model instances;
-- Creating your action factory using blueprints for a JSON:API backend;
-- Running basic actions on your models with your action factory;
+- Creating your first model and using it through model instances
+- Creating your action factory using blueprints for a JSON:API backend
+- Running basic actions on your models with your action factory
 :::
 
 ## Your first model
@@ -67,7 +67,9 @@ console.log(post.title); // "Hello World!"
 console.log(post.isDraft); // true
 ```
 
-## Action factory with blueprints
+## Your first actions
+
+### Action factory with blueprints
 
 Once your models are set up, you will probably want to interact with a data store, such as an API.
 For this, you will need an action factory which initialize a preconfigured context
@@ -112,7 +114,7 @@ If you want more control over your action factory and dependencies, you should
 read [the advanced guide on actions dependencies and factories (TODO)](#todo).
 :::
 
-## Running actions
+### Running actions
 
 To run an action, you can initialize a new action instance by calling your factory.
 With this instance, you can call **context enhancers** through `use` to modify

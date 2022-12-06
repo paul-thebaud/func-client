@@ -34,19 +34,19 @@ export type ModelRelation<T> = ModelProp<T> & {
 // TODO Rename S generics to D.
 export type ModelDefinition = Dictionary;
 
-export type ModelSchema<S extends ModelDefinition> = [keyof S] extends [never]
+export type ModelSchema<D extends ModelDefinition> = [keyof D] extends [never]
   ? Dictionary<ModelAttribute<any, any> | ModelRelation<any>>
   : {
-    [K in keyof S]: S[K] extends ModelAttribute<any, any>
-      ? S[K] : S[K] extends ModelRelation<any>
-        ? S[K] : never;
+    [K in keyof D]: D[K] extends ModelAttribute<any, any>
+      ? D[K] : D[K] extends ModelRelation<any>
+        ? D[K] : never;
   };
 
-export type ModelValues<S extends ModelDefinition> = [keyof S] extends [never]
+export type ModelValues<D extends ModelDefinition> = [keyof D] extends [never]
   ? Dictionary
   : {
-    [K in keyof S]: S[K] extends ModelAttribute<infer T, any>
-      ? T : S[K] extends ModelRelation<infer T>
+    [K in keyof D]: D[K] extends ModelAttribute<infer T, any>
+      ? T : D[K] extends ModelRelation<infer T>
         ? T : never;
   };
 
@@ -61,35 +61,35 @@ export type ModelInstanceHook =
   | 'onDestroying'
   | 'onDestroyed';
 
-export type ModelInstance<S extends ModelDefinition = {}> = {
+export type ModelInstance<D extends ModelDefinition = {}> = {
   readonly $MODEL_TYPE: 'instance';
-  readonly constructor: Model<S>;
+  readonly constructor: Model<D>;
   // FIXME Should the model id be nullable in its type?
   id: ModelId;
   exists: boolean;
   $loaded: Dictionary<true>;
-  $original: Partial<ModelValues<S>>;
-  $values: Partial<ModelValues<S>>;
+  $original: Partial<ModelValues<D>>;
+  $values: Partial<ModelValues<D>>;
 } & {
-  [K in keyof S]: S[K] extends ModelAttribute<infer T, any>
-    ? T : S[K] extends ModelRelation<infer T>
-      ? T : S[K];
+  [K in keyof D]: D[K] extends ModelAttribute<infer T, any>
+    ? T : D[K] extends ModelRelation<infer T>
+      ? T : D[K];
 };
 
-export type ModelClass<S extends ModelDefinition = {}> = {
+export type ModelClass<D extends ModelDefinition = {}> = {
   readonly $MODEL_TYPE: 'model';
   readonly $config: ModelConfig;
-  readonly $rawSchema: () => S;
-  readonly $schema: ModelSchema<S>;
+  readonly $rawSchema: () => D;
+  readonly $schema: ModelSchema<D>;
   extends<NS extends ModelSchema<{}> = {}, NE extends object = {}>(
     addSchemaAndExtension?: { schema?: NS; extension?: NE; },
-  ): Model<S & NS & NE, ModelInstance<S & NS & NE>>;
+  ): Model<D & NS & NE, ModelInstance<D & NS & NE>>;
   schema<NS extends ModelSchema<{}> = {}>(
     addSchema?: NS,
-  ): Model<S & NS, ModelInstance<S & NS>>;
+  ): Model<D & NS, ModelInstance<D & NS>>;
   extension<NE extends object = {}>(
-    addExtension?: NE & ThisType<ModelInstance<S & NE>>,
-  ): Model<S & NE, ModelInstance<S & NE>>;
+    addExtension?: NE & ThisType<ModelInstance<D & NE>>,
+  ): Model<D & NE, ModelInstance<D & NE>>;
 };
 
 export type Model<S extends ModelDefinition = {}, I extends ModelInstance<S> = ModelInstance<S>> =
@@ -102,6 +102,8 @@ export type ModelInferRawSchema<M> = M extends ModelInstance<infer S>
     ? ModelSchema<S>
     : never;
 
+export type ModelKey<D extends ModelDefinition> = keyof ModelValues<D>;
+
 export type ModelRelationKey<S> =
   keyof S extends infer K
     ? K extends string & keyof S
@@ -111,15 +113,15 @@ export type ModelRelationKey<S> =
           ? S[K]
           : never : never : never;
 
-export type ModelRelationDotKey<S, D extends number = 5> =
-  [D] extends [0]
+export type ModelRelationDotKey<D, Depth extends number = 5> =
+  [Depth] extends [0]
     ? never
-    : keyof S extends infer K
-      ? K extends string & keyof S
-        ? S[K] extends never
+    : keyof D extends infer K
+      ? K extends string & keyof D
+        ? D[K] extends never
           ? never
-          : S[K] extends ModelRelation<infer T>
+          : D[K] extends ModelRelation<infer T>
             ? T extends any[]
-              ? K | `${K}.${ModelRelationDotKey<ModelInferRawSchema<T[number]>, Prev[D]>}`
-              : K | `${K}.${ModelRelationDotKey<ModelInferRawSchema<T>, Prev[D]>}`
+              ? K | `${K}.${ModelRelationDotKey<ModelInferRawSchema<T[number]>, Prev[Depth]>}`
+              : K | `${K}.${ModelRelationDotKey<ModelInferRawSchema<T>, Prev[Depth]>}`
             : never : never : never;

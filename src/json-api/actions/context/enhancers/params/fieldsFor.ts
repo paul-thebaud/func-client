@@ -1,11 +1,11 @@
-import { Action, ActionContext, ArrayWrappable, ModelClass, ModelDefinition, ModelValues, param } from '@/core';
+import { Action, ActionContext, Arrayable, ModelClass, ModelDefinition, ModelKey, param } from '@/core';
 import previousParams from '@/core/actions/context/utilities/previousParams';
-import arrayWrap from '@/core/utilities/arrayWrap';
+import wrap from '@/core/utilities/wrap';
 import mergeParamList from '@/json-api/utilities/mergeParamList';
 
-export default function fieldsFor<S extends ModelDefinition>(
-  model: ModelClass<S>,
-  fieldset: ArrayWrappable<keyof ModelValues<S>>,
+export default function fieldsFor<D extends ModelDefinition>(
+  model: ModelClass<D>,
+  fieldset: Arrayable<ModelKey<D>>,
 ) {
   return async <C extends ActionContext>(a: Action<C>) => {
     const prevFields = previousParams(await a.getContext())?.fields;
@@ -14,7 +14,7 @@ export default function fieldsFor<S extends ModelDefinition>(
       ...prevFields,
       [model.$config.type]: mergeParamList([
         prevFields?.[model.$config.type],
-        ...arrayWrap(fieldset),
+        ...wrap(fieldset),
       ]),
     }));
   };

@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { ModelDefinition, ModelInstance, ModelValues } from '@/core/model/types';
+import { ModelDefinition, ModelInstance, ModelKey } from '@/core/model/types';
 import cloneModelValue from '@/core/model/utilities/cloneModelValue';
 import schemaKeys from '@/core/model/utilities/schemaKeys';
-import { ArrayWrappable } from '@/core/utilities/types';
+import { Arrayable } from '@/core/utilities/types';
 
 export default function syncOriginal<S extends ModelDefinition, I>(
   instance: ModelInstance<S> & I,
-  keys?: ArrayWrappable<keyof ModelValues<S>>,
+  keys?: Arrayable<ModelKey<S>>,
 ) {
   if (keys === undefined) {
     instance.$original = {};

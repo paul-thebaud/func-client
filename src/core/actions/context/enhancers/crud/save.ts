@@ -4,7 +4,7 @@ import update from '@/core/actions/context/enhancers/crud/update';
 import { ConsumeAdapter, ConsumeInstance, ConsumeSerializer } from '@/core/actions/types';
 import { ModelInstance, ModelDefinition } from '@/core/model/types';
 
-export default function save<R, D, S extends ModelDefinition, I>(
+export default function save<R, D, S extends ModelDefinition, I extends ModelInstance<S>>(
   instance: ModelInstance<S> & I,
 ) {
   return <C extends ConsumeAdapter<R, D> & ConsumeSerializer<D>>(a: Action<C>) => (

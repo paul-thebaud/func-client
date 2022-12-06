@@ -33,6 +33,8 @@
     position: relative;
     padding: 4px 6px;
     border-radius: 8px;
+    font-weight: bold;
+    margin-right: 4px;
 }
 
 .chip::before {
@@ -49,4 +51,16 @@
 
 .chip.chip--primary {
     color: var(--ifm-color-primary);
+}
+
+.chip.chip--success {
+    color: var(--ifm-color-success-darkest);
+}
+
+.chip.chip--info {
+    color: var(--ifm-color-info-darkest);
+}
+
+.chip.chip--danger {
+    color: var(--ifm-color-danger-darkest);
 }

@@ -1,0 +1,83 @@
+---
+sidebar_position: 4
+---
+
+# API
+
+## Model types
+
+### `ModelId`
+
+```typescript
+type ModelId = string | number;
+```
+
+### `ModelDefinition`
+
+A raw model definition corresponding to a merge of the model schema
+(attributes, relations) and the model extensions
+(custom getters, methods, etc.).
+
+### `ModelSchema<D>`
+
+An extracted schema from a [`ModelDefinition` `D`](#modeldefinition).
+
+### `ModelValues<D>`
+
+A dictionary of a [`ModelSchema<D>`](#modelschemad) values.
+
+### `ModelKey<D>`
+
+A key of a [`ModelSchema<D>`](#modelschemad). It can be an attribute or a
+relation key.
+
+### `ModelRelationDotKey<D>`
+
+A dotted key of a relation for a [`ModelSchema<D>`](#modelschemad). It can be
+a deep relation.
+
+Examples for a `Post` model: `comments`, `comments.author`,
+`comments.reactions`, etc.
+
+### `ModelClass<D>`
+
+A model class made with the model factory and defined by its
+[`ModelDefinition` `D`](#modeldefinition).
+
+### `Model<D, I>`
+
+A [`ModelClass<D>`](#modelclassd) which is also a constructor of an
+instance of this class `I`.
+
+## Action types
+
+### `ActionMethod`
+
+An HTTP method as a fully lower or upper cased string (GET, POST, etc.).
+
+### `ActionContext`
+
+A variable and extendable context to be enhanced and ran by an action.
+
+```typescript
+export type ActionContext = {
+  method?: ActionMethod;
+  baseURL?: string;
+  type?: string;
+  id?: ModelId;
+  relation?: string;
+  includes?: string[];
+  path?: string;
+  params?: Dictionary<any> | string;
+  payload?: unknown;
+  [key: string]: unknown;
+};
+```
+
+## Utilities types
+
+### `Arrayable<T>`
+
+```typescript
+type Arrayable<T> = T | T[];
+```

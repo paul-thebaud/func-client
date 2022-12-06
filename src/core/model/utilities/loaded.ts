@@ -1,14 +1,14 @@
 import isInstance from '@/core/model/guards/isInstance';
 import isRelationDef from '@/core/model/guards/isRelationDef';
 import { ModelDefinition, ModelInstance, ModelRelationDotKey } from '@/core/model/types';
-import arrayWrap from '@/core/utilities/arrayWrap';
-import { ArrayWrappable } from '@/core/utilities/types';
+import wrap from '@/core/utilities/wrap';
+import { Arrayable } from '@/core/utilities/types';
 
 export default function loaded<S extends ModelDefinition>(
   instance: ModelInstance<S>,
-  relations: ArrayWrappable<ModelRelationDotKey<S>>,
+  relations: Arrayable<ModelRelationDotKey<S>>,
 ): boolean {
-  return arrayWrap(relations).every((key) => {
+  return wrap(relations).every((key) => {
     const [localKey, ...relatedKeys] = key.split('.');
     const def = instance.constructor.$schema[localKey];
     if (!isRelationDef(def)) {

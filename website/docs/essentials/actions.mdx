@@ -1,0 +1,291 @@
+---
+sidebar_position: 3
+---
+
+import Chip from '../../src/components/chip';
+import FunctionInfo from '../../src/components/functionInfo';
+
+# Actions
+
+:::tip What you'll learn
+
+- Building actions
+- Placing hooks on actions
+- Available context enhancers
+- Available context runners
+
+:::
+
+:::caution Requirements
+Before reading this guide, you should have a working action factory. You can
+read the [**getting started guide**](/docs/getting-started#your-first-actions)
+to quickly create your own action factory.
+:::
+
+### Enhancing and running
+
+As stated in the [discover guide](/docs/discover#concept), actions are
+instantiated through your action factory, evolved with context enhancers and
+ran by context runners.
+
+```javascript
+const posts = await action()
+  .use(model(Post))
+  .use(include('comments'))
+  .run(all());
+```
+
+In the example above:
+
+- `action()` is your action factory
+- `model(Post)` and `include('comments')` are context enhancers which we `use`
+- `all()` is a context runner which we `run`
+
+When you instantiate a new action, you can `use` multiple context enhancers.
+Those enhancers will be queued until the `run` call.
+
+An enhancer take the action with a given context and enhancer its context. It
+might use other enhancers. An enhancer may return an instance of an action
+or void.
+
+A runner take the action with its context and use it to return a result. It
+might use other enhancers and runners. A runner may return any result (
+including void, throwing error, etc.).
+
+### Hooks
+
+Every action will trigger hooks when running. There are 4 hooks available.
+You may register any hooks you want to use. The `hook` method will
+register an additional hook, whereas the `hooks` method will replace all
+existing hooks by the given ones.
+
+```javascript
+action()
+  .hook('onRunning', ({ context }) => /* ... */)
+  .hook('onSuccess', ({ context, result }) => /* ... */)
+  .hook('onError', ({ context, error }) => /* ... */)
+  .hook('onFinally', ({ context }) => /* ... */);
+```
+
+You can also disable or enable an action instance hooks execution at any time.
+This will also prevent any FuncModel hooks from executing.
+
+```javascript
+const myAction = action();
+// Disable hooks execution.
+myAction.withoutHooks();
+// Re-enable hooks execution.
+myAction.withHooks();
+```
+
+:::info
+FuncModel will also register hooks when using some enhancers. Those will
+provide some library features (models hooks, etc.).
+:::
+
+## Note on enhancers and runners
+
+Any context enhancers or runners in this guide may:
+
+- <Chip>depend</Chip> on a minimal package version
+- <Chip color="primary">only</Chip> be available in a given use case
+(JSON:API, etc.)
+- <Chip color="success">provide</Chip> a given context to next enhancers
+or runners
+- <Chip color="danger">require</Chip> a given context from previous enhancers
+or runners
+
+Most runners will execute an action through the adapter.
+
+The examples will omit imports of your action factories or models to
+provide shorter examples.
+
+## <Chip color="primary">Work in progress</Chip> Available enhancers
+
+### `context`
+
+Merge the given context into the action's current context.
+**The context is not deeply merged.**
+
+This is the most basic context enhancer. It is used by a lot of FuncModel
+enhancers.
+
+#### Example
+
+```javascript
+import { context } from 'func-model/core';
+
+action().use(context({ method: 'GET', path: 'hello-world' }));
+```
+
+#### Arguments
+
+- [`{Partial<ActionContext>}`](/docs/api#actioncontext) `contextToMerge`
+the context to merge into the action's current context
+
+### `model`
+
+<FunctionInfo provides="Definition, Model" />
+
+Target the given model.
+Register the given model and its definition onto the action's current context.
+
+#### Example
+
+```javascript
+import { model } from 'func-model/core';
+
+action().use(model(Post));
+```
+
+#### Arguments
+
+- [`{Model<D, I>}`](/docs/api#modeld-i) `modelToUse` the model class to use
+
+### `include`
+
+<FunctionInfo requires="Definition" />
+
+Eager load the given relations for the current model definition. It accepts
+deep relations through dot notation. The new relations will be merged with the
+previous ones.
+
+#### Example
+
+```javascript
+import { include } from 'func-model/core';
+
+action().use(include(['author', 'comments', 'comments.reactions']));
+```
+
+#### Arguments
+
+- [`{Arrayable<ModelRelationDotKey<D>>}`](/docs/api#modelrelationdotkeyd)
+`relations` a relation or a set of relation to eager load
+
+### `fields`
+
+<FunctionInfo
+  only="JSON:API"
+  requires="Model"
+/>
+
+Select the given
+[JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
+for the current context's model. The new fieldsets will be merged with the
+previous ones.
+
+#### Example
+
+```javascript
+import { fields } from 'func-model/json-api';
+
+action().use(fields(['title', 'description']));
+```
+
+#### Arguments
+
+- [`{Arrayable<ModelKey<D>>}`](/docs/api#modelvaluesd) `fieldset` a
+field or a set of field to select for the current context's model
+
+### `fieldsFor`
+
+<FunctionInfo only="JSON:API" />
+
+Select the given
+[JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
+for the given model. The new fieldsets will be merged with the
+previous ones.
+
+#### Example
+
+```javascript
+import { fieldsFor } from 'func-model/json-api';
+
+action().use(fieldsFor(Post, ['title', 'description']));
+```
+
+#### Arguments
+
+- [`{ModelClass<D>}`](/docs/api#modelclassd) `model` the model
+to select the fieldsets for
+- [`{Arrayable<ModelKey<D>>}`](/docs/api#modelvaluesd) `fieldset` a
+field or a set of field to select for the given model
+
+### `sortBy`
+
+<FunctionInfo only="JSON:API" />
+
+[Sort the JSON:API resource](https://jsonapi.org/format/#fetching-sorting)
+by the given key and direction. The new sort will be merged with the
+previous ones. **Sorts priority are kept**.
+
+#### Example
+
+```javascript
+import { sortBy } from 'func-model/json-api';
+
+action().use(sortBy('createdAt'));
+```
+
+#### Arguments
+
+- `{string}` `key` the key for the sort
+- `{'asc' | 'desc' = 'asc'}` `direction` the direction for the sort
+
+### `sortByDesc`
+
+<FunctionInfo only="JSON:API" />
+
+Shortcut for the [`sortBy` function](#sortby) with a `desc` direction.
+
+#### Example
+
+```javascript
+import { sortByDesc } from 'func-model/json-api';
+
+action().use(sortByDesc('createdAt'));
+```
+
+#### Arguments
+
+- `{string}` `key` the key for the sort
+
+## <Chip color="primary">Work in progress</Chip>  Available runners
+
+### `none`
+
+<FunctionInfo requires="Adapter" />
+
+Run the action through the adapter without using the result.
+Adapter errors may still occur.
+
+#### Example
+
+```javascript
+import { none } from 'func-model/core';
+
+await action().run(none());
+```
+
+#### Returns
+
+`{Promise<void>}`
+
+### `all`
+
+<FunctionInfo requires="Adapter, Deserializer, Model" />
+
+Retrieve an array of targeted model's instances.
+
+#### Example
+
+```javascript
+import { all } from 'func-model/core';
+
+const posts = await action().run(all());
+```
+
+#### Returns
+
+`{Promise<I[]>}` where `I` is an instance of the targeted model.

@@ -51,17 +51,15 @@ export type ContextRunner<C extends ActionContext, R> = (
   a: Action<C>,
 ) => R;
 
-export type ConsumeSchema<S extends ModelDefinition = ModelDefinition> = { schema: S; };
+export type ConsumeDefinition<D extends ModelDefinition = ModelDefinition> = { schema: D; };
 
-export type ConsumeModel<S extends ModelDefinition = ModelDefinition, I = ModelInstance<S>> =
-  & ConsumeSchema<S>
-  & { type: string; model: ModelClass<S> & Constructor<I>; };
+export type ConsumeModel<D extends ModelDefinition = ModelDefinition, I = ModelInstance<D>> =
+  & ConsumeDefinition<D>
+  & { type: string; model: ModelClass<D> & Constructor<I>; };
 
 export type ConsumeInstance<S extends ModelDefinition = ModelDefinition, I = ModelInstance<S>> =
   & ConsumeModel<S, I>
   & { instance: ModelInstance<S> & I; };
-
-export type ConsumeId = { id: ModelId };
 
 export type ConsumeCache = { cache: InstancesCacheI; };
 

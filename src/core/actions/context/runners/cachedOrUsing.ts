@@ -1,8 +1,10 @@
 import Action from '@/core/actions/action';
-import { ActionContext, ConsumeCache, ConsumeId, ConsumeModel, ContextRunner } from '@/core/actions/types';
+import { ActionContext, ConsumeCache, ConsumeModel, ContextRunner } from '@/core/actions/types';
+import FuncModelError from '@/core/errors/funcModelError';
 import { ModelDefinition } from '@/core/model/types';
 import loaded from '@/core/model/utilities/loaded';
 import isNil from '@/core/utilities/isNil';
+import isNone from '@/core/utilities/isNone';
 import { Awaitable } from '@/core/utilities/types';
 
 export default function cachedOrUsing<C extends ActionContext,
@@ -11,9 +13,13 @@ export default function cachedOrUsing<C extends ActionContext,
   nilRunner: ContextRunner<C, DD>,
 ) {
   return async (
-    action: Action<C & ConsumeCache & ConsumeId & ConsumeModel<S, I>>,
+    action: Action<C & ConsumeCache & ConsumeModel<S, I>>,
   ) => {
     const context = await action.getContext();
+    if (isNone(context.id)) {
+      throw new FuncModelError('cannot use cached runner without ID context');
+    }
+
     const cachedInstance = await context.cache.find(context.type, context.id);
     if (isNil(cachedInstance)) {
       return action.run(nilRunner);

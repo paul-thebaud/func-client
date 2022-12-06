@@ -1,12 +1,12 @@
 import { ModelInstance, ModelInstanceHook } from '@/core/model/types';
-import arrayWrap from '@/core/utilities/arrayWrap';
-import { ArrayWrappable } from '@/core/utilities/types';
+import wrap from '@/core/utilities/wrap';
+import { Arrayable } from '@/core/utilities/types';
 
 export default function runInstanceHooks(
   instance: ModelInstance<any>,
-  hooks: ArrayWrappable<ModelInstanceHook>,
+  hooks: Arrayable<ModelInstanceHook>,
 ) {
-  arrayWrap(hooks).forEach((hook) => {
+  wrap(hooks).forEach((hook) => {
     if (typeof instance[hook] === 'function') {
       instance[hook]();
     }

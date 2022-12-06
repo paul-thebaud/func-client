@@ -1,14 +1,13 @@
 # Planned features
-
+  
 ## General features
 
-- [ ] Enumerable and other props on model attributes.
 - [ ] Rename package to `func-api-client` or something like this.
-- [ ] Extendable base model (to always make timestamped models, etc.).
-- [ ] Avoid updating if nothing changed.
+- [ ] Rename one letter parameters to real name (`a` to `action`)
+- [ ] Rename model definition generics (`S` to `D`)
+- [ ] Generic context (ID, etc.) should not be mentioned in ActionContext type
 - [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Manage errors when users are bypassing types (relations not found, etc.)
-- [ ] Rename one letter parameters to real name (`a` to `action`)
 - [ ] Tests using vitest
 
 ## Documentation
@@ -42,13 +41,6 @@ Planned plan for documentation:
 
 Provide relations related helpers and actions enhancers/consumers.
 
-### Helpers
-
-```ts
-// Check if the post instance has its author relation missing.
-loaded(post, 'author'); // True or false
-```
-
 ### Read actions
 
 Those enhancers and consumers will probably be available in the core.
@@ -76,20 +68,6 @@ await action().run(dissociate(post, 'author'));
 await action().run(attach(post, 'tags', [tag]));
 await action().run(sync(post, 'tags', [tag]));
 await action().run(detach(post, 'tags', [tag]));
-```
-
-### Associated features
-
-Those elements will allow better consumers, such as:
-
-```ts
-// Retrieve post from cache, load missing relation.
-// OR, if not found, run oneOrFail with included rels.
-// This may also check for included fields.
-const post = await action()
-  .use(find(Post, '<id>'))
-  .use(include('author', 'tags'))
-  .run(newCachedOr(oneOrFail())); // TODO Find a good name for this.
 ```
 
 ## Relations inverse
