@@ -1,5 +1,5 @@
 import Action from '@/core/actions/action';
-import cachedOr from '@/core/actions/context/consumers/cachedOr';
+import cachedOr from '@/core/actions/context/runners/cachedOr';
 import { ConsumeCache, ConsumeId, ConsumeModel } from '@/core/actions/types';
 import RunFailureError from '@/core/errors/runFailureError';
 import { ModelDefinition } from '@/core/model/types';

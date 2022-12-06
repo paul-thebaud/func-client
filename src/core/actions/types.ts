@@ -47,7 +47,7 @@ export type ContextEnhancer<PC extends ActionContext, NC extends ActionContext> 
   a: Action<PC>,
 ) => Awaitable<Action<NC> | void>;
 
-export type ContextConsumer<C extends ActionContext, R> = (
+export type ContextRunner<C extends ActionContext, R> = (
   a: Action<C>,
 ) => R;
 

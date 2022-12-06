@@ -1,5 +1,5 @@
 import Action from '@/core/actions/action';
-import knownData from '@/core/actions/context/consumers/knownData';
+import knownData from '@/core/actions/context/runners/knownData';
 import { ConsumeAdapter } from '@/core/actions/types';
 
 export default function data<R, D>() {

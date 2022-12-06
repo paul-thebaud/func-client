@@ -1,5 +1,5 @@
 import Action from '@/core/actions/action';
-import raw from '@/core/actions/context/consumers/raw';
+import raw from '@/core/actions/context/runners/raw';
 import { ConsumeAdapter } from '@/core/actions/types';
 
 export default function knownData<ND = any, R = unknown, D = unknown>() {

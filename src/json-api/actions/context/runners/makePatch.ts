@@ -1,7 +1,7 @@
 import { Action, ActionContext, ConsumeAdapter } from '@/core';
-import makeRequest, { RequestConfig } from '@/json-api/actions/context/consumers/makeRequest';
+import makeRequest, { RequestConfig } from '@/json-api/actions/context/runners/makeRequest';
 
-export default function makeDelete<R, D>(
+export default function makePatch<R, D>(
   pathOrBaseURL: string,
   payload?: unknown,
   config?: Omit<RequestConfig, 'method' | 'payload'>,

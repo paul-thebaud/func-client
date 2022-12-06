@@ -1,4 +1,4 @@
-import type { ActionContext, ActionHooks, ContextConsumer, ContextEnhancer } from '@/core/actions/types';
+import type { ActionContext, ActionHooks, ContextEnhancer, ContextRunner } from '@/core/actions/types';
 import sequentialTransform from '@/core/utilities/sequentialTransform';
 
 export default class Action<C extends ActionContext> {
@@ -77,7 +77,7 @@ export default class Action<C extends ActionContext> {
     return this as any;
   }
 
-  public async run<NR>(consumer: ContextConsumer<C, NR>): Promise<Awaited<NR>> {
+  public async run<NR>(runner: ContextRunner<C, NR>): Promise<Awaited<NR>> {
     const context = await this.getContext();
 
     // Some enhancements might disable hooks, so store the hooks state only
@@ -87,13 +87,13 @@ export default class Action<C extends ActionContext> {
     await this.runHooks('onRunning', { context });
 
     try {
-      // Context consumer might use other context consumers, so we must disable
+      // Context runner might use other context runners, so we must disable
       // hooks at this point to avoid multiple hooks runs.
       if (hooksEnabled) {
         this.withoutHooks();
       }
 
-      const result = await consumer(this);
+      const result = await runner(this);
 
       if (hooksEnabled) {
         this.withHooks();

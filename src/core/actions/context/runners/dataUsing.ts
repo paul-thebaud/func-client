@@ -1,5 +1,5 @@
 import Action from '@/core/actions/action';
-import data from '@/core/actions/context/consumers/data';
+import data from '@/core/actions/context/runners/data';
 import { ActionContext, ConsumeAdapter } from '@/core/actions/types';
 
 export default function dataUsing<C extends ActionContext, R, D, ND>(

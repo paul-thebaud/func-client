@@ -1,6 +1,6 @@
 import Action from '@/core/actions/action';
-import dataUsing from '@/core/actions/context/consumers/dataUsing';
-import toManyInstances from '@/core/actions/context/consumers/transformers/toManyInstances';
+import dataUsing from '@/core/actions/context/runners/dataUsing';
+import toManyInstances from '@/core/actions/context/runners/transformers/toManyInstances';
 import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
 import { ModelDefinition } from '@/core/model/types';
 import { Awaitable } from '@/core/utilities/types';

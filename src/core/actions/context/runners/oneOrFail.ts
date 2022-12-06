@@ -1,5 +1,5 @@
 import Action from '@/core/actions/action';
-import oneOr from '@/core/actions/context/consumers/oneOr';
+import oneOr from '@/core/actions/context/runners/oneOr';
 import { ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
 import RunFailureError from '@/core/errors/runFailureError';
 import { ModelDefinition } from '@/core/model/types';

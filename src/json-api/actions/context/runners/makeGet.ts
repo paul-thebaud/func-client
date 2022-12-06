@@ -1,5 +1,5 @@
 import { Action, ActionContext, ConsumeAdapter } from '@/core';
-import makeRequest, { RequestConfig } from '@/json-api/actions/context/consumers/makeRequest';
+import makeRequest, { RequestConfig } from '@/json-api/actions/context/runners/makeRequest';
 
 export default function makeGet<R, D>(
   pathOrBaseURL: string,

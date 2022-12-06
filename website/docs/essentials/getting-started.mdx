@@ -117,7 +117,7 @@ read [the advanced guide on actions dependencies and factories (TODO)](#todo).
 To run an action, you can initialize a new action instance by calling your factory.
 With this instance, you can call **context enhancers** through `use` to modify
 the action context.
-When you are ready, you can `run` the action with a given **context consumer**.
+When you are ready, you can `run` the action with a given **context runner**.
 
 ```javascript
 import { all, model } from 'func-model/core';
@@ -130,13 +130,13 @@ const posts = await action()
 ```
 
 Generally in FuncModel, the context enhancers are doing the majority of work to
-customize the action you will run. Context consumers only exists to tell how
+customize the action you will run. Context runners only exists to tell how
 you wish to run the action and retrieve the result (raw response,
 model instance, etc.).
 
 A great example of this is when finding a model using its ID. You'll not use
-a `find` context consumer. Instead, you will need to use a `find` context
-enhancer and a `oneOrFail` context consumer. This way, you are able to do
+a `find` context runner. Instead, you will need to use a `find` context
+enhancer and a `oneOrFail` context runner. This way, you are able to do
 a find query and retrieve a raw result when needed.
 
 ```javascript
@@ -190,7 +190,7 @@ console.log(data.message); // "Successfully published post."
 ```
 
 :::info
-`data` consumer will return the adapter response data (for JSON:API, it is a JSON:API document).
+`data` runner will return the adapter response data (for JSON:API, it is a JSON:API document).
 
 `knownData` will the same data but with a generic type (which defaults to any). This can be useful
 when creating non-standard JSON:API services.
