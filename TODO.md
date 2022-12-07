@@ -8,6 +8,8 @@
 - [ ] Generic context (ID, etc.) should not be mentioned in ActionContext type
 - [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Manage errors when users are bypassing types (relations not found, etc.)
+- [ ] Avoid exporting common types (Dictionary, etc.), users will recreate those if needed
+- [ ] Probably merge "discover" docs in "getting started"
 - [ ] Tests using vitest
 
 ## Documentation
@@ -31,6 +33,7 @@ Planned plan for documentation:
         - Transform
       - Relations
     - Extensions
+  - Best practices (model vs ES6 classes, extensions, etc.)
 - Advanced
   - Configuration
     - Model configuration
