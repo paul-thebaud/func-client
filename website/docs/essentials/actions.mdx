@@ -3,6 +3,7 @@ sidebar_position: 3
 description: Build actions, discover enhancers and runners.
 ---
 
+
 import Chip from '../../src/components/chip';
 import FunctionInfo from '../../src/components/functionInfo';
 
@@ -258,8 +259,8 @@ action().use(sortByDesc('createdAt'));
 
 <FunctionInfo requires="Adapter" />
 
-Run the action through the adapter without using the result.
-Adapter errors may still occur.
+Run the action and ignore the content of the result.
+Adapter errors are not caught and so may be thrown.
 
 #### Example
 
@@ -277,7 +278,7 @@ await action().run(none());
 
 <FunctionInfo requires="Adapter, Deserializer, Model" />
 
-Retrieve an array of targeted model's instances.
+Run the action and deserialize an array of model's instance.
 
 #### Example
 
