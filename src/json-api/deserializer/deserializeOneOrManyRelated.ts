@@ -2,21 +2,21 @@ import { ModelInstance } from '@/core';
 import isNil from '@/core/utilities/isNil';
 import { JsonApiResourceIdentifier } from '@/json-api/types';
 
-export type DeserializeIncluded = (
+export type DeserializeRelated = (
   resourceIdentifier: JsonApiResourceIdentifier,
 ) => Promise<ModelInstance>;
 
-export default async function deserializeRelated(
+export default async function deserializeOneOrManyRelated(
   value: JsonApiResourceIdentifier[] | JsonApiResourceIdentifier | null,
-  deserializeIncluded: DeserializeIncluded,
+  deserializeRelated: DeserializeRelated,
 ) {
   if (isNil(value)) {
     return null;
   }
 
   if (Array.isArray(value)) {
-    return Promise.all(value.map((r) => deserializeIncluded(r)));
+    return Promise.all(value.map((r) => deserializeRelated(r)));
   }
 
-  return deserializeIncluded(value);
+  return deserializeRelated(value);
 }

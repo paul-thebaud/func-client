@@ -1,7 +1,7 @@
 import { ActionContext, DeserializerI, FuncModelError } from '@/core';
 import isNil from '@/core/utilities/isNil';
 import deserializeOne from '@/json-api/deserializer/deserializeOne';
-import makeIncludedMap from '@/json-api/deserializer/makeIncludedMap';
+import prepareDeserializationData from '@/json-api/deserializer/prepareDeserializationData';
 import { DeserializerOptions } from '@/json-api/deserializer/types';
 import { JsonApiDocument } from '@/json-api/types';
 
@@ -24,7 +24,7 @@ export default class Deserializer implements DeserializerI<JsonApiDocument> {
     return deserializeOne(
       context,
       document.data,
-      makeIncludedMap(document.included ?? []),
+      prepareDeserializationData([document.data], document.included ?? []),
       this.options,
     );
   }
@@ -34,10 +34,10 @@ export default class Deserializer implements DeserializerI<JsonApiDocument> {
       throw new FuncModelError('Cannot deserialize non array JSON:API resources to many');
     }
 
-    const includedMap = makeIncludedMap(document.included ?? []);
+    const deserializationData = prepareDeserializationData(document.data, document.included ?? []);
 
     return Promise.all(document.data.map(
-      (resource) => deserializeOne(context, resource, includedMap, this.options),
+      (resource) => deserializeOne(context, resource, deserializationData, this.options),
     ));
   }
 }
