@@ -1,5 +1,5 @@
 # Planned features
-  
+
 ## General features
 
 - [ ] Rename package to `func-api-client` or something like this.
@@ -8,8 +8,10 @@
 - [ ] Generic context (ID, etc.) should not be mentioned in ActionContext type
 - [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Manage errors when users are bypassing types (relations not found, etc.)
-- [ ] Avoid exporting common types (Dictionary, etc.), users will recreate those if needed
 - [ ] Probably merge "discover" docs in "getting started"
+- [ ] Models hooks should be defined as same as action hooks (definition made
+  available outside of model). It should also be external
+  functions (`registerHook`, `unregisterHook`, `withoutHooks`, etc.)
 - [ ] Tests using vitest
 
 ## Documentation
@@ -18,27 +20,27 @@ Planned plan for documentation:
 
 - Discover
 - Installation
-  - Yarn
-  - PNPM
-  - NPM
-  - UMD?
-  - Notes?
+    - Yarn
+    - PNPM
+    - NPM
+    - UMD?
+    - Notes?
 - Essentials
-  - Getting started
-  - Models
-    - Model factory
-    - Schema
-      - Attributes
-        - Configuration
-        - Transform
-      - Relations
-    - Extensions
-  - Best practices (model vs ES6 classes, extensions, etc.)
+    - Getting started
+    - Models
+        - Model factory
+        - Schema
+            - Attributes
+                - Configuration
+                - Transform
+            - Relations
+        - Extensions
+    - Best practices (model vs ES6 classes, extensions, etc.)
 - Advanced
-  - Configuration
-    - Model configuration
-  - Models composition
-  - Custom transformers
+    - Configuration
+        - Model configuration
+    - Models composition
+    - Custom transformers
 
 ## Relations interactions
 

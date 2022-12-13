@@ -24,7 +24,6 @@ import useTransform from '@/core/transforms/useTransform';
 export * from '@/core/actions/types';
 export * from '@/core/model/types';
 export * from '@/core/transforms/types';
-export * from '@/core/utilities/types';
 export * from '@/core/types';
 
 export * from '@/core/actions';
