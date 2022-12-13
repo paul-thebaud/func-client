@@ -1,4 +1,5 @@
-import { ActionContext, Dictionary } from '@/core';
+import { ActionContext } from '@/core';
+import { Dictionary } from '@/core/utilities/types';
 import makeEndpoint from '@/json-api/adapter/makeEndpoint';
 import makeParams from '@/json-api/adapter/makeParams';
 import { AdapterOptions, JsonApiRequest } from '@/json-api/adapter/types';

@@ -1,4 +1,5 @@
-import { ActionMethod, Awaitable, Dictionary } from '@/core';
+import { ActionMethod } from '@/core';
+import { Awaitable, Dictionary } from '@/core/utilities/types';
 import { JsonApiDocument, JsonApiError } from '@/json-api/types';
 
 export type JsonApiRequest = {

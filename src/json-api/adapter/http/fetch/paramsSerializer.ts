@@ -1,4 +1,4 @@
-import { Dictionary } from '@/core';
+import { Dictionary } from '@/core/utilities/types';
 
 export default function paramsSerializer(params: Dictionary<any>) {
   const urlSearchParams = new URLSearchParams();

@@ -1,4 +1,5 @@
-import { Action, ActionContext, ActionMethod, ConsumeAdapter, context, Dictionary } from '@/core';
+import { Action, ActionContext, ActionMethod, ConsumeAdapter, context } from '@/core';
+import { Dictionary } from '@/core/utilities/types';
 
 export type RequestConfig = {
   method?: ActionMethod;

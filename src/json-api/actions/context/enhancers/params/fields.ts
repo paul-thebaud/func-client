@@ -1,4 +1,5 @@
-import { Action, ActionContext, Arrayable, ConsumeModel, ModelDefinition, ModelKey } from '@/core';
+import { Action, ActionContext, ConsumeModel, ModelDefinition, ModelKey } from '@/core';
+import { Arrayable } from '@/core/utilities/types';
 import fieldsFor from '@/json-api/actions/context/enhancers/params/fieldsFor';
 
 export default function fields<C extends ActionContext, D extends ModelDefinition>(

@@ -1,7 +1,8 @@
 import makeCache from '@/blueprints/makeCache';
 import makeStore from '@/blueprints/makeStore';
 import toKebab from '@/blueprints/utilities/toKebab';
-import { Action, Dictionary, withAdapter, withCache, withDeserializer, withSerializer, withStore } from '@/core';
+import { Action, withAdapter, withCache, withDeserializer, withSerializer, withStore } from '@/core';
+import { Dictionary } from '@/core/utilities/types';
 import {
   Adapter,
   Deserializer,

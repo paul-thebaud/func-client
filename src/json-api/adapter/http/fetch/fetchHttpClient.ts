@@ -1,4 +1,4 @@
-import { Dictionary } from '@/core';
+import { Dictionary } from '@/core/utilities/types';
 import FetchHttpClientError from '@/json-api/adapter/http/fetch/fetchHttpClientError';
 import makeFetchRequestInit from '@/json-api/adapter/http/fetch/makeFetchRequestInit';
 import makeFetchRequestURL from '@/json-api/adapter/http/fetch/makeFetchRequestURL';

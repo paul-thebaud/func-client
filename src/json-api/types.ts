@@ -1,4 +1,5 @@
-import { Dictionary, ModelId } from '@/core';
+import { ModelId } from '@/core';
+import { Dictionary } from '@/core/utilities/types';
 
 export type JsonApiLink = {
   href: string;
