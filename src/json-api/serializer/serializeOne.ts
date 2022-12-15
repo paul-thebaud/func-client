@@ -1,7 +1,6 @@
 import { changed, FuncModelError, ModelInstance } from '@/core';
 import isAttributeDef from '@/core/model/guards/isAttributeDef';
 import isRelationDef from '@/core/model/guards/isRelationDef';
-import mapSchema from '@/core/utilities/mapSchema';
 import serializeAttribute from '@/json-api/serializer/serializeAttribute';
 import serializeRelation from '@/json-api/serializer/serializeRelation';
 import type { SerializerOptions } from '@/json-api/serializer/types';
@@ -18,7 +17,7 @@ export default async function serializeOne(
     relationships: {},
   };
 
-  await Promise.all(mapSchema(instance.constructor.$schema, async (def, key) => {
+  await Promise.all(Object.entries(instance.constructor.$schema).map(async ([key, def]) => {
     if (options.keepUnchanged !== true && !changed(instance, key)) {
       return;
     }

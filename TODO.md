@@ -9,9 +9,6 @@
 - [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Manage errors when users are bypassing types (relations not found, etc.)
 - [ ] Probably merge "discover" docs in "getting started"
-- [ ] Models hooks should be defined as same as action hooks (definition made
-  available outside of model). It should also be external
-  functions (`registerHook`, `unregisterHook`, `withoutHooks`, etc.)
 - [ ] Tests using vitest
 
 ## Documentation

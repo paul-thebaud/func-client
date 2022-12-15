@@ -32,7 +32,7 @@ export default function makeModelClass(config: ModelConfig | string): Model {
         this.$values[key] = def.default;
 
         if (def.default && typeof def.default === 'object') {
-          warn('default object values should be defined using a factory function');
+          warn('default object values must be defined using a factory function');
         }
       }
     });
@@ -43,6 +43,7 @@ export default function makeModelClass(config: ModelConfig | string): Model {
     type: config,
   } : config;
   ModelClass.$schema = {} as ModelSchema<{}>;
+  ModelClass.$hooks = {};
   ModelClass.prototype = {};
   ModelClass.schema = (addSchema?: object) => {
     if (addSchema) {

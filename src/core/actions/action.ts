@@ -1,56 +1,20 @@
-import type { ActionContext, ActionHooks, ContextEnhancer, ContextRunner } from '@/core/actions/types';
+import type { ActionContext, ActionHooksDefinition, ContextEnhancer, ContextRunner } from '@/core/actions/types';
+import runHook from '@/core/hooks/runHook';
+import { HooksRegistrar } from '@/core/hooks/types';
+import withoutHooks from '@/core/hooks/withoutHooks';
 import sequentialTransform from '@/core/utilities/sequentialTransform';
 
 export default class Action<C extends ActionContext> {
+  public $hooks: HooksRegistrar<ActionHooksDefinition> | null;
+
   private $enhancementsQueue: ContextEnhancer<any, any>[];
 
   private $context: C;
 
-  private $hooks: ActionHooks<any>;
-
-  private $hooksEnabled: boolean;
-
   public constructor() {
     this.$enhancementsQueue = [];
     this.$context = {} as C;
-    this.$hooks = {
-      onRunning: [],
-      onSuccess: [],
-      onError: [],
-      onFinally: [],
-    };
-    this.$hooksEnabled = true;
-  }
-
-  public hook<K extends keyof ActionHooks<C>>(
-    hook: K,
-    callback: ActionHooks<C>[K][number],
-  ) {
-    return this.hooks(hook, [
-      ...this.$hooks[hook],
-      callback,
-    ] as ActionHooks<C>[K]);
-  }
-
-  public hooks<K extends keyof ActionHooks<C>>(
-    hook: K,
-    callbacks: ActionHooks<C>[K],
-  ) {
-    this.$hooks[hook] = callbacks;
-
-    return this;
-  }
-
-  public withHooks() {
-    this.$hooksEnabled = true;
-
-    return this;
-  }
-
-  public withoutHooks() {
-    this.$hooksEnabled = false;
-
-    return this;
+    this.$hooks = {};
   }
 
   public get context() {
@@ -78,56 +42,27 @@ export default class Action<C extends ActionContext> {
   }
 
   public async run<NR>(runner: ContextRunner<C, NR>): Promise<Awaited<NR>> {
+    await runHook(this, 'preparing', undefined);
+
     const context = await this.getContext();
 
-    // Some enhancements might disable hooks, so store the hooks state only
-    // after dequeuing all.
-    const hooksEnabled = this.$hooksEnabled;
-
-    await this.runHooks('onRunning', { context });
+    await runHook(this, 'running', { context });
 
     try {
       // Context runner might use other context runners, so we must disable
-      // hooks at this point to avoid multiple hooks runs.
-      if (hooksEnabled) {
-        this.withoutHooks();
-      }
+      // hooks at this point to avoid duplicated hooks runs.
+      const result = await withoutHooks(this, () => runner(this));
 
-      const result = await runner(this);
-
-      if (hooksEnabled) {
-        this.withHooks();
-      }
-
-      await this.runHooks('onSuccess', { context, result });
+      await runHook(this, 'success', { context, result });
 
       return result;
     } catch (error) {
-      if (hooksEnabled) {
-        this.withHooks();
-      }
-
-      await this.runHooks('onError', { context, error });
+      await runHook(this, 'error', { context, error });
 
       throw error;
     } finally {
-      await this.runHooks('onFinally', { context });
+      await runHook(this, 'finally', { context });
     }
-  }
-
-  private async runHooks<K extends keyof ActionHooks<C>>(
-    hook: K,
-    event: Parameters<ActionHooks<C>[K][number]>[0],
-  ) {
-    if (!this.$hooksEnabled) {
-      return;
-    }
-
-    await sequentialTransform(
-      this.$hooks[hook].map((callback) => async () => {
-        await callback(event as any);
-      }),
-    );
   }
 
   private async dequeueEnhancements() {

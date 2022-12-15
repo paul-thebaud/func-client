@@ -1,8 +1,21 @@
 import AdapterError from '@/core/errors/adapterError';
 import FuncModelError from '@/core/errors/funcModelError';
 import RunFailureError from '@/core/errors/runFailureError';
+import registerHook from '@/core/hooks/registerHook';
+import runHook from '@/core/hooks/runHook';
+import unregisterHook from '@/core/hooks/unregisterHook';
+import withoutHooks from '@/core/hooks/withoutHooks';
 import compose from '@/core/model/compose';
 import isInstance from '@/core/model/guards/isInstance';
+import onCreated from '@/core/model/hooks/onCreated';
+import onCreating from '@/core/model/hooks/onCreating';
+import onDestroyed from '@/core/model/hooks/onDestroyed';
+import onDestroying from '@/core/model/hooks/onDestroying';
+import onRetrieved from '@/core/model/hooks/onRetrieved';
+import onSaved from '@/core/model/hooks/onSaved';
+import onSaving from '@/core/model/hooks/onSaving';
+import onUpdated from '@/core/model/hooks/onUpdated';
+import onUpdating from '@/core/model/hooks/onUpdating';
 import makeComposable from '@/core/model/makeComposable';
 import makeModel from '@/core/model/makeModel';
 import makeModelFactory from '@/core/model/makeModelFactory';
@@ -22,6 +35,7 @@ import toString from '@/core/transforms/toString';
 import useTransform from '@/core/transforms/useTransform';
 
 export * from '@/core/actions/types';
+export * from '@/core/hooks/types';
 export * from '@/core/model/types';
 export * from '@/core/transforms/types';
 export * from '@/core/types';
@@ -51,4 +65,17 @@ export {
   toNumber,
   toString,
   useTransform,
+  onRetrieved,
+  onCreating,
+  onCreated,
+  onUpdating,
+  onUpdated,
+  onSaving,
+  onSaved,
+  onDestroying,
+  onDestroyed,
+  runHook,
+  registerHook,
+  unregisterHook,
+  withoutHooks,
 };

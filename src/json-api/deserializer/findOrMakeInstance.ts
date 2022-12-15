@@ -1,12 +1,10 @@
 import { ActionContext, FuncModelError, InstancesCacheI, isInstance, Model, ModelInstance, ModelsStoreI } from '@/core';
 import isNil from '@/core/utilities/isNil';
-import { JsonApiDeserializationData } from '@/json-api/deserializer/prepareDeserializationData';
 import { NewJsonApiResource } from '@/json-api/types';
 
 export default async function findOrMakeInstance(
   context: ActionContext & { cache?: InstancesCacheI; store?: ModelsStoreI; model?: Model; },
   resource: NewJsonApiResource,
-  deserializationData: JsonApiDeserializationData,
 ) {
   let instance: ModelInstance | undefined;
 
@@ -42,11 +40,6 @@ export default async function findOrMakeInstance(
   if (!isNil(instance.id)) {
     if (context.cache) {
       await context.cache.put(resource.type, instance.id, instance);
-    }
-
-    const instancesMapOfType = deserializationData.instances.get(resource.type);
-    if (instancesMapOfType) {
-      instancesMapOfType.set(instance.id, instance);
     }
   }
 

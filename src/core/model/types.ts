@@ -1,3 +1,4 @@
+import { Hookable, HookCallback } from '@/core/hooks/types';
 import { Transform } from '@/core/transforms/types';
 import { Constructor, Dictionary, Prev } from '@/core/utilities/types';
 
@@ -50,17 +51,6 @@ export type ModelValues<D extends ModelDefinition> = [keyof D] extends [never]
         ? T : never;
   };
 
-export type ModelInstanceHook =
-  | 'onRetrieved'
-  | 'onCreating'
-  | 'onCreated'
-  | 'onUpdating'
-  | 'onUpdated'
-  | 'onSaving'
-  | 'onSaved'
-  | 'onDestroying'
-  | 'onDestroyed';
-
 export type ModelInstance<D extends ModelDefinition = {}> = {
   readonly $MODEL_TYPE: 'instance';
   readonly constructor: Model<D>;
@@ -76,7 +66,21 @@ export type ModelInstance<D extends ModelDefinition = {}> = {
       ? T : D[K];
 };
 
-export type ModelClass<D extends ModelDefinition = {}> = {
+export type ModelHookCallback = HookCallback<ModelInstance<any>>;
+
+export type ModelHooksDefinition = {
+  retrieved: ModelHookCallback;
+  creating: ModelHookCallback;
+  created: ModelHookCallback;
+  updating: ModelHookCallback;
+  updated: ModelHookCallback;
+  saving: ModelHookCallback;
+  saved: ModelHookCallback;
+  destroying: ModelHookCallback;
+  destroyed: ModelHookCallback;
+};
+
+export type ModelClass<D extends ModelDefinition = {}> = Hookable<ModelHooksDefinition> & {
   readonly $MODEL_TYPE: 'model';
   readonly $config: ModelConfig;
   readonly $rawSchema: () => D;

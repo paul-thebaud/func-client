@@ -4,7 +4,7 @@ import { JsonApiResource, JsonApiResourceId, NewJsonApiResource } from '@/json-a
 export type JsonApiResourcesOfTypeMap = Map<JsonApiResourceId, JsonApiResource>;
 export type JsonApiResourcesMap = Map<string, JsonApiResourcesOfTypeMap>;
 
-export type JsonApiInstancesOfTypeMap = Map<JsonApiResourceId, ModelInstance>;
+export type JsonApiInstancesOfTypeMap = Map<JsonApiResourceId, Promise<ModelInstance>>;
 export type JsonApiInstancesMap = Map<string, JsonApiInstancesOfTypeMap>;
 
 export type JsonApiDeserializationData = {

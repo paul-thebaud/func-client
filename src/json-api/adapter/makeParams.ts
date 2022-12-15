@@ -1,4 +1,4 @@
-import { ActionContext } from '@/core/actions/types';
+import { ActionContext } from '@/core';
 import optionalJoin from '@/core/utilities/optionalJoin';
 
 export default function makeParams(context: ActionContext) {

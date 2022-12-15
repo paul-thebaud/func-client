@@ -1,4 +1,9 @@
 import Action from '@/core/actions/action';
+import onError from '@/core/actions/context/enhancers/hooks/onError';
+import onFinally from '@/core/actions/context/enhancers/hooks/onFinally';
+import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
+import onRunning from '@/core/actions/context/enhancers/hooks/onRunning';
+import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import all from '@/core/actions/context/runners/all';
 import allUsing from '@/core/actions/context/runners/allUsing';
 import cached from '@/core/actions/context/runners/cached';
@@ -81,5 +86,10 @@ export {
   model,
   include,
   when,
+  onPreparing,
+  onRunning,
+  onSuccess,
+  onError,
+  onFinally,
   Action,
 };

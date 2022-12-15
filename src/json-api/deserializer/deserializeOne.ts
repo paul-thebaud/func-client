@@ -1,7 +1,6 @@
-import { ActionContext, FuncModelError, ModelInstance, syncOriginal } from '@/core';
+import { ActionContext, FuncModelError, ModelInstance, runHook, syncOriginal } from '@/core';
 import isAttributeDef from '@/core/model/guards/isAttributeDef';
 import isRelationDef from '@/core/model/guards/isRelationDef';
-import runInstanceHooks from '@/core/model/hooks/runInstanceHooks';
 import deserializeAttribute from '@/json-api/deserializer/deserializeAttribute';
 import deserializeRelation from '@/json-api/deserializer/deserializeRelation';
 import findOrMakeInstance from '@/json-api/deserializer/findOrMakeInstance';
@@ -10,6 +9,13 @@ import type { DeserializerOptions } from '@/json-api/deserializer/types';
 import { JsonApiResourceIdentifier, NewJsonApiResource } from '@/json-api/types';
 import serializedKey from '@/json-api/utilities/serializedKey';
 
+/**
+ * This ID is used for ID-less resource, which will occurs only when creating
+ * resource. We can use a static value because an ID-less resource will always
+ * be unique by payload.
+ */
+export const NON_IDENTIFIED_INSTANCE_ID = '__non-identified-instance__';
+
 export default async function deserializeOne(
   context: ActionContext,
   resource: NewJsonApiResource,
@@ -17,13 +23,6 @@ export default async function deserializeOne(
   options: DeserializerOptions,
 ): Promise<ModelInstance> {
   const deserializeRelated = async (resourceIdentifier: JsonApiResourceIdentifier) => {
-    const instance = deserializationData.instances
-      .get(resourceIdentifier.type)
-      ?.get(resourceIdentifier.id);
-    if (instance) {
-      return instance;
-    }
-
     const resourceData = deserializationData.resources
       .get(resourceIdentifier.type)
       ?.get(resourceIdentifier.id);
@@ -36,7 +35,24 @@ export default async function deserializeOne(
     );
   };
 
-  const instance = await findOrMakeInstance(context, resource, deserializationData);
+  let instancesMapOfType = deserializationData.instances.get(resource.type);
+  if (!instancesMapOfType) {
+    deserializationData.instances.set(resource.type, instancesMapOfType = new Map());
+  }
+
+  let instancePromise = instancesMapOfType.get(
+    resource.id ?? NON_IDENTIFIED_INSTANCE_ID,
+  );
+  if (instancePromise) {
+    return instancePromise;
+  }
+
+  instancesMapOfType.set(
+    resource.id ?? NON_IDENTIFIED_INSTANCE_ID,
+    instancePromise = findOrMakeInstance(context, resource),
+  );
+
+  const instance = await instancePromise;
 
   await Promise.all(Object.entries(instance.constructor.$schema).map(async ([key, def]) => {
     const resourceKey = serializedKey(def, key, options);
@@ -69,7 +85,8 @@ export default async function deserializeOne(
   instance.exists = true;
 
   syncOriginal(instance);
-  runInstanceHooks(instance, 'onRetrieved');
+
+  await runHook(instance.constructor, 'retrieved', instance);
 
   return instance;
 }
