@@ -2,10 +2,7 @@
 
 ## General features
 
-- [ ] Rework types to always infer schema.
-- [ ] Rename package to `func-api-client` or something like this.
 - [ ] Rename one letter parameters to real name (`a` to `action`)
-- [ ] Rename model definition generics (`S` to `D`)
 - [ ] Generic context (ID, etc.) should not be mentioned in ActionContext type
 - [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Manage errors when users are bypassing types (relations not found, etc.)
