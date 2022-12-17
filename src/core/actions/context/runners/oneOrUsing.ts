@@ -1,18 +1,23 @@
 import Action from '@/core/actions/action';
 import dataUsing from '@/core/actions/context/runners/dataUsing';
 import toOneInstance from '@/core/actions/context/runners/transformers/toOneInstance';
-import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel, ContextRunner } from '@/core/actions/types';
-import { ModelDefinition } from '@/core/model/types';
+import {
+  ActionContext,
+  ConsumeAdapter,
+  ConsumeDeserializer,
+  ContextRunner,
+  ConsumeModel,
+} from '@/core/actions/types';
+import { Model } from '@/core/model/types';
 import isNil from '@/core/utilities/isNil';
 import { Awaitable } from '@/core/utilities/types';
 
-export default function oneOrUsing<C extends ActionContext, R, D,
-  S extends ModelDefinition, I, ND, DD>(
-  transformData: (data: I, realData: D, context: C) => Awaitable<ND>,
+export default function oneOrUsing<C extends ActionContext, R, D, M extends Model, ND, DD>(
+  transformData: (data: InstanceType<M>, realData: D, context: C) => Awaitable<ND>,
   nilRunner: ContextRunner<C, DD>,
 ) {
   return async (
-    action: Action<C & ConsumeAdapter<R, D> & ConsumeDeserializer<D> & ConsumeModel<S, I>>,
+    action: Action<C & ConsumeAdapter<R, D> & ConsumeDeserializer<D> & ConsumeModel<M>>,
   ) => {
     try {
       return await action.run(dataUsing(

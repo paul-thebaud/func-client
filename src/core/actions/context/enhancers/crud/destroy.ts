@@ -6,13 +6,13 @@ import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import runInstanceHooks from '@/core/actions/context/enhancers/hooks/runInstanceHooks';
 import instance from '@/core/actions/context/enhancers/instance';
 import { ConsumeAdapter, ConsumeSerializer } from '@/core/actions/types';
-import { ModelDefinition, ModelInstance } from '@/core/model/types';
+import { ModelInstance } from '@/core/model/types';
 
-export default function destroy<R, D, S extends ModelDefinition, I extends ModelInstance<S>>(
-  instanceToDestroy: ModelInstance<S> & I,
+export default function destroy<R, D, I extends ModelInstance>(
+  instanceToDestroy: I,
 ) {
   return <C extends ConsumeAdapter<R, D> & ConsumeSerializer<D>>(a: Action<C>) => a
-    .use(instance<S, I>(instanceToDestroy))
+    .use(instance(instanceToDestroy))
     .use(context({ method: 'DELETE' }))
     .use(changeInstanceExistence(false))
     .use(onPreparing(runInstanceHooks(instanceToDestroy, ['destroying'])))

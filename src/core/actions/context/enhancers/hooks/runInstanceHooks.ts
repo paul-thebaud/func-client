@@ -5,12 +5,12 @@ import { Arrayable } from '@/core/utilities/types';
 import wrap from '@/core/utilities/wrap';
 
 export default function runInstanceHooks(
-  instance: ModelInstance<any>,
+  instance: ModelInstance,
   hooks: Arrayable<keyof ModelHooksDefinition>,
 ) {
   return async () => {
     await sequentialTransform(wrap(hooks).map(
-      (hook) => () => runHook(instance.constructor, hook, instance),
+      (hook) => () => runHook(instance.$model, hook, instance),
     ));
   };
 }

@@ -32,41 +32,13 @@ export type ModelRelation<T> = ModelProp<T> & {
   type?: string;
 };
 
-// TODO Rename S generics to D.
-export type ModelDefinition = Dictionary;
-
-export type ModelSchema<D extends ModelDefinition> = [keyof D] extends [never]
-  ? Dictionary<ModelAttribute<any, any> | ModelRelation<any>>
-  : {
-    [K in keyof D]: D[K] extends ModelAttribute<any, any>
-      ? D[K] : D[K] extends ModelRelation<any>
-        ? D[K] : never;
-  };
-
-export type ModelValues<D extends ModelDefinition> = [keyof D] extends [never]
-  ? Dictionary
-  : {
-    [K in keyof D]: D[K] extends ModelAttribute<infer T, any>
-      ? T : D[K] extends ModelRelation<infer T>
-        ? T : never;
-  };
-
-export type ModelInstance<D extends ModelDefinition = {}> = {
-  readonly $MODEL_TYPE: 'instance';
-  readonly constructor: Model<D>;
-  // FIXME Should the model id be nullable in its type?
-  id: ModelId;
-  exists: boolean;
-  $loaded: Dictionary<true>;
-  $original: Partial<ModelValues<D>>;
-  $values: Partial<ModelValues<D>>;
-} & {
-  [K in keyof D]: D[K] extends ModelAttribute<infer T, any>
-    ? T : D[K] extends ModelRelation<infer T>
-      ? T : D[K];
+export type ModelSchema<D extends {} = {}> = {
+  [K in keyof D]: D[K] extends ModelAttribute<any, any>
+    ? D[K] : D[K] extends ModelRelation<any>
+      ? D[K] : never;
 };
 
-export type ModelHookCallback = HookCallback<ModelInstance<any>>;
+export type ModelHookCallback = HookCallback<ModelInstance>;
 
 export type ModelHooksDefinition = {
   retrieved: ModelHookCallback;
@@ -80,15 +52,14 @@ export type ModelHooksDefinition = {
   destroyed: ModelHookCallback;
 };
 
-export type ModelClass<D extends ModelDefinition = {}> = Hookable<ModelHooksDefinition> & {
+export type ModelClass<D extends {} = any> = Hookable<ModelHooksDefinition> & {
   readonly $MODEL_TYPE: 'model';
   readonly $config: ModelConfig;
-  readonly $rawSchema: () => D;
   readonly $schema: ModelSchema<D>;
-  extends<NS extends ModelSchema<{}> = {}, NE extends object = {}>(
+  extends<NS extends ModelSchema = {}, NE extends object = {}>(
     addSchemaAndExtension?: { schema?: NS; extension?: NE; },
   ): Model<D & NS & NE, ModelInstance<D & NS & NE>>;
-  schema<NS extends ModelSchema<{}> = {}>(
+  schema<NS extends ModelSchema = {}>(
     addSchema?: NS,
   ): Model<D & NS, ModelInstance<D & NS>>;
   extension<NE extends object = {}>(
@@ -96,36 +67,64 @@ export type ModelClass<D extends ModelDefinition = {}> = Hookable<ModelHooksDefi
   ): Model<D & NE, ModelInstance<D & NE>>;
 };
 
-export type Model<S extends ModelDefinition = {}, I extends ModelInstance<S> = ModelInstance<S>> =
-  & ModelClass<S>
+export type Model<D extends {} = any, I extends ModelInstance<D> = any> =
+  & ModelClass<D>
   & Constructor<I>;
 
-export type ModelInferRawSchema<M> = M extends ModelInstance<infer S>
-  ? ModelSchema<S>
-  : M extends ModelClass<infer S>
-    ? ModelSchema<S>
-    : never;
+export type ModelClassInstance<D extends {} = any> = {
+  readonly $model: ModelClass<D>;
+};
 
-export type ModelKey<D extends ModelDefinition> = keyof ModelValues<D>;
+export type ModelInstance<D extends {} = any> = {
+  readonly $MODEL_TYPE: 'instance';
+  readonly $model: ModelClass<D>;
+  // FIXME Should the model id be nullable in its type?
+  id: ModelId;
+  exists: boolean;
+  $loaded: Dictionary<true>;
+  $original: Partial<ModelValues<ModelClass<D>>>;
+  $values: Partial<ModelValues<ModelClass<D>>>;
+} & {
+  [K in keyof D]: D[K] extends ModelAttribute<infer T, any>
+    ? T : D[K] extends ModelRelation<infer T>
+      ? T : D[K];
+};
 
-export type ModelRelationKey<S> =
-  keyof S extends infer K
-    ? K extends string & keyof S
-      ? S[K] extends never
+export type ModelInferDefinition<M> = M extends ModelClass<infer D>
+  ? D
+  : M extends ModelClassInstance<infer D>
+    ? D
+    : {};
+
+export type ModelInferSchema<M> = ModelSchema<ModelInferDefinition<M>>;
+
+export type ModelValues<M> = {
+  [K in keyof ModelInferDefinition<M>]:
+  ModelInferDefinition<M>[K] extends ModelAttribute<infer T, any>
+    ? T : ModelInferDefinition<M>[K] extends ModelRelation<infer T>
+      ? T : never;
+};
+
+export type ModelKey<M> = keyof ModelValues<M>;
+
+export type ModelRelationKey<M> =
+  keyof ModelInferSchema<M> extends infer K
+    ? K extends string & keyof ModelInferSchema<M>
+      ? ModelInferSchema<M>[K] extends never
         ? never
-        : S[K] extends ModelRelation<unknown>
-          ? S[K]
+        : ModelInferSchema<M>[K] extends ModelRelation<unknown>
+          ? K
           : never : never : never;
 
-export type ModelRelationDotKey<D, Depth extends number = 5> =
+export type ModelRelationDotKey<M, Depth extends number = 5> =
   [Depth] extends [0]
     ? never
-    : keyof D extends infer K
-      ? K extends string & keyof D
-        ? D[K] extends never
+    : keyof ModelInferSchema<M> extends infer K
+      ? K extends string & keyof ModelInferSchema<M>
+        ? ModelInferSchema<M>[K] extends never
           ? never
-          : D[K] extends ModelRelation<infer T>
+          : ModelInferSchema<M>[K] extends ModelRelation<infer T>
             ? T extends any[]
-              ? K | `${K}.${ModelRelationDotKey<ModelInferRawSchema<T[number]>, Prev[Depth]>}`
-              : K | `${K}.${ModelRelationDotKey<ModelInferRawSchema<T>, Prev[Depth]>}`
+              ? K | `${K}.${ModelRelationDotKey<T[number], Prev[Depth]>}`
+              : K | `${K}.${ModelRelationDotKey<T, Prev[Depth]>}`
             : never : never : never;

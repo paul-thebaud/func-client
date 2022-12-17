@@ -2,6 +2,7 @@
 
 ## General features
 
+- [ ] Rework types to always infer schema.
 - [ ] Rename package to `func-api-client` or something like this.
 - [ ] Rename one letter parameters to real name (`a` to `action`)
 - [ ] Rename model definition generics (`S` to `D`)

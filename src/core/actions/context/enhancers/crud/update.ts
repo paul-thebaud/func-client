@@ -7,13 +7,13 @@ import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import runInstanceHooks from '@/core/actions/context/enhancers/hooks/runInstanceHooks';
 import instance from '@/core/actions/context/enhancers/instance';
 import { ConsumeAdapter, ConsumeSerializer } from '@/core/actions/types';
-import { ModelDefinition, ModelInstance } from '@/core/model/types';
+import { ModelInstance } from '@/core/model/types';
 
-export default function update<R, D, S extends ModelDefinition, I extends ModelInstance<S>>(
-  instanceToUpdate: ModelInstance<S> & I,
+export default function update<R, D, I extends ModelInstance>(
+  instanceToUpdate: I,
 ) {
   return <C extends ConsumeAdapter<R, D> & ConsumeSerializer<D>>(action: Action<C>) => action
-    .use(instance<S, I>(instanceToUpdate))
+    .use(instance(instanceToUpdate))
     .use(instancePayload(instanceToUpdate))
     .use(context({ method: 'PATCH' }))
     .use(changeInstanceExistence(true))

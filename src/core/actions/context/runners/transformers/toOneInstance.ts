@@ -1,12 +1,12 @@
 import { ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
-import { ModelDefinition } from '@/core/model/types';
+import { Model } from '@/core/model/types';
 
-export default function toOneInstance<D, S extends ModelDefinition, I>(
-  context: ConsumeAdapter & ConsumeDeserializer<D> & ConsumeModel<S, I>,
+export default function toOneInstance<D, M extends Model>(
+  context: ConsumeAdapter & ConsumeDeserializer<D> & ConsumeModel<M>,
   data: D,
 ) {
   return context.deserializer.deserializeOne(
     context,
     data,
-  ) as Promise<I | null | undefined>;
+  ) as Promise<InstanceType<M> | null | undefined>;
 }

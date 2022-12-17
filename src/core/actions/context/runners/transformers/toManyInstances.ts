@@ -1,12 +1,12 @@
 import { ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
-import { ModelDefinition } from '@/core/model/types';
+import { Model } from '@/core/model/types';
 
-export default function toManyInstances<D, S extends ModelDefinition, I>(
-  context: ConsumeDeserializer<D> & ConsumeModel<S, I>,
+export default function toManyInstances<D, M extends Model>(
+  context: ConsumeDeserializer<D> & ConsumeModel<M>,
   data: D,
 ) {
   return context.deserializer.deserializeMany(
     context,
     data,
-  ) as Promise<I[]>;
+  ) as Promise<InstanceType<M>[]>;
 }

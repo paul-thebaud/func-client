@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { ModelDefinition, ModelInstance, ModelKey } from '@/core/model/types';
+import { ModelInstance, ModelKey } from '@/core/model/types';
 import cloneModelValue from '@/core/model/utilities/cloneModelValue';
 import schemaKeys from '@/core/model/utilities/schemaKeys';
 import { Arrayable } from '@/core/utilities/types';
 
-export default function syncOriginal<S extends ModelDefinition, I>(
-  instance: ModelInstance<S> & I,
-  keys?: Arrayable<ModelKey<S>>,
+export default function syncOriginal<I extends ModelInstance>(
+  instance: I,
+  keys?: Arrayable<ModelKey<I>>,
 ) {
   if (keys === undefined) {
     instance.$original = {};
@@ -15,7 +15,7 @@ export default function syncOriginal<S extends ModelDefinition, I>(
   schemaKeys(instance, keys).forEach((key) => {
     if (key in instance.$values) {
       instance.$original[key] = cloneModelValue(
-        instance.constructor,
+        instance.$model,
         instance.$values[key],
       );
     } else {

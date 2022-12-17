@@ -11,13 +11,13 @@ export default async function serializeOne(
   options: SerializerOptions,
 ): Promise<JsonApiResource> {
   const record = {
-    type: instance.constructor.$config.type,
+    type: instance.$model.$config.type,
     id: instance.id,
     attributes: {},
     relationships: {},
   };
 
-  await Promise.all(Object.entries(instance.constructor.$schema).map(async ([key, def]) => {
+  await Promise.all(Object.entries(instance.$model.$schema).map(async ([key, def]) => {
     if (options.keepUnchanged !== true && !changed(instance, key)) {
       return;
     }

@@ -54,7 +54,7 @@ export default async function deserializeOne(
 
   const instance = await instancePromise;
 
-  await Promise.all(Object.entries(instance.constructor.$schema).map(async ([key, def]) => {
+  await Promise.all(Object.entries(instance.$model.$schema).map(async ([key, def]) => {
     const resourceKey = serializedKey(def, key, options);
 
     if (isAttributeDef(def)) {
@@ -86,7 +86,7 @@ export default async function deserializeOne(
 
   syncOriginal(instance);
 
-  await runHook(instance.constructor, 'retrieved', instance);
+  await runHook(instance.$model, 'retrieved', instance);
 
   return instance;
 }

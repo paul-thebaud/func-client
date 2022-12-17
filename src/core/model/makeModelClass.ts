@@ -5,7 +5,8 @@ import warn from '@/core/utilities/warn';
 
 export default function makeModelClass(config: ModelConfig | string): Model {
   function ModelClass(this: ModelInstance) {
-    Object.defineProperty(this, '$MODEL_TYPE', { writable: true, value: 'instance' });
+    Object.defineProperty(this, '$MODEL_TYPE', { value: 'instance' });
+    Object.defineProperty(this, '$model', { value: ModelClass });
     Object.defineProperty(this, 'exists', { writable: true, value: false });
     Object.defineProperty(this, '$loaded', { writable: true, value: {} });
     Object.defineProperty(this, '$original', { writable: true, value: {} });
@@ -17,7 +18,7 @@ export default function makeModelClass(config: ModelConfig | string): Model {
       value: undefined,
     });
 
-    Object.entries(ModelClass.$schema).forEach(([key, def]) => {
+    Object.entries(ModelClass.$schema as ModelSchema<any>).forEach(([key, def]) => {
       Object.defineProperty(this, key, {
         enumerable: true,
         get: () => this.$values[key],
@@ -42,7 +43,7 @@ export default function makeModelClass(config: ModelConfig | string): Model {
   ModelClass.$config = typeof config === 'string' ? {
     type: config,
   } : config;
-  ModelClass.$schema = {} as ModelSchema<{}>;
+  ModelClass.$schema = {} as ModelSchema;
   ModelClass.$hooks = {};
   ModelClass.prototype = {};
   ModelClass.schema = (addSchema?: object) => {

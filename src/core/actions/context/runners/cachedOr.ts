@@ -1,12 +1,12 @@
 import Action from '@/core/actions/action';
 import cachedOrUsing from '@/core/actions/context/runners/cachedOrUsing';
-import { ActionContext, ConsumeCache, ConsumeModel, ContextRunner } from '@/core/actions/types';
-import { ModelDefinition } from '@/core/model/types';
+import { ActionContext, ConsumeCache, ContextRunner, ConsumeModel } from '@/core/actions/types';
+import { Model } from '@/core/model/types';
 
-export default function cachedOr<C extends ActionContext, S extends ModelDefinition, I, DD>(
+export default function cachedOr<C extends ActionContext, M extends Model, DD>(
   nilRunner: ContextRunner<C, DD>,
 ) {
   return async (
-    action: Action<C & ConsumeCache & ConsumeModel<S, I>>,
+    action: Action<C & ConsumeCache & ConsumeModel<M>>,
   ) => action.run(cachedOrUsing((d) => d, nilRunner));
 }

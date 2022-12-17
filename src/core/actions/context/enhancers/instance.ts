@@ -3,13 +3,13 @@ import context from '@/core/actions/context/enhancers/context';
 import forId from '@/core/actions/context/enhancers/forId';
 import model from '@/core/actions/context/enhancers/model';
 import { ActionContext } from '@/core/actions/types';
-import { Model, ModelDefinition, ModelInstance } from '@/core/model/types';
+import { Model, ModelClassInstance, ModelInstance } from '@/core/model/types';
 
-export default function instance<D extends ModelDefinition, I extends ModelInstance<D>>(
-  instanceToUse: ModelInstance<D> & I,
+export default function instance<D extends {}, I extends ModelInstance<D>>(
+  instanceToUse: ModelClassInstance<D> & I,
 ) {
-  return <C extends ActionContext>(a: Action<C>) => a
-    .use(model<D, I>(instanceToUse.constructor as Model<D, I>))
+  return <C extends ActionContext>(action: Action<C>) => action
+    .use(model(instanceToUse.$model as Model<D, I>))
     .use(context({ instance: instanceToUse }))
     .use(forId(instanceToUse.id));
 }

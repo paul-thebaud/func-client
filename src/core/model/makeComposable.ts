@@ -1,6 +1,6 @@
 import { ModelInstance, ModelSchema } from '@/core/model/types';
 
-export default function makeComposable<S extends ModelSchema<{}> = {}, E extends object = {}>(
+export default function makeComposable<S extends ModelSchema = {}, E extends object = {}>(
   schema?: S,
   extension?: E & ThisType<ModelInstance<S & E>>,
 ) {

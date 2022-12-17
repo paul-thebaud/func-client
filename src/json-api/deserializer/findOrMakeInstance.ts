@@ -34,14 +34,14 @@ export default async function findOrMakeInstance(
       );
     }
 
-    instance.id = resource.id ?? instance.id;
+    instance!.id = resource.id ?? instance!.id;
   }
 
-  if (!isNil(instance.id)) {
+  if (!isNil(instance!.id)) {
     if (context.cache) {
-      await context.cache.put(resource.type, instance.id, instance);
+      await context.cache.put(resource.type, instance!.id, instance!);
     }
   }
 
-  return instance;
+  return instance!;
 }

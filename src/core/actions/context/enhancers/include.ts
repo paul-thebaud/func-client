@@ -1,16 +1,16 @@
 import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
-import { ActionContext, ConsumeDefinition } from '@/core/actions/types';
-import { ModelDefinition, ModelRelationDotKey } from '@/core/model/types';
-import wrap from '@/core/utilities/wrap';
+import { ActionContext, ConsumeModel } from '@/core/actions/types';
+import { Model, ModelRelationDotKey } from '@/core/model/types';
 import { Arrayable } from '@/core/utilities/types';
 import uniqueValues from '@/core/utilities/uniqueValues';
+import wrap from '@/core/utilities/wrap';
 
-export default function include<C extends ActionContext, D extends ModelDefinition>(
-  relations: Arrayable<ModelRelationDotKey<D>>,
+export default function include<C extends ActionContext, M extends Model>(
+  relations: Arrayable<ModelRelationDotKey<M>>,
 ) {
   return async (
-    action: Action<C & ConsumeDefinition<D>>,
+    action: Action<C & ConsumeModel<M>>,
   ) => action.use(context({
     includes: uniqueValues([
       ...((await action.getContext()).includes ?? []),

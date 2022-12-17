@@ -1,19 +1,18 @@
 import Action from '@/core/actions/action';
-import { ActionContext, ConsumeCache, ConsumeModel, ContextRunner } from '@/core/actions/types';
+import { ActionContext, ConsumeCache, ContextRunner, ConsumeModel } from '@/core/actions/types';
 import FuncModelError from '@/core/errors/funcModelError';
-import { ModelDefinition } from '@/core/model/types';
+import { Model } from '@/core/model/types';
 import loaded from '@/core/model/utilities/loaded';
 import isNil from '@/core/utilities/isNil';
 import isNone from '@/core/utilities/isNone';
 import { Awaitable } from '@/core/utilities/types';
 
-export default function cachedOrUsing<C extends ActionContext,
-  S extends ModelDefinition, I, ND, DD>(
-  transformData: (data: I, context: C) => Awaitable<ND>,
+export default function cachedOrUsing<C extends ActionContext, M extends Model, ND, DD>(
+  transformData: (data: InstanceType<M>, context: C) => Awaitable<ND>,
   nilRunner: ContextRunner<C, DD>,
 ) {
   return async (
-    action: Action<C & ConsumeCache & ConsumeModel<S, I>>,
+    action: Action<C & ConsumeCache & ConsumeModel<M>>,
   ) => {
     const context = await action.getContext();
     if (isNone(context.id)) {
@@ -29,6 +28,6 @@ export default function cachedOrUsing<C extends ActionContext,
       return action.run(nilRunner);
     }
 
-    return transformData(cachedInstance as I, context);
+    return transformData(cachedInstance as InstanceType<M>, context);
   };
 }

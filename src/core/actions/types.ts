@@ -1,8 +1,8 @@
 import type Action from '@/core/actions/action';
 import { HookCallback } from '@/core/hooks/types';
-import { ModelClass, ModelDefinition, ModelId, ModelInstance } from '@/core/model/types';
+import { Model, ModelId, ModelInstance } from '@/core/model/types';
 import { AdapterI, DeserializerI, InstancesCacheI, SerializerI } from '@/core/types';
-import { Awaitable, Constructor, Dictionary } from '@/core/utilities/types';
+import { Awaitable, Dictionary } from '@/core/utilities/types';
 
 export type ActionMethod =
   | 'get' | 'GET'
@@ -45,20 +45,19 @@ export type ContextRunner<C extends ActionContext, R> = (
   a: Action<C>,
 ) => R;
 
-export type ConsumeDefinition<D extends ModelDefinition = ModelDefinition> = { schema: D; };
+export type ConsumeModel<M extends Model = Model> = {
+  type: string;
+  model: M;
+};
 
-export type ConsumeModel<D extends ModelDefinition = ModelDefinition, I = ModelInstance<D>> =
-  & ConsumeDefinition<D>
-  & { type: string; model: ModelClass<D> & Constructor<I>; };
-
-export type ConsumeInstance<S extends ModelDefinition = ModelDefinition, I = ModelInstance<S>> =
-  & ConsumeModel<S, I>
-  & { instance: ModelInstance<S> & I; };
+export type ConsumeInstance<I extends ModelInstance = ModelInstance> = {
+  instance: I;
+};
 
 export type ConsumeCache = { cache: InstancesCacheI; };
 
-export type ConsumeAdapter<R = unknown, D = unknown> = { adapter: AdapterI<R, D>; };
+export type ConsumeAdapter<R = unknown, AD = unknown> = { adapter: AdapterI<R, AD>; };
 
-export type ConsumeDeserializer<D = unknown> = { deserializer: DeserializerI<D> };
+export type ConsumeDeserializer<AD = unknown> = { deserializer: DeserializerI<AD> };
 
-export type ConsumeSerializer<D = unknown> = { serializer: SerializerI<D> };
+export type ConsumeSerializer<AD = unknown> = { serializer: SerializerI<AD> };

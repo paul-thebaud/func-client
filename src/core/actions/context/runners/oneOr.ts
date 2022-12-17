@@ -4,15 +4,15 @@ import {
   ActionContext,
   ConsumeAdapter,
   ConsumeDeserializer,
-  ConsumeModel,
   ContextRunner,
+  ConsumeModel,
 } from '@/core/actions/types';
-import { ModelDefinition } from '@/core/model/types';
+import { Model } from '@/core/model/types';
 
-export default function oneOr<C extends ActionContext, R, D, S extends ModelDefinition, I, DD>(
+export default function oneOr<C extends ActionContext, R, D, M extends Model, DD>(
   nilRunner: ContextRunner<C, DD>,
 ) {
   return (
-    action: Action<C & ConsumeAdapter<R, D> & ConsumeDeserializer<D> & ConsumeModel<S, I>>,
+    action: Action<C & ConsumeAdapter<R, D> & ConsumeDeserializer<D> & ConsumeModel<M>>,
   ) => action.run(oneOrUsing((d) => d, nilRunner));
 }
