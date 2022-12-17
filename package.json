@@ -1,7 +1,7 @@
 {
   "name": "func-client",
   "type": "module",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.59",
   "license": "MIT",
   "description": "Typescript strongly typed functional programming oriented API client interactions.",
   "homepage": "https://github.com/paul-thebaud/func-client",
