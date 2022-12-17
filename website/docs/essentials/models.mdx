@@ -8,6 +8,7 @@ description: Define models with attributes, relations and extensions.
 :::tip What you'll learn
 - Defining basic models with attributes and relationships
 - Extending your models with extensions and classes
+- Registering hooks on models
 :::
 
 ## Model factory
@@ -184,4 +185,44 @@ export default class User extends makeModel('users', {
 
 ## Hooks
 
-<span class="chip chip--primary">Work in progress</span>
+You may hook on multiple events which occurs on model instance using the hook
+registration functions:
+
+- `onRetrieved`: instance was deserialized from a backend response.
+- `onCreating`: action to create instance will run soon.
+- `onCreated`: action to create instance was ran successfully.
+- `onUpdating`: action to update instance will run soon.
+- `onUpdated`: action to update instance was ran successfully.
+- `onSaving`: action to save (create or update) instance will run soon (always ran after `onCreating` and `onUpdating`).
+- `onSaved`: action to save (create or update) instance was ran successfully (always ran after `onCreated` and `onUpdated`).
+- `onDestroying`: action to destroy instance will run soon.
+- `onDestroyed`: action to destroy instance was ran successfully.
+
+To register a hook callback, you must pass a model class and a callback
+function to the registration function. It will return a function which
+you may call to unregister the hook. All model hook callback will have
+the concerned model instance as the only provided argument.
+
+```javascript
+import { onSaving } from 'func-client/core';
+
+const unregisterThisHook = onSaving(User, async (user) => {
+  // TODO Do something (a)sync with user instance before saving.
+});
+```
+
+:::tip
+As you may notice above, hooks callback may be async and will be ran
+sequentially (one by one, not parallelized).
+:::
+
+You can disable hook execution on a given model by using the `withoutHooks`
+function.
+
+```javascript
+import { withoutHooks } from 'func-client/core';
+
+const resultOfCallback = await withoutHooks(User, async () => {
+  // TODO Do something (a)sync and return it.
+});
+```

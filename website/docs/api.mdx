@@ -12,42 +12,42 @@ sidebar_position: 4
 type ModelId = string | number;
 ```
 
-### `ModelDefinition`
-
-A raw model definition corresponding to a merge of the model schema
-(attributes, relations) and the model extensions
-(custom getters, methods, etc.).
-
 ### `ModelSchema<D>`
 
-An extracted schema from a [`ModelDefinition` `D`](#modeldefinition).
-
-### `ModelValues<D>`
-
-A dictionary of a [`ModelSchema<D>`](#modelschemad) values.
-
-### `ModelKey<D>`
-
-A key of a [`ModelSchema<D>`](#modelschemad). It can be an attribute or a
-relation key.
-
-### `ModelRelationDotKey<D>`
-
-A dotted key of a relation for a [`ModelSchema<D>`](#modelschemad). It can be
-a deep relation.
-
-Examples for a `Post` model: `comments`, `comments.author`,
-`comments.reactions`, etc.
+An extracted schema (only attributes and relations, not extension) from a model
+definition `D`.
 
 ### `ModelClass<D>`
 
-A model class made with the model factory and defined by its
-[`ModelDefinition` `D`](#modeldefinition).
+A model class made with the model factory and defined by its definition `D`.
+
+### `ModelInstance<D>`
+
+A [`ModelClass<D>`](#modelclassd) instance.
 
 ### `Model<D, I>`
 
-A [`ModelClass<D>`](#modelclassd) which is also a constructor of an
-instance of this class `I`.
+A [`ModelClass<D>`](#modelclassd) and constructor of a
+[`ModelInstance<D> I`](#modelinstanced).
+
+### `ModelValues<M>`
+
+An inferred schema's values dictionary for a [`ModelClass<D>`](#modelclassd)
+or a [`ModelInstance<D>`](#modelinstanced).
+
+### `ModelKey<M>`
+
+An inferred schema's value's key for a [`ModelClass<D>`](#modelclassd)
+or a [`ModelInstance<D>`](#modelinstanced).
+
+### `ModelRelationDotKey<M>`
+
+An inferred schema's relation's key for a [`ModelClass<D>`](#modelclassd)
+or a [`ModelInstance<D>`](#modelinstanced). Key might be a direct relation
+or a deeper relation (up to 5 depth) with a dot separation.
+
+Examples for a `Post` model: `comments`, `comments.author`,
+`comments.reactions`, etc.
 
 ## Action types
 
@@ -75,6 +75,12 @@ export type ActionContext = {
 ```
 
 ## Utilities types
+
+:::tip
+Many utilities types are used by FuncModel but are not exported to avoid
+polluting your code or conflicting with your own utilities types.
+You may copy those types as you want and use them in your project.
+:::
 
 ### `Arrayable<T>`
 

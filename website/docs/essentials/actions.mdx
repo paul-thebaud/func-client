@@ -1,7 +1,8 @@
 ---
 sidebar_position: 3
-description: Build actions, discover enhancers and runners.
+description: Build actions, registering hooks, discover enhancers and runners.
 ---
+
 
 
 import Chip from '../../src/components/chip';
@@ -12,7 +13,7 @@ import FunctionInfo from '../../src/components/functionInfo';
 :::tip What you'll learn
 
 - Building actions
-- Placing hooks on actions
+- Registering hooks on actions
 - Available context enhancers
 - Available context runners
 
@@ -56,33 +57,48 @@ including void, throwing error, etc.).
 
 ### Hooks
 
-Every action will trigger hooks when running. There are 4 hooks available.
-You may register any hooks you want to use. The `hook` method will
-register an additional hook, whereas the `hooks` method will replace all
-existing hooks by the given ones.
+You may hook on multiple events which occurs on action instance using the hook
+registration function:
+
+- `onPreparing`: before context computation through enhancers dequeueing.
+- `onRunning`: after context computation, before context runner execution.
+- `onSuccess`: after context runner successful execution (no error thrown).
+- `onError`: after context runner failed execution (error thrown).
+- `onFinally`: after context runner successful or failed execution.
+
+To register a hook callback, you must use the registration enhancer on your
+building action.
 
 ```javascript
-action()
-  .hook('onRunning', ({ context }) => /* ... */)
-  .hook('onSuccess', ({ context, result }) => /* ... */)
-  .hook('onError', ({ context, error }) => /* ... */)
-  .hook('onFinally', ({ context }) => /* ... */);
+import { onPreparing, onRunning, onSuccess, onError, onFinally } from 'func-client/core';
+
+action().use(onPreparing(() => /* ... */));
+action().use(onRunning(({ context }) => /* ... */));
+action().use(onSuccess(({ context, result }) => /* ... */));
+action().use(onError(({ context, error }) => /* ... */));
+action().use(onFinally(({ context }) => /* ... */));
 ```
 
-You can also disable or enable an action instance hooks execution at any time.
-This will also prevent any FuncClient hooks from executing.
+:::tip
+Hooks callback may be async and will be ran sequentially
+(one by one, not parallelized).
+:::
+
+You can disable hook execution on a given action instance by using the
+`withoutHooks` function.
 
 ```javascript
-const myAction = action();
-// Disable hooks execution.
-myAction.withoutHooks();
-// Re-enable hooks execution.
-myAction.withHooks();
+import { withoutHooks } from 'func-client/core';
+
+const users = await withoutHooks(action(), async (a) => {
+  return await a.use(model(User)).run(all());
+});
 ```
 
 :::info
 FuncClient will also register hooks when using some enhancers. Those will
-provide some library features (models hooks, etc.).
+provide some library features ([models hooks](/docs/essentials/models#hooks),
+etc.).
 :::
 
 ## Note on enhancers and runners
@@ -127,7 +143,7 @@ the context to merge into the action's current context
 
 ### `model`
 
-<FunctionInfo provides="Definition, Model" />
+<FunctionInfo provides="Model" />
 
 Target the given model.
 Register the given model and its definition onto the action's current context.
@@ -146,7 +162,7 @@ action().use(model(Post));
 
 ### `include`
 
-<FunctionInfo requires="Definition" />
+<FunctionInfo requires="Model" />
 
 Eager load the given relations for the current model definition. It accepts
 deep relations through dot notation. The new relations will be merged with the
@@ -162,7 +178,7 @@ action().use(include(['author', 'comments', 'comments.reactions']));
 
 #### Arguments
 
-- [`{Arrayable<ModelRelationDotKey<D>>}`](/docs/api#modelrelationdotkeyd)
+- [`{Arrayable<ModelRelationDotKey<M>>}`](/docs/api#modelrelationdotkeym)
 `relations` a relation or a set of relation to eager load
 
 ### `fields`
@@ -187,7 +203,7 @@ action().use(fields(['title', 'description']));
 
 #### Arguments
 
-- [`{Arrayable<ModelKey<D>>}`](/docs/api#modelvaluesd) `fieldset` a
+- [`{Arrayable<ModelKey<M>>}`](/docs/api#modelkeym) `fieldset` a
 field or a set of field to select for the current context's model
 
 ### `fieldsFor`
@@ -211,7 +227,7 @@ action().use(fieldsFor(Post, ['title', 'description']));
 
 - [`{ModelClass<D>}`](/docs/api#modelclassd) `model` the model
 to select the fieldsets for
-- [`{Arrayable<ModelKey<D>>}`](/docs/api#modelvaluesd) `fieldset` a
+- [`{Arrayable<ModelKey<M>>}`](/docs/api#modelkeym) `fieldset` a
 field or a set of field to select for the given model
 
 ### `sortBy`
