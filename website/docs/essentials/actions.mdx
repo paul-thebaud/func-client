@@ -70,7 +70,7 @@ action()
 ```
 
 You can also disable or enable an action instance hooks execution at any time.
-This will also prevent any FuncModel hooks from executing.
+This will also prevent any FuncClient hooks from executing.
 
 ```javascript
 const myAction = action();
@@ -81,7 +81,7 @@ myAction.withHooks();
 ```
 
 :::info
-FuncModel will also register hooks when using some enhancers. Those will
+FuncClient will also register hooks when using some enhancers. Those will
 provide some library features (models hooks, etc.).
 :::
 
@@ -109,13 +109,13 @@ provide shorter examples.
 Merge the given context into the action's current context.
 **The context is not deeply merged.**
 
-This is the most basic context enhancer. It is used by a lot of FuncModel
+This is the most basic context enhancer. It is used by a lot of FuncClient
 enhancers.
 
 #### Example
 
 ```javascript
-import { context } from 'func-model/core';
+import { context } from 'func-client/core';
 
 action().use(context({ method: 'GET', path: 'hello-world' }));
 ```
@@ -135,7 +135,7 @@ Register the given model and its definition onto the action's current context.
 #### Example
 
 ```javascript
-import { model } from 'func-model/core';
+import { model } from 'func-client/core';
 
 action().use(model(Post));
 ```
@@ -155,7 +155,7 @@ previous ones.
 #### Example
 
 ```javascript
-import { include } from 'func-model/core';
+import { include } from 'func-client/core';
 
 action().use(include(['author', 'comments', 'comments.reactions']));
 ```
@@ -180,7 +180,7 @@ previous ones.
 #### Example
 
 ```javascript
-import { fields } from 'func-model/json-api';
+import { fields } from 'func-client/json-api';
 
 action().use(fields(['title', 'description']));
 ```
@@ -202,7 +202,7 @@ previous ones.
 #### Example
 
 ```javascript
-import { fieldsFor } from 'func-model/json-api';
+import { fieldsFor } from 'func-client/json-api';
 
 action().use(fieldsFor(Post, ['title', 'description']));
 ```
@@ -225,7 +225,7 @@ previous ones. **Sorts priority are kept**.
 #### Example
 
 ```javascript
-import { sortBy } from 'func-model/json-api';
+import { sortBy } from 'func-client/json-api';
 
 action().use(sortBy('createdAt'));
 ```
@@ -244,7 +244,7 @@ Shortcut for the [`sortBy` function](#sortby) with a `desc` direction.
 #### Example
 
 ```javascript
-import { sortByDesc } from 'func-model/json-api';
+import { sortByDesc } from 'func-client/json-api';
 
 action().use(sortByDesc('createdAt'));
 ```
@@ -265,7 +265,7 @@ Adapter errors are not caught and so may be thrown.
 #### Example
 
 ```javascript
-import { none } from 'func-model/core';
+import { none } from 'func-client/core';
 
 await action().run(none());
 ```
@@ -283,7 +283,7 @@ Run the action and deserialize an array of model's instance.
 #### Example
 
 ```javascript
-import { all } from 'func-model/core';
+import { all } from 'func-client/core';
 
 const posts = await action().run(all());
 ```

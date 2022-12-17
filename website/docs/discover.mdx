@@ -4,9 +4,9 @@ sidebar_position: 1
 
 # Discover
 
-## What is FuncModel?
+## What is FuncClient?
 
-**FuncModel** is a simple functional programming oriented API client. It is
+**FuncClient** is a simple functional programming oriented API client. It is
 framework-agnostic and can integrate with any Web app using Javascript or
 Typescript.
 
@@ -24,11 +24,11 @@ on [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API))
 
 ```ts
 // file: models/comment.ts noEmit
-import { makeModel } from 'func-model/core';
+import { makeModel } from 'func-client/core';
 export default class Comment extends makeModel('comments') {}
 
 // file: models/post.ts
-import { makeModel, attr, hasMany, toDate } from 'func-model/core';
+import { makeModel, attr, hasMany, toDate } from 'func-client/core';
 import type Comment from './comment';
 
 export default class Post extends makeModel('posts', {
@@ -57,7 +57,7 @@ full name getter for a `User` model, etc.).
 ### Action factory
 
 ```javascript
-import { makeJsonApi } from 'func-model/blueprints';
+import { makeJsonApi } from 'func-client/blueprints';
 import Post from './post';
 import Comment from './comment';
 
@@ -79,8 +79,8 @@ it may impact the serialization, the request, etc.
 ### Actions
 
 ```javascript
-import { model, include, all, none, destroy } from 'func-model/core';
-import { filter } from 'func-model/json-api';
+import { model, include, all, none, destroy } from 'func-client/core';
+import { filter } from 'func-client/json-api';
 
 // GET /api/v1/posts?filter[isPublished]=0&include=comments
 const posts = await action()
@@ -119,21 +119,21 @@ runner.
 In a lot of frameworks, modeling the data and building the query are done
 through two main classes: the `Model` and the `Builder`.
 
-The goal of FuncModel is to provide a lot of simple function to affect model
+The goal of FuncClient is to provide a lot of simple function to affect model
 instances or their context. If all of those functions were included in classes,
 it will be in your final production bundle even if you are not using them.
-Thanks to the way FuncModel works, **all unused models helpers or actions
+Thanks to the way FuncClient works, **all unused models helpers or actions
 enhancers/runners can be tree shaken.**
 
 ### Is it strongly typed?
 
-**Yes!** FuncModel makes great use of Typescript generics to provide strongly
+**Yes!** FuncClient makes great use of Typescript generics to provide strongly
 typed models objects and contexts changes.
 
 Here are a short example of the capabilities reusing the previous examples:
 
 ```typescript title="post.ts"
-import { makeModel, attr, hasMany, toDate } from 'func-model/core';
+import { makeModel, attr, hasMany, toDate } from 'func-client/core';
 
 class Post extends makeModel('posts', {
   title: attr({ default: '' }), // Infered to string.
@@ -192,7 +192,7 @@ export default class Post extends makeModel('posts', {
 }
 ```
 
-### What our the downsides of FuncModel approach?
+### What our the downsides of FuncClient approach?
 
 When declaring models, there are no clear downside of the functional
 programming, as `this` context is still available in extensions and classes

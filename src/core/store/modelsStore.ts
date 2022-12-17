@@ -1,4 +1,4 @@
-import FuncModelError from '@/core/errors/funcModelError';
+import FuncClientError from '@/core/errors/funcClientError';
 import isModel from '@/core/model/guards/isModel';
 import { Model } from '@/core/model/types';
 import { ModelsStoreI } from '@/core/types';
@@ -17,7 +17,7 @@ export default class ModelsStore implements ModelsStoreI {
     if (!modelResolver) {
       const registeredModels = [...this.modelsMap.keys()].map((t) => `- ${t}`).join('\n');
 
-      throw new FuncModelError(
+      throw new FuncClientError(
         `Model for type \`${type}\` is not registered. Did you forget registering it?\nRegistered models:\n${registeredModels}`,
       );
     }

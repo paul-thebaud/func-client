@@ -1,6 +1,6 @@
-export default class FuncModelError extends Error {
+export default class FuncClientError extends Error {
   public constructor(message: string) {
-    super(`[func-model] ${message}`);
+    super(`[func-client] ${message}`);
 
     Object.defineProperty(this, 'name', {
       value: new.target.name,

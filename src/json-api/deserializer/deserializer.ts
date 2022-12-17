@@ -1,4 +1,4 @@
-import { ActionContext, DeserializerI, FuncModelError } from '@/core';
+import { ActionContext, DeserializerI, FuncClientError } from '@/core';
 import isNil from '@/core/utilities/isNil';
 import deserializeOne from '@/json-api/deserializer/deserializeOne';
 import prepareDeserializationData from '@/json-api/deserializer/prepareDeserializationData';
@@ -14,7 +14,7 @@ export default class Deserializer implements DeserializerI<JsonApiDocument> {
 
   public async deserializeOne(context: ActionContext, document: JsonApiDocument) {
     if (Array.isArray(document.data)) {
-      throw new FuncModelError('Cannot deserialize array JSON:API resources to one');
+      throw new FuncClientError('Cannot deserialize array JSON:API resources to one');
     }
 
     if (isNil(document.data)) {
@@ -31,7 +31,7 @@ export default class Deserializer implements DeserializerI<JsonApiDocument> {
 
   public async deserializeMany(context: ActionContext, document: JsonApiDocument) {
     if (!Array.isArray(document.data)) {
-      throw new FuncModelError('Cannot deserialize non array JSON:API resources to many');
+      throw new FuncClientError('Cannot deserialize non array JSON:API resources to many');
     }
 
     const deserializationData = prepareDeserializationData(document.data, document.included ?? []);

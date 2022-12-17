@@ -1,4 +1,4 @@
-import { ActionContext, FuncModelError, ModelInstance, runHook, syncOriginal } from '@/core';
+import { ActionContext, FuncClientError, ModelInstance, runHook, syncOriginal } from '@/core';
 import isAttributeDef from '@/core/model/guards/isAttributeDef';
 import isRelationDef from '@/core/model/guards/isRelationDef';
 import deserializeAttribute from '@/json-api/deserializer/deserializeAttribute';
@@ -30,7 +30,7 @@ export default async function deserializeOne(
       return deserializeOne(context, resourceData, deserializationData, options);
     }
 
-    throw new FuncModelError(
+    throw new FuncClientError(
       `Cannot deserialize related resource \`${resourceIdentifier.type}\` with id \`${resourceIdentifier.id}\`. It does not exists in fetched resources.`,
     );
   };
@@ -78,7 +78,7 @@ export default async function deserializeOne(
         instance.$loaded[key] = true;
       }
     } else {
-      throw new FuncModelError(`Cannot deserialize non attribute or relation key \`${key}\``);
+      throw new FuncClientError(`Cannot deserialize non attribute or relation key \`${key}\``);
     }
   }));
 

@@ -13,7 +13,7 @@ description: Define models with attributes, relations and extensions.
 ## Model factory
 
 ```javascript
-import { makeModel } from 'func-model/core';
+import { makeModel } from 'func-client/core';
 
 makeModel('type', { /* schema */ }, { /* extensions */ })
 ```
@@ -68,7 +68,7 @@ define your model's attributes. It may take 0 to 2 arguments, depending on
 what you want to do.
 
 ```ts
-import { attr, toDate } from 'func-model/core';
+import { attr, toDate } from 'func-client/core';
 
 attr<string>(); // Without options.
 attr(toDate()); // With a transformer.
@@ -90,12 +90,12 @@ You may customize your attribute with the following options:
 #### Transform
 
 You can use a transform to convert an attribute value when (de)serializing from/to your backend.
-There are two types or transformer within FuncModel:
+There are two types or transformer within FuncClient:
 
 - `FunctionTransform`: a function to call to transform the value whether we are serializing or deserializing it.
 - `ObjectTransform`: an object with two methods: `serialize` and `deserialize`.
 
-FuncModel propose you 4 transformers out of the box: `toDate`, `toNumber`, `toBoolean` and `toString`.
+FuncClient propose you 4 transformers out of the box: `toDate`, `toNumber`, `toBoolean` and `toString`.
 
 :::tip
 You may need other transformers in your implementation, for example when you
@@ -116,15 +116,15 @@ It may take 0 to 1 argument, depending on what you want to do.
 
 ```ts
 // file: models/user.ts noEmit
-import { makeModel } from 'func-model/core';
+import { makeModel } from 'func-client/core';
 export default class User extends makeModel('users') {}
 
 // file: models/comment.ts noEmit
-import { makeModel } from 'func-model/core';
+import { makeModel } from 'func-client/core';
 export default class Comment extends makeModel('comments') {}
 
 // file: models/example.ts
-import { hasOne, hasMany } from 'func-model/core';
+import { hasOne, hasMany } from 'func-client/core';
 import type User from './user';
 import type Comment from './comment';
 

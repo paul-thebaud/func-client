@@ -3,11 +3,11 @@
 Contributions are **welcome** and will be fully **credited**.
 
 We accept contributions via Pull Requests on
-[GitHub](https://github.com/paul-thebaud/func-model).
+[GitHub](https://github.com/paul-thebaud/func-client).
 
 Informal discussion regarding bugs, new features, and implementation of existing features takes
 place in the
-[GitHub issue page](https://github.com/paul-thebaud/func-model/issues).
+[GitHub issue page](https://github.com/paul-thebaud/func-client/issues).
 
 ## Pull Requests
 

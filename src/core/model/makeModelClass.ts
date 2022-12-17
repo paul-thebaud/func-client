@@ -1,4 +1,4 @@
-import FuncModelError from '@/core/errors/funcModelError';
+import FuncClientError from '@/core/errors/funcClientError';
 import compose from '@/core/model/compose';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
 import warn from '@/core/utilities/warn';
@@ -67,7 +67,7 @@ export default function makeModelClass(config: ModelConfig | string): Model {
     return ModelClass;
   };
   ModelClass.$rawSchema = () => {
-    throw new FuncModelError(
+    throw new FuncClientError(
       '`Model.$rawSchema` cannot be used as it only holds generic raw schema of model',
     );
   };

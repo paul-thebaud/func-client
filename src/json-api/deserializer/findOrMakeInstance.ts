@@ -1,4 +1,4 @@
-import { ActionContext, FuncModelError, InstancesCacheI, isInstance, Model, ModelInstance, ModelsStoreI } from '@/core';
+import { ActionContext, FuncClientError, InstancesCacheI, isInstance, Model, ModelInstance, ModelsStoreI } from '@/core';
 import isNil from '@/core/utilities/isNil';
 import { NewJsonApiResource } from '@/json-api/types';
 
@@ -29,7 +29,7 @@ export default async function findOrMakeInstance(
 
       instance = new ModelClass();
     } else {
-      throw new FuncModelError(
+      throw new FuncClientError(
         `No alternative found for JSON:API resource with type \`${resource.type}\`. You should use a Store and register a model for this type in it.`,
       );
     }

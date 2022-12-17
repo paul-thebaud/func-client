@@ -18,10 +18,10 @@
     "jsx": "preserve",
     "baseUrl": "..",
     "paths": {
-      "func-model/core": [
+      "func-client/core": [
         "src/core.ts"
       ],
-      "func-model/json-api": [
+      "func-client/json-api": [
         "src/json-api.ts"
       ]
     }

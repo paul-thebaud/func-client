@@ -1,4 +1,4 @@
-import { changed, FuncModelError, ModelInstance } from '@/core';
+import { changed, FuncClientError, ModelInstance } from '@/core';
 import isAttributeDef from '@/core/model/guards/isAttributeDef';
 import isRelationDef from '@/core/model/guards/isRelationDef';
 import serializeAttribute from '@/json-api/serializer/serializeAttribute';
@@ -46,7 +46,7 @@ export default async function serializeOne(
         options,
       ));
     } else {
-      throw new FuncModelError(`Cannot serialize non attribute or relation key \`${key}\``);
+      throw new FuncClientError(`Cannot serialize non attribute or relation key \`${key}\``);
     }
   }));
 

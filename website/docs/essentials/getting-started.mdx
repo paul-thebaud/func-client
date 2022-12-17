@@ -23,11 +23,11 @@ To declare a model, you just need to use the `makeModel` function. This function
 
 ```ts title="models/post.js"
 // file: models/comment.ts noEmit
-import { makeModel } from 'func-model/core';
+import { makeModel } from 'func-client/core';
 export default class Comment extends makeModel('comments') {}
 
 // file: models/post.ts
-import { makeModel, attr, hasMany, toDate } from 'func-model/core';
+import { makeModel, attr, hasMany, toDate } from 'func-client/core';
 import type Comment from './comment';
 
 export default class Post extends makeModel('posts', {
@@ -83,7 +83,7 @@ set up your action factory for a JSON:API by providing a root URL and the models
 interacts with.
 
 ```javascript title="action.js"
-import { makeJsonApi } from 'func-model/blueprints';
+import { makeJsonApi } from 'func-client/blueprints';
 
 const { makeAction, store } = makeJsonApi({
   baseURL: 'https://example.com/api/v1',
@@ -122,7 +122,7 @@ the action context.
 When you are ready, you can `run` the action with a given **context runner**.
 
 ```javascript
-import { all, model } from 'func-model/core';
+import { all, model } from 'func-client/core';
 import Post from './models/post';
 import action from './action';
 
@@ -131,7 +131,7 @@ const posts = await action()
   .run(all());
 ```
 
-Generally in FuncModel, the context enhancers are doing the majority of work to
+Generally in FuncClient, the context enhancers are doing the majority of work to
 customize the action you will run. Context runners only exists to tell how
 you wish to run the action and retrieve the result (raw response,
 model instance, etc.).
@@ -142,7 +142,7 @@ enhancer and a `oneOrFail` context runner. This way, you are able to do
 a find query and retrieve a raw result when needed.
 
 ```javascript
-import { find, oneOrFail } from 'func-model/core';
+import { find, oneOrFail } from 'func-client/core';
 import Post from './models/post';
 import action from './action';
 
@@ -155,7 +155,7 @@ This works the same to send write operations through actions. In the following
 example, we are retrieving a raw adapter response instead of model instances.
 
 ```javascript
-import { create, one, fill } from 'func-model/core';
+import { create, one, fill } from 'func-client/core';
 import Post from './models/post';
 import action from './action';
 
@@ -169,12 +169,12 @@ const response = await action()
   .run(one());
 ```
 
-Finally, you may also want to use FuncModel to make non-standard API calls
+Finally, you may also want to use FuncClient to make non-standard API calls
 which are unrelated to models.
 
 ```javascript
-import { instance, knownData } from 'func-model/core';
-import { makePost } from 'func-model/json-api';
+import { instance, knownData } from 'func-client/core';
+import { makePost } from 'func-client/json-api';
 import action from './action';
 
 const post = await action()

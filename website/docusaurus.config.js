@@ -8,14 +8,14 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'FuncModel',
+  title: 'FuncClient',
   tagline: 'Functional programming oriented API client for TS and JS, with strong types capabilities.',
   url: 'https://paul-thebaud.github.io',
-  baseUrl: '/func-model/',
+  baseUrl: '/func-client/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   organizationName: 'paul-thebaud',
-  projectName: 'func-model',
+  projectName: 'func-client',
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -33,7 +33,7 @@ const config = {
             },
           }]],
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/paul-thebaud/func-model/tree/main/website/',
+          editUrl: 'https://github.com/paul-thebaud/func-client/tree/main/website/',
         },
         blog: false,
         theme: {
@@ -47,7 +47,7 @@ const config = {
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'FuncModel',
+        title: 'FuncClient',
         items: [
           {
             to: '/docs/discover',
@@ -60,7 +60,7 @@ const config = {
             label: 'Documentation',
           },
           {
-            href: 'https://github.com/paul-thebaud/func-model',
+            href: 'https://github.com/paul-thebaud/func-client',
             label: 'GitHub',
             position: 'right',
           },
@@ -90,7 +90,7 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/paul-thebaud/func-model',
+                href: 'https://github.com/paul-thebaud/func-client',
               },
             ],
           },

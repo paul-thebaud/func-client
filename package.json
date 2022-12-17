@@ -1,16 +1,16 @@
 {
-  "name": "func-model",
+  "name": "func-client",
   "type": "module",
-  "version": "1.0.0-alpha.58",
+  "version": "1.0.0-alpha.1",
   "license": "MIT",
   "description": "Typescript strongly typed functional programming oriented API client interactions.",
-  "homepage": "https://github.com/paul-thebaud/func-model",
+  "homepage": "https://github.com/paul-thebaud/func-client",
   "repository": {
     "type": "git",
-    "url": "https://github.com/paul-thebaud/func-model.git"
+    "url": "https://github.com/paul-thebaud/func-client.git"
   },
   "bugs": {
-    "url": "https://github.com/paul-thebaud/func-model/issues"
+    "url": "https://github.com/paul-thebaud/func-client/issues"
   },
   "keywords": [
     "typescript",
@@ -29,7 +29,7 @@
     "index.d.ts"
   ],
   "types": "index.d.ts",
-  "main": "./dist/func-model.umd.cjs",
+  "main": "./dist/func-client.umd.cjs",
   "exports": {
     "./core": {
       "import": "./dist/core.js",
@@ -53,7 +53,7 @@
     "build:lib:umd": "BUILD_FORMAT=umd vite build --config vite.config.ts",
     "build:lib": "concurrently \"pnpm build:lib:es\" \"pnpm build:lib:cjs\" \"pnpm build:lib:umd\"",
     "build:declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist/ && tsc-alias --directory dist/",
-    "build:post-clear": "rimraf \"./dist/func-model.@(js|cjs|d.ts)?(.map)\"",
+    "build:post-clear": "rimraf \"./dist/func-client.@(js|cjs|d.ts)?(.map)\"",
     "build": "pnpm build:pre-clear && pnpm build:lib && pnpm build:declaration && pnpm build:post-clear",
     "prepublishOnly": "pnpm build"
   },

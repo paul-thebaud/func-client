@@ -1,5 +1,5 @@
 import AdapterError from '@/core/errors/adapterError';
-import FuncModelError from '@/core/errors/funcModelError';
+import FuncClientError from '@/core/errors/funcClientError';
 import RunFailureError from '@/core/errors/runFailureError';
 import registerHook from '@/core/hooks/registerHook';
 import runHook from '@/core/hooks/runHook';
@@ -44,7 +44,7 @@ export * from '@/core/actions';
 
 export {
   AdapterError,
-  FuncModelError,
+  FuncClientError,
   RunFailureError,
   attr,
   hasMany,

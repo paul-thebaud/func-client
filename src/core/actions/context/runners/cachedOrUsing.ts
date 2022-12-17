@@ -1,6 +1,6 @@
 import Action from '@/core/actions/action';
 import { ActionContext, ConsumeCache, ContextRunner, ConsumeModel } from '@/core/actions/types';
-import FuncModelError from '@/core/errors/funcModelError';
+import FuncClientError from '@/core/errors/funcClientError';
 import { Model } from '@/core/model/types';
 import loaded from '@/core/model/utilities/loaded';
 import isNil from '@/core/utilities/isNil';
@@ -16,7 +16,7 @@ export default function cachedOrUsing<C extends ActionContext, M extends Model, 
   ) => {
     const context = await action.getContext();
     if (isNone(context.id)) {
-      throw new FuncModelError('cannot use cached runner without ID context');
+      throw new FuncClientError('cannot use cached runner without ID context');
     }
 
     const cachedInstance = await context.cache.find(context.type, context.id);

@@ -10,10 +10,10 @@ const libChunks = [
 ];
 
 const makeLibOptions = (format: LibFormat) => ({
-  entry: resolve(__dirname, 'src/func-model.ts'),
+  entry: resolve(__dirname, 'src/func-client.ts'),
   formats: [format],
-  fileName: 'func-model',
-  name: 'FuncModel',
+  fileName: 'func-client',
+  name: 'FuncClient',
 });
 
 const makeRollupOptions = (ext: 'js' | 'cjs') => ({
@@ -21,8 +21,8 @@ const makeRollupOptions = (ext: 'js' | 'cjs') => ({
     minifyInternalExports: false,
     chunkFileNames: '[name]',
     manualChunks(id: string) {
-      if (id.endsWith('func-model.ts')) {
-        return 'func-model';
+      if (id.endsWith('func-client.ts')) {
+        return 'func-client';
       }
 
       const libModule = libChunks.find((m) => id.startsWith(m.dir));
