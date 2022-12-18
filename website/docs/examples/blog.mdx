@@ -144,3 +144,53 @@ const post = new Post();
 
 await deletePost(post);
 ```
+
+## Non-standard actions
+
+You can also use FuncModel to run non-standard actions to your backend.
+
+Thanks to functional programming, you can easily combine non-standard action
+with classical context enhancers and runners.
+
+```javascript
+import { instance, include, when, oneOrFail } from 'func-client/core';
+import { makeGet, makePost } from 'func-client/json-api';
+import action from './action';
+import Post from './models/post';
+
+export default function bestPosts() {
+  return action()
+    .use(model(Post))
+    .use(makeGet('actions/best-posts'))
+    .run(all());
+}
+
+export default function publishPost(post, query = {}) {
+  return action()
+    .use(instance(post))
+    .use(when(query.include, (a, i) => a.use(include(i))))
+    .use(makePost('actions/publish', {
+      publishedAt: new Date(),
+    }))
+    .run(oneOrFail());
+}
+
+// Somewhere in your app.
+// Sends a GET to "/<your-base-url>/posts/actions/best-posts
+// and deserialize a list of Post instances.
+const posts = await bestPosts();
+
+const post = new Post();
+// Sends a POST to "/<your-base-url>/posts/<id>/actions/publish
+// and deserialize a Post instance.
+await publishPost(post);
+```
+
+:::info
+`makeGet` or other custom request enhancers (`makePost`, etc.) will just append
+the given path if it is not an "absolute" (starting with `/`) path.
+This allows you to run non-standard actions scoped to an instance, etc.
+
+Your may also use an absolute (starting with `/`) path like `/some/magic/action`
+to ignore the configured base URL and run a non-standard action.
+:::
