@@ -50,12 +50,12 @@ const config = {
         title: 'FuncClient',
         items: [
           {
-            to: '/docs/discover',
+            to: '/docs/about',
             position: 'left',
-            label: 'Discover',
+            label: 'About',
           },
           {
-            to: '/docs/essentials/getting-started',
+            to: '/docs/getting-started',
             position: 'left',
             label: 'Documentation',
           },
@@ -72,8 +72,12 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Discover',
-                to: '/docs/discover',
+                label: 'About',
+                to: '/docs/about',
+              },
+              {
+                label: 'Getting started',
+                to: '/docs/getting-started',
               },
               {
                 label: 'Essentials',
@@ -82,6 +86,10 @@ const config = {
               {
                 label: 'Advanced',
                 to: '/docs/category/advanced',
+              },
+              {
+                label: 'FAQ',
+                to: '/docs/faq',
               },
             ],
           },
