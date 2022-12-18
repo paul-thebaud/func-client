@@ -25,7 +25,7 @@ read the [**getting started guide**](/docs/essentials/getting-started#your-first
 to quickly create your own action factory.
 :::
 
-### Enhancing and running
+## Enhancing and running
 
 As stated in the [discover guide](/docs/discover#concept), actions are
 instantiated through your action factory, evolved with context enhancers and
@@ -55,7 +55,7 @@ A runner take the action with its context and use it to return a result. It
 might use other enhancers and runners. A runner may return any result (
 including void, throwing error, etc.).
 
-### Hooks
+## Hooks
 
 You may hook on multiple events which occurs on action instance using the hook
 registration function:
@@ -118,7 +118,9 @@ Most runners will execute an action through the adapter.
 The examples will omit imports of your action factories or models to
 provide shorter examples.
 
-## <Chip color="primary">Work in progress</Chip> Available enhancers
+## Available enhancers
+
+<Chip color="primary">Work in progress</Chip>
 
 ### `context`
 
@@ -138,7 +140,7 @@ action().use(context({ method: 'GET', path: 'hello-world' }));
 
 #### Arguments
 
-- [`{Partial<ActionContext>}`](/docs/api#actioncontext) `contextToMerge`
+- [`{Partial<ActionContext>}`](/docs/api/types#actioncontext) `contextToMerge`
 the context to merge into the action's current context
 
 ### `model`
@@ -158,7 +160,7 @@ action().use(model(Post));
 
 #### Arguments
 
-- [`{Model<D, I>}`](/docs/api#modeld-i) `modelToUse` the model class to use
+- [`{Model<D, I>}`](/docs/api/types#modeld-i) `modelToUse` the model class to use
 
 ### `include`
 
@@ -178,7 +180,7 @@ action().use(include(['author', 'comments', 'comments.reactions']));
 
 #### Arguments
 
-- [`{Arrayable<ModelRelationDotKey<M>>}`](/docs/api#modelrelationdotkeym)
+- [`{Arrayable<ModelRelationDotKey<M>>}`](/docs/api/types#modelrelationdotkeym)
 `relations` a relation or a set of relation to eager load
 
 ### `fields`
@@ -203,7 +205,7 @@ action().use(fields(['title', 'description']));
 
 #### Arguments
 
-- [`{Arrayable<ModelKey<M>>}`](/docs/api#modelkeym) `fieldset` a
+- [`{Arrayable<ModelKey<M>>}`](/docs/api/types#modelkeym) `fieldset` a
 field or a set of field to select for the current context's model
 
 ### `fieldsFor`
@@ -225,9 +227,9 @@ action().use(fieldsFor(Post, ['title', 'description']));
 
 #### Arguments
 
-- [`{ModelClass<D>}`](/docs/api#modelclassd) `model` the model
+- [`{ModelClass<D>}`](/docs/api/types#modelclassd) `model` the model
 to select the fieldsets for
-- [`{Arrayable<ModelKey<M>>}`](/docs/api#modelkeym) `fieldset` a
+- [`{Arrayable<ModelKey<M>>}`](/docs/api/types#modelkeym) `fieldset` a
 field or a set of field to select for the given model
 
 ### `sortBy`
@@ -269,7 +271,9 @@ action().use(sortByDesc('createdAt'));
 
 - `{string}` `key` the key for the sort
 
-## <Chip color="primary">Work in progress</Chip>  Available runners
+## Available runners
+
+<Chip color="primary">Work in progress</Chip>
 
 ### `none`
 

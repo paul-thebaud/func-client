@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0-alpha.59",
   "license": "MIT",
-  "description": "Typescript strongly typed functional programming oriented API client interactions.",
+  "description": "Functional programming oriented API client for TS and JS, with strong typing and tree-shaking capabilities.",
   "homepage": "https://github.com/paul-thebaud/func-client",
   "repository": {
     "type": "git",

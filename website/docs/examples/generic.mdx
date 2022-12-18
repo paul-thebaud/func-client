@@ -1,0 +1,136 @@
+---
+sidebar_position: 2
+description: Generic CRUD functions setup using your own action factory.
+---
+
+# Generic CRUD
+
+:::tip What you'll learn
+
+- Writing generic CRUD functions to use your models
+
+:::
+
+## View many
+
+```typescript
+import { ModelRelationDotKey, Model, model, when, include } from 'func-client/core';
+import { filter, sortByDesc, paginate, allMeta } from 'func-client/json-api';
+import action from './action';
+import Post from './models/post';
+
+type FetchAllOptions<M extends Model> = {
+  search?: string;
+  include?: ModelRelationDotKey<M>[];
+  page?: number;
+}
+
+export default async function fetchAll<M extends Model>(
+  useModel: M,
+  query: FetchAllOptions<M> = {},
+) {
+  return action()
+    .use(model(useModel))
+    .use(when(query.search, (a, s) => a.use(filter('search', s))))
+    .use(when(query.include, (a, i) => a.use(include(i))))
+    .use(sortByDesc('createdAt'))
+    .use(paginate({ number: query.page ?? 1 }))
+    .run(allMeta())
+}
+
+// Somewhere in your app.
+const { data, meta } = await fetchAll(Post, {
+  search: 'Hello',
+  include: ['tags'],
+});
+```
+
+## View one
+
+```typescript
+import { ModelRelationDotKey, ModelId, Model, find, when, include, oneOrFail } from 'func-client/core';
+import action from './action';
+import Post from './models/post';
+
+type FetchOneOptions<M extends Model> = {
+  include?: ModelRelationDotKey<M>[];
+}
+
+export default async function fetchOne<M extends Model>(
+  useModel: M,
+  id: ModelId,
+  query: FetchOneOptions<M> = {},
+) {
+  return action()
+    .use(find(Post, id))
+    .use(when(query.include, (a, i) => a.use(include(i))))
+    .run(oneOrFail())
+}
+
+// Somewhere in your app.
+const { data, meta } = await fetchOne(Post, '123-abc', {
+  include: ['tags'],
+});
+```
+
+## Create or update one
+
+```typescript
+import {changed, fill, include, ModelInstance, ModelRelationDotKey, ModelValues, one, reset, save, when} from 'func-client/core';
+import action from './action';
+import Post from './models/post';
+
+type SaveOneOptions<I extends ModelInstance> = {
+  include?: ModelRelationDotKey<I>[];
+}
+
+export default async function saveOne<I extends ModelInstance>(
+  useInstance: I,
+  values: Partial<ModelValues<I>>,
+  query: SaveOneOptions<I> = {},
+) {
+  fill(useInstance, values);
+
+  try {
+    await action()
+      .use(save(useInstance))
+      .use(when(query.include, (a, i) => a.use(include(i))))
+      .run(when(changed(useInstance), one()));
+  } catch (error) {
+    reset(useInstance);
+
+    throw error;
+  }
+
+  return useInstance;
+}
+
+// Somewhere in your app.
+const post = new Post();
+
+await saveOne(post, {
+  title: 'Hello World!',
+  publishedAt: new Date(),
+}, {
+  include: ['tags'],
+});
+```
+
+## Delete one
+
+```javascript
+import { destroy, none } from 'func-client/core';
+import action from './action';
+import Post from './models/post';
+
+export default async function deleteOne(useInstance: ModelInstance) {
+  await action()
+    .use(destroy(useInstance))
+    .run(none());
+}
+
+// Somewhere in your app.
+const post = new Post();
+
+await deleteOne(post);
+```

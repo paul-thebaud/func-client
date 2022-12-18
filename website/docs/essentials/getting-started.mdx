@@ -21,7 +21,7 @@ To declare a model, you just need to use the `makeModel` function. This function
 - The model `schema` (optional), which contains your attributes and relations definitions.
 - The model `extension` (optional), which contains additional properties and methods.
 
-```ts title="models/post.js"
+```ts title="models/post.ts"
 // file: models/comment.ts noEmit
 import { makeModel } from 'func-client/core';
 export default class Comment extends makeModel('comments') {}

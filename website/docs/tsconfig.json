@@ -23,6 +23,9 @@
       ],
       "func-client/json-api": [
         "src/json-api.ts"
+      ],
+      "func-client/blueprints": [
+        "src/blueprints.ts"
       ]
     }
   }

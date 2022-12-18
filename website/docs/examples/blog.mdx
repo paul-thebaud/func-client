@@ -1,0 +1,146 @@
+---
+sidebar_position: 1
+description: Blog articles with tags example. Model setup and action usage.
+---
+
+# Blog CRUD
+
+:::tip What you'll learn
+
+- Defining blog and tag models
+- Use blog model for CRUD operations
+
+:::
+
+This is a simple example to implement a blog content management using
+FuncClient. This example is framework-agnostic, so you'll only see
+examples of models or actions calls. You may use those examples inside
+any project (Vanilla JS, React, Vue, etc.).
+
+## Models
+
+```ts title="models/tag.ts"
+// file: models/post.ts noEmit
+export default class Post {}
+// file: models/tag.ts
+import { attr, hasMany, makeModel } from 'func-client/core';
+import type Post from './post';
+
+const TagModel = makeModel({
+  name: attr<string>(),
+  posts: hasMany<Post>(),
+});
+
+export default class Tag extends TagModel {
+}
+```
+
+```ts title="models/post.ts"
+// file: models/tag.ts noEmit
+export default class Tag {}
+// file: models/post.ts
+import { attr, hasMany, makeModel, toDate } from 'func-client/core';
+import type Tag from './tag';
+
+const PostModel = makeModel({
+  title: attr<string>(),
+  description: attr<string>(),
+  publishedAt: attr(toDate()),
+  tags: hasMany<Tag>(),
+});
+
+export default class Post extends PostModel {
+}
+```
+
+## CRUD
+
+### View many
+
+```javascript
+import { model, when } from 'func-client/core';
+import { filter, sortByDesc, paginate, allMeta } from 'func-client/json-api';
+import action from './action';
+import Post from './models/post';
+
+export default async function fetchAllPost(query = {}) {
+  return action()
+    .use(model(Post))
+    .use(when(query.search, (a, s) => a.use(filter('search', s))))
+    .use(sortByDesc('createdAt'))
+    .use(paginate({ number: query.page ?? 1 }))
+    .run(allMeta())
+}
+
+// Somewhere in your app.
+const { data, meta } = await fetchAllPost({ search: 'Hello' });
+```
+
+### View one
+
+```javascript
+import { find, include, oneOrFail } from 'func-client/core';
+import action from './action';
+import Post from './models/post';
+
+export default async function fetchOnePost(id) {
+  return action()
+    .use(find(Post, id))
+    .use(include('tags'))
+    .run(oneOrFail())
+}
+
+// Somewhere in your app.
+const post = await fetchOnePost('123-abc');
+```
+
+### Create or update one
+
+```javascript
+import { changed, fill, one, reset, save, when } from 'func-client/core';
+import action from './action';
+import Post from './models/post';
+
+export default async function savePost(post, values = {}) {
+  fill(post, values);
+
+  try {
+    await action()
+      .use(save(post))
+      .run(when(changed(post), one()));
+  } catch (error) {
+    reset(post);
+
+    throw error;
+  }
+
+  return post;
+}
+
+// Somewhere in your app.
+const post = new Post();
+
+await savePost(post, {
+  title: 'Hello World!',
+  publishedAt: new Date(),
+});
+```
+
+### Delete one
+
+```javascript
+import { destroy, none } from 'func-client/core';
+import action from './action';
+import Post from './models/post';
+
+export default async function deletePost(post) {
+  await action()
+    .use(destroy(post))
+    .run(none());
+}
+
+// Somewhere in your app.
+const post = new Post();
+
+await deletePost(post);
+```

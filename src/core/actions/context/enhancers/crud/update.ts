@@ -9,10 +9,10 @@ import instance from '@/core/actions/context/enhancers/instance';
 import { ConsumeAdapter, ConsumeSerializer } from '@/core/actions/types';
 import { ModelInstance } from '@/core/model/types';
 
-export default function update<R, D, I extends ModelInstance>(
+export default function update<R, RD, I extends ModelInstance>(
   instanceToUpdate: I,
 ) {
-  return <C extends ConsumeAdapter<R, D> & ConsumeSerializer<D>>(action: Action<C>) => action
+  return <C extends ConsumeAdapter<R, RD> & ConsumeSerializer<RD>>(action: Action<C>) => action
     .use(instance(instanceToUpdate))
     .use(instancePayload(instanceToUpdate))
     .use(context({ method: 'PATCH' }))

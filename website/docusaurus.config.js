@@ -9,7 +9,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'FuncClient',
-  tagline: 'Functional programming oriented API client for TS and JS, with strong types capabilities.',
+  tagline: 'Functional programming oriented API client for TS and JS, with strong typing and tree-shaking capabilities.',
   url: 'https://paul-thebaud.github.io',
   baseUrl: '/func-client/',
   onBrokenLinks: 'throw',
