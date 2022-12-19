@@ -5,11 +5,11 @@ import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from
 import { Model } from '@/core/model/types';
 import { Awaitable } from '@/core/utilities/types';
 
-export default function allUsing<C extends ActionContext, R, D, M extends Model, ND>(
-  transformData: (data: InstanceType<M>[], realData: D, context: C) => Awaitable<ND>,
+export default function allUsing<C extends ActionContext, R, RD, M extends Model, ND>(
+  transformData: (data: InstanceType<M>[], realData: RD, context: C) => Awaitable<ND>,
 ) {
   return (
-    action: Action<C & ConsumeAdapter<R, D> & ConsumeDeserializer<D> & ConsumeModel<M>>,
+    action: Action<C & ConsumeAdapter<R, RD> & ConsumeDeserializer<RD> & ConsumeModel<M>>,
   ) => action.run(
     dataUsing(async (context, realData) => transformData(
       await toManyInstances(context, realData),

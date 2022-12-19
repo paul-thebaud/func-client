@@ -10,10 +10,10 @@ import instance from '@/core/actions/context/enhancers/instance';
 import { ConsumeAdapter, ConsumeSerializer } from '@/core/actions/types';
 import { ModelInstance } from '@/core/model/types';
 
-export default function create<R, D, I extends ModelInstance>(
+export default function create<R, RD, I extends ModelInstance>(
   instanceToCreate: I,
 ) {
-  return <C extends ConsumeAdapter<R, D> & ConsumeSerializer<D>>(action: Action<C>) => action
+  return <C extends ConsumeAdapter<R, RD> & ConsumeSerializer<RD>>(action: Action<C>) => action
     .use(forId(undefined))
     .use(instance(instanceToCreate))
     .use(instancePayload(instanceToCreate))

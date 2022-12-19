@@ -12,12 +12,12 @@ import { Model } from '@/core/model/types';
 import isNil from '@/core/utilities/isNil';
 import { Awaitable } from '@/core/utilities/types';
 
-export default function oneOrUsing<C extends ActionContext, R, D, M extends Model, ND, DD>(
-  transformData: (data: InstanceType<M>, realData: D, context: C) => Awaitable<ND>,
+export default function oneOrUsing<C extends ActionContext, R, RD, M extends Model, ND, DD>(
+  transformData: (data: InstanceType<M>, realData: RD, context: C) => Awaitable<ND>,
   nilRunner: ContextRunner<C, DD>,
 ) {
   return async (
-    action: Action<C & ConsumeAdapter<R, D> & ConsumeDeserializer<D> & ConsumeModel<M>>,
+    action: Action<C & ConsumeAdapter<R, RD> & ConsumeDeserializer<RD> & ConsumeModel<M>>,
   ) => {
     try {
       return await action.run(dataUsing(

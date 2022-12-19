@@ -12,9 +12,9 @@ export type InstancesCacheI = {
   forgetAll(type: string): Promise<void>;
 };
 
-export type AdapterI<R, D> = {
+export type AdapterI<R, RD> = {
   action(context: ActionContext): Promise<R>;
-  data(response: R): Promise<D>;
+  data(response: R): Promise<RD>;
   isNotFound(error: unknown): boolean;
 };
 

@@ -9,10 +9,10 @@ import {
 } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
 
-export default function oneOr<C extends ActionContext, R, D, M extends Model, DD>(
+export default function oneOr<C extends ActionContext, R, RD, M extends Model, DD>(
   nilRunner: ContextRunner<C, DD>,
 ) {
   return (
-    action: Action<C & ConsumeAdapter<R, D> & ConsumeDeserializer<D> & ConsumeModel<M>>,
+    action: Action<C & ConsumeAdapter<R, RD> & ConsumeDeserializer<RD> & ConsumeModel<M>>,
   ) => action.run(oneOrUsing((d) => d, nilRunner));
 }

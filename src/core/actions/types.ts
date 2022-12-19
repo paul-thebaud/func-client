@@ -56,8 +56,8 @@ export type ConsumeInstance<I extends ModelInstance = ModelInstance> = {
 
 export type ConsumeCache = { cache: InstancesCacheI; };
 
-export type ConsumeAdapter<R = unknown, AD = unknown> = { adapter: AdapterI<R, AD>; };
+export type ConsumeAdapter<R = unknown, RD = unknown> = { adapter: AdapterI<R, RD>; };
 
-export type ConsumeDeserializer<AD = unknown> = { deserializer: DeserializerI<AD> };
+export type ConsumeDeserializer<D = unknown> = { deserializer: DeserializerI<D> };
 
-export type ConsumeSerializer<AD = unknown> = { serializer: SerializerI<AD> };
+export type ConsumeSerializer<D = unknown> = { serializer: SerializerI<D> };

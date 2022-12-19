@@ -8,11 +8,11 @@ export type RequestConfig = {
   payload?: unknown;
 };
 
-export default function makeRequest<R, D>(
+export default function makeRequest<R, RD>(
   pathOrBaseURL: string,
   config?: RequestConfig,
 ) {
-  return <C extends ActionContext>(a: Action<C & ConsumeAdapter<R, D>>) => {
+  return <C extends ActionContext>(a: Action<C & ConsumeAdapter<R, RD>>) => {
     const [baseURL, path] = pathOrBaseURL.startsWith('/')
       ? [pathOrBaseURL, undefined]
       : [undefined, pathOrBaseURL];

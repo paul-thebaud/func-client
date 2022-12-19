@@ -4,9 +4,9 @@ import { ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/action
 import RunFailureError from '@/core/errors/runFailureError';
 import { Model } from '@/core/model/types';
 
-export default function oneOrFail<R, D, M extends Model>() {
+export default function oneOrFail<R, RD, M extends Model>() {
   return (
-    action: Action<ConsumeAdapter<R, D> & ConsumeDeserializer<D> & ConsumeModel<M>>,
+    action: Action<ConsumeAdapter<R, RD> & ConsumeDeserializer<RD> & ConsumeModel<M>>,
   ) => action.run(oneOr(async (): Promise<never> => {
     throw new RunFailureError('`oneOrFail` failed.');
   }));
