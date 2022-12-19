@@ -8,9 +8,12 @@ export default function makeFetchRequestInit(
   const method = (request.method ?? 'GET').toUpperCase();
   const headers = request.headers ?? {};
 
-  let payload = undefined as unknown;
-  if (request.payload !== undefined) {
-    const contentType = headers['content-type'] ?? headers['Content-Type'];
+  let payload: unknown;
+  if (request.payload instanceof FormData) {
+    delete headers['Content-Type'];
+    payload = request.payload;
+  } else if (request.payload !== undefined) {
+    const contentType = headers['Content-Type'];
     const jsonContentTypes = options.jsonContentTypes ?? [
       'application/json', 'application/vnd.api+json',
     ];
