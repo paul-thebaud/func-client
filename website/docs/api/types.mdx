@@ -5,6 +5,38 @@ description: Types description.
 
 # Types
 
+## Utilities types
+
+:::tip
+Many utilities types are used by FuncClient but are not exported to avoid
+polluting your code or conflicting with your own utilities types.
+You may copy those types as you want and use them in your project.
+:::
+
+### `Constructor<T>`
+
+```typescript
+type Constructor<T> = new (...args: any[]) => T;
+```
+
+### `Dictionary<T>`
+
+```typescript
+type Dictionary<T = unknown> = { [K: string]: T };
+```
+
+### `Arrayable<T>`
+
+```typescript
+type Arrayable<T> = T | T[];
+```
+
+### `Awaitable<T>`
+
+```typescript
+type Awaitable<T> = T | Promise<T>;
+```
+
 ## Model types
 
 ### `ModelId`
@@ -12,6 +44,23 @@ description: Types description.
 ```typescript
 type ModelId = string | number;
 ```
+
+### `ModelConfig`
+
+```typescript
+type ModelConfig = {
+  type: string;
+  baseURL?: string;
+  comparator?: (newValue: unknown, prevValue: unknown) => boolean;
+  cloner?: <T = unknown>(value: T) => T;
+};
+```
+
+### `ModelDefinition`
+
+A model definition (an object with attributes/relations/custom properties).
+
+*This type does not really exist, it is only here for documentation purpose*.
 
 ### `ModelSchema<D>`
 
@@ -72,18 +121,4 @@ export type ActionContext = {
   payload?: unknown;
   [key: string]: unknown;
 };
-```
-
-## Utilities types
-
-:::tip
-Many utilities types are used by FuncClient but are not exported to avoid
-polluting your code or conflicting with your own utilities types.
-You may copy those types as you want and use them in your project.
-:::
-
-### `Arrayable<T>`
-
-```typescript
-type Arrayable<T> = T | T[];
 ```

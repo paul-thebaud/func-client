@@ -3,7 +3,7 @@ import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/typ
 import { Dictionary } from '@/core/utilities/types';
 import warn from '@/core/utilities/warn';
 
-export default function makeModelClass(config: ModelConfig | string): Model {
+export default function makeModelClass(config: ModelConfig): Model {
   function ModelClass(this: ModelInstance) {
     Object.defineProperty(this, '$MODEL_TYPE', { value: 'instance' });
     Object.defineProperty(this, '$model', { value: ModelClass });
@@ -40,9 +40,7 @@ export default function makeModelClass(config: ModelConfig | string): Model {
   }
 
   ModelClass.$MODEL_TYPE = 'model';
-  ModelClass.$config = typeof config === 'string' ? {
-    type: config,
-  } : config;
+  ModelClass.$config = config;
   ModelClass.$schema = {} as Dictionary;
   ModelClass.$hooks = {};
   ModelClass.extends = (extendsFrom?: object) => {

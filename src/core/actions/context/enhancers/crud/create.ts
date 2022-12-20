@@ -14,9 +14,9 @@ export default function create<R, RD, I extends ModelInstance>(
   instanceToCreate: I,
 ) {
   return <C extends ConsumeAdapter<R, RD> & ConsumeSerializer<RD>>(action: Action<C>) => action
-    .use(forId(undefined))
     .use(instance(instanceToCreate))
     .use(instancePayload(instanceToCreate))
+    .use(forId(undefined))
     .use(context({ method: 'POST' }))
     .use(changeInstanceExistence(true))
     .use(onPreparing(runInstanceHooks(instanceToCreate, ['creating', 'saving'])))

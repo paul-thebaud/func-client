@@ -20,6 +20,7 @@ import onSuccess from '@/core/actions/context/enhancers/hooks/onSuccess';
 import include from '@/core/actions/context/enhancers/include';
 import instance from '@/core/actions/context/enhancers/instance';
 import model from '@/core/actions/context/enhancers/model';
+import target from '@/core/actions/context/enhancers/target';
 import fullPath from '@/core/actions/context/enhancers/requests/fullPath';
 import param from '@/core/actions/context/enhancers/requests/param';
 import params from '@/core/actions/context/enhancers/requests/params';
@@ -82,6 +83,7 @@ export {
   forId,
   instance,
   model,
+  target,
   include,
   when,
   onPreparing,

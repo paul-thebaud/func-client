@@ -3,6 +3,8 @@ sidebar_position: 3
 description: Available actions enhancers.
 ---
 
+
+
 import Chip from '../../src/components/chip';
 import FunctionInfo from '../../src/components/functionInfo';
 
@@ -46,12 +48,35 @@ action().use(context({ method: 'GET', path: 'hello-world' }));
 - [`{Partial<ActionContext>}`](/docs/api/types#actioncontext) `contextToMerge`
 the context to merge into the action's current context
 
+### `target`
+
+<FunctionInfo provides="Model" />
+
+Only target the given model.
+
+This should only be used in special actions cases where we do not want to
+use the model type and base URL (understand "endpoint" in case of an API).
+
+**In most case, you should an alternative ([`model`](#model), [`find`](#find),
+[`update`](#update), etc.) instead.**
+
+#### Example
+
+```javascript
+import { target } from 'func-client/core';
+
+action().use(target(Post));
+```
+
+#### Arguments
+
+- [`{M extends Model}`](/docs/api/types#modeld-i) `modelToUse` the model class to use
+
 ### `model`
 
 <FunctionInfo provides="Model" />
 
-Target the given model.
-Register the given model and its definition onto the action's current context.
+Target the given model and use its type and base URL (if defined).
 
 #### Example
 

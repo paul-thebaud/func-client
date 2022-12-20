@@ -145,3 +145,45 @@ if (areSameInstances) { /* do something */ }
 #### Returns
 
 `{boolean}`
+
+### `makeModel`
+
+Create a model class.
+
+#### Example
+
+```javascript
+import { makeModel } from 'func-client/core';
+
+const PostModel = makeModel('posts', { /* definition */ });
+```
+
+#### Arguments
+
+- [`{ModelConfig | string}`](/docs/api/types#modelconfig) `config`
+- [`{ModelDefinition}`](/docs/api/types#modeldefinition) `extendsFrom`
+
+#### Returns
+
+[`{ModelClass}`](/docs/api/types#modelclass)
+
+### `makeModelFactory`
+
+Create a model class factory.
+
+#### Example
+
+```javascript
+import { makeModelFactory } from 'func-client/core';
+
+const makeModel = makeModelFactory({ /* definition */ }, { /* config */ });
+```
+
+#### Arguments
+
+- [`{ModelDefinition | undefined}`](/docs/api/types#modeldefinition) `baseExtendsFrom`
+- [`{ModelConfig | undefined}`](/docs/api/types#modelconfig) `baseConfig` (omitting `type`)
+
+#### Returns
+
+[`{makeModel}`](#makemodel), a customized model factory function.
