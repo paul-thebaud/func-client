@@ -55,7 +55,7 @@ When an action run, it does 3 things:
 
 - Dequeue all enhancers since the action instantiation and build context
 - Execute the runner and each of its internal enhancers/runners (this may update the context)
-- Return the runner's result or throw an error
+- Return the runner's result (might be any value, including void or an error throwing)
 
 Internally, action running will also trigger [actions hooks](#hooks).
 
@@ -71,36 +71,6 @@ action()
 
 All runners are listed in the
 [**actions' available runners API guide**](/docs/api/actions-runners).
-
-## Enhancing and running
-
-As stated in the [getting started guide](/docs/getting-started#running-actions), actions are
-instantiated through your action factory, evolved with context enhancers and
-ran by context runners.
-
-```javascript
-const posts = await action()
-  .use(model(Post))
-  .use(include('comments'))
-  .run(all());
-```
-
-In the example above:
-
-- `action()` is your action factory
-- `model(Post)` and `include('comments')` are context enhancers which we `use`
-- `all()` is a context runner which we `run`
-
-When you instantiate a new action, you can `use` multiple context enhancers.
-Those enhancers will be queued until the `run` call.
-
-An enhancer take the action with a given context and enhancer its context. It
-might use other enhancers. An enhancer may return an instance of an action
-or void.
-
-A runner take the action with its context and use it to return a result. It
-might use other enhancers and runners. A runner may return any result (
-including void, throwing error, etc.).
 
 ## Hooks
 
