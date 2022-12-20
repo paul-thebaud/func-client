@@ -152,37 +152,6 @@ You may customize your relation with the following options:
 | `readonly`    | `boolean`      | `false`     | The value won't be serialized when sending the data to your backend.                  |
 | `alias`       | `string`       | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend. |
 
-## Extensions
-
-Sometimes, a model is not only composed by attributes and relations. As an
-example, a `User` model may have first name and last name attributes, and a
-convenience method to retrieve the full name.
-
-To solve this, you may extend the model class created by `makeModel`, or pass
-an extension as the `makeModel` call third arguments.
-
-```javascript
-// Using an extension.
-export default makeModel('users', {
-  firstName: attr(),
-  lastName: attr(),
-}, {
-  get fullName() {
-    return `${this.firstName} ${this.lastName}`
-  }
-});
-
-// Using an ES6 class.
-export default class User extends makeModel('users', {
-  firstName: attr(),
-  lastName: attr(),
-}) {
-  get fullName() {
-    return `${this.firstName} ${this.lastName}`
-  }
-}
-```
-
 ## Hooks
 
 You may hook on multiple events which occurs on model instance using the hook
@@ -225,4 +194,35 @@ import { withoutHooks } from 'func-client/core';
 const resultOfCallback = await withoutHooks(User, async () => {
   // TODO Do something (a)sync and return it.
 });
+```
+
+## Extensions
+
+Sometimes, a model is not only composed by attributes and relations. As an
+example, a `User` model may have first name and last name attributes, and a
+convenience method to retrieve the full name.
+
+To solve this, you may extend the model class created by `makeModel`, or pass
+an extension as the `makeModel` call third arguments.
+
+```javascript
+// Using an extension.
+export default makeModel('users', {
+  firstName: attr(),
+  lastName: attr(),
+}, {
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`
+  }
+});
+
+// Using an ES6 class.
+export default class User extends makeModel('users', {
+  firstName: attr(),
+  lastName: attr(),
+}) {
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`
+  }
+}
 ```
