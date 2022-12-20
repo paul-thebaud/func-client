@@ -34,13 +34,12 @@ class Post extends makeModel('posts', {
   createdAt: attr(toDate()), // Infered from transformers.
   publishedAt: attr<Date | null>(toDate()),
   comments: hasMany<Comment>(),
-}, {
-  // `this` context is available and strongly typed in extensions.
+  // `this` context is available and strongly typed in definition methods.
   get isPublished() {
     return !!this.publishedAt;
   },
 }) {
-  // `this` context is also available and strongly typed in classes body.
+  // `this` context is also available and strongly typed in class methods.
   shortenDescription() {
     return this.description.substring(0, 50);
   }
@@ -88,12 +87,12 @@ export default class Post extends makeModel('posts', {
 ## What our the downsides of FuncClient approach?
 
 When declaring models, there are no clear downside of the functional
-programming, as `this` context is still available in extensions and classes
+programming, as `this` context is still available in definition and classes
 body.
 
 But, since we are not building the action factory for you, you must initialize
 this factory yourself with the things you need: an adapter, a serializer, etc.
-Don't worry, the process is still pretty simple.
+Don't worry, the process is still pretty simple thanks to blueprints.
 
 In addition, you cannot just use `action().model(Post).all()` because those
 function must be imported to be used. We are thinking of a way to simply extends

@@ -9,5 +9,5 @@ export default function fill<I extends ModelInstance>(
     instance.$values[key] = value;
   });
 
-  return instance as I;
+  return instance;
 }

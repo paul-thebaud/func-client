@@ -56,15 +56,9 @@ export type ModelClass<D extends {} = any> = Hookable<ModelHooksDefinition> & {
   readonly $MODEL_TYPE: 'model';
   readonly $config: ModelConfig;
   readonly $schema: ModelSchema<D>;
-  extends<NS extends ModelSchema = {}, NE extends object = {}>(
-    addSchemaAndExtension?: { schema?: NS; extension?: NE; },
-  ): Model<D & NS & NE, ModelInstance<D & NS & NE>>;
-  schema<NS extends ModelSchema = {}>(
-    addSchema?: NS,
-  ): Model<D & NS, ModelInstance<D & NS>>;
-  extension<NE extends object = {}>(
-    addExtension?: NE & ThisType<ModelInstance<D & NE>>,
-  ): Model<D & NE, ModelInstance<D & NE>>;
+  extends<ND extends {} = {}>(
+    extendsFrom?: ND & ThisType<ModelInstance<D & ND>>,
+  ): Model<D & ND, ModelInstance<D & ND>>;
 };
 
 export type Model<D extends {} = any, I extends ModelInstance<D> = any> =
@@ -105,7 +99,12 @@ export type ModelValues<M> = {
       ? T : never;
 };
 
-export type ModelKey<M> = keyof ModelValues<M>;
+export type ModelKey<M> = {
+  [K in keyof ModelInferDefinition<M>]:
+  ModelInferDefinition<M>[K] extends ModelAttribute<any, any>
+    ? K : ModelInferDefinition<M>[K] extends ModelRelation<any>
+      ? K : never;
+}[keyof ModelInferDefinition<M>];
 
 export type ModelRelationKey<M> =
   keyof ModelInferSchema<M> extends infer K

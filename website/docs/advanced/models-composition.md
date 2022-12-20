@@ -29,7 +29,6 @@ import { attr, makeComposable, toDate } from 'func-client/core';
 
 export default makeComposable({
   publishedAt: attr(toDate()),
-}, {
   get isDraft() {
     return !this.publishedAt;
   },
@@ -49,7 +48,7 @@ export default class Post extends makeModel('posts').extends(publishable) {
 ## Factory
 
 When you need to share features across **all** of your models, you should use
-a custom model factory. It will replace the FuncModel's `makeModel` function.
+a custom model factory. It will replace the FuncClient's `makeModel` function.
 
 ```javascript title="makeModel.js"
 import { attr, makeModelFactory, toDate } from 'func-client/core';
@@ -57,7 +56,6 @@ import { attr, makeModelFactory, toDate } from 'func-client/core';
 export default makeModelFactory({
   createdAt: attr(toDate()),
   updatedAt: attr(toDate()),
-}, {
   get wasChangedSinceCreation() {
     return this.createdAt.getTime() === this.updatedAt.getTime();
   },
@@ -70,6 +68,6 @@ Once your factory is ready, you can use in replacement of the classical
 ```javascript
 import makeModel from './makeModel';
 
-export default class Post extends makeModel('posts') {
+export default class Post extends makeModel('posts', { /* definition */ }) {
 }
 ```

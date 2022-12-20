@@ -1,0 +1,175 @@
+---
+sidebar_position: 3
+description: Available actions enhancers.
+---
+
+import Chip from '../../src/components/chip';
+import FunctionInfo from '../../src/components/functionInfo';
+
+# Actions enhancers
+
+## Note
+
+Many actions enhancers are available. Each may:
+
+- <Chip>depend</Chip> on a minimal package version
+- <Chip color="primary">only</Chip> be available in a given use case
+(JSON:API, etc.)
+- <Chip color="success">provide</Chip> a given context to next enhancers
+or runners
+- <Chip color="danger">require</Chip> a given context from previous enhancers
+or runners
+
+Examples of this guide will omit imports of your action factories or models to
+provide shorter examples.
+
+## List
+
+### `context`
+
+Merge the given context into the action's current context.
+**The context is not deeply merged.**
+
+This is the most basic context enhancer. It is used by a lot of FuncClient
+enhancers.
+
+#### Example
+
+```javascript
+import { context } from 'func-client/core';
+
+action().use(context({ method: 'GET', path: 'hello-world' }));
+```
+
+#### Arguments
+
+- [`{Partial<ActionContext>}`](/docs/api/types#actioncontext) `contextToMerge`
+the context to merge into the action's current context
+
+### `model`
+
+<FunctionInfo provides="Model" />
+
+Target the given model.
+Register the given model and its definition onto the action's current context.
+
+#### Example
+
+```javascript
+import { model } from 'func-client/core';
+
+action().use(model(Post));
+```
+
+#### Arguments
+
+- [`{M extends Model}`](/docs/api/types#modeld-i) `modelToUse` the model class to use
+
+### `include`
+
+<FunctionInfo requires="Model" />
+
+Eager load the given relations for the current model definition. It accepts
+deep relations through dot notation. The new relations will be merged with the
+previous ones.
+
+#### Example
+
+```javascript
+import { include } from 'func-client/core';
+
+action().use(include(['author', 'comments', 'comments.reactions']));
+```
+
+#### Arguments
+
+- [`{Arrayable<ModelRelationDotKey<M>>}`](/docs/api/types#modelrelationdotkeym)
+`relations` a relation or a set of relation to eager load
+
+### `fields`
+
+<FunctionInfo
+  only="JSON:API"
+  requires="Model"
+/>
+
+Select the given
+[JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
+for the current context's model. The new fieldsets will be merged with the
+previous ones.
+
+#### Example
+
+```javascript
+import { fields } from 'func-client/json-api';
+
+action().use(fields(['title', 'description']));
+```
+
+#### Arguments
+
+- [`{Arrayable<ModelKey<M>>}`](/docs/api/types#modelkeym) `fieldset` a
+field or a set of field to select for the current context's model
+
+### `fieldsFor`
+
+<FunctionInfo only="JSON:API" />
+
+Select the given
+[JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
+for the given model. The new fieldsets will be merged with the
+previous ones.
+
+#### Example
+
+```javascript
+import { fieldsFor } from 'func-client/json-api';
+
+action().use(fieldsFor(Post, ['title', 'description']));
+```
+
+#### Arguments
+
+- [`{M extends ModelClass<D>}`](/docs/api/types#modelclassd) `model` the model
+to select the fieldsets for
+- [`{Arrayable<ModelKey<M>>}`](/docs/api/types#modelkeym) `fieldset` a
+field or a set of field to select for the given model
+
+### `sortBy`
+
+<FunctionInfo only="JSON:API" />
+
+[Sort the JSON:API resource](https://jsonapi.org/format/#fetching-sorting)
+by the given key and direction. The new sort will be merged with the
+previous ones. **Sorts priority are kept**.
+
+#### Example
+
+```javascript
+import { sortBy } from 'func-client/json-api';
+
+action().use(sortBy('createdAt'));
+```
+
+#### Arguments
+
+- `{string}` `key` the key for the sort
+- `{'asc' | 'desc' = 'asc'}` `direction` the direction for the sort
+
+### `sortByDesc`
+
+<FunctionInfo only="JSON:API" />
+
+Shortcut for the [`sortBy` function](#sortby) with a `desc` direction.
+
+#### Example
+
+```javascript
+import { sortByDesc } from 'func-client/json-api';
+
+action().use(sortByDesc('createdAt'));
+```
+
+#### Arguments
+
+- `{string}` `key` the key for the sort

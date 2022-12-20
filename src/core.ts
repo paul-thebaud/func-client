@@ -5,8 +5,6 @@ import registerHook from '@/core/hooks/registerHook';
 import runHook from '@/core/hooks/runHook';
 import unregisterHook from '@/core/hooks/unregisterHook';
 import withoutHooks from '@/core/hooks/withoutHooks';
-import compose from '@/core/model/compose';
-import isInstance from '@/core/model/guards/isInstance';
 import onCreated from '@/core/model/hooks/onCreated';
 import onCreating from '@/core/model/hooks/onCreating';
 import onDestroyed from '@/core/model/hooks/onDestroyed';
@@ -55,8 +53,6 @@ export {
   syncOriginal,
   changed,
   isSame,
-  isInstance,
-  compose,
   makeComposable,
   makeModel,
   makeModelFactory,

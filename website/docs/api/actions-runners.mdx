@@ -1,0 +1,63 @@
+---
+sidebar_position: 4
+description: Available actions runners.
+---
+
+import Chip from '../../src/components/chip';
+import FunctionInfo from '../../src/components/functionInfo';
+
+# Actions runners
+
+## Note
+
+Many actions runners are available. Each may:
+
+- <Chip>depend</Chip> on a minimal package version
+- <Chip color="primary">only</Chip> be available in a given use case
+(JSON:API, etc.)
+- <Chip color="success">provide</Chip> a given context to next enhancers
+or runners
+- <Chip color="danger">require</Chip> a given context from previous enhancers
+or runners
+
+Examples of this guide will omit imports of your action factories or models to
+provide shorter examples.
+
+## List
+
+### `none`
+
+<FunctionInfo requires="Adapter" />
+
+Run the action and ignore the content of the result.
+Adapter errors are not caught and so may be thrown.
+
+#### Example
+
+```javascript
+import { none } from 'func-client/core';
+
+await action().run(none());
+```
+
+#### Returns
+
+`{Promise<void>}`
+
+### `all`
+
+<FunctionInfo requires="Adapter, Deserializer, Model" />
+
+Run the action and deserialize an array of model's instance.
+
+#### Example
+
+```javascript
+import { all } from 'func-client/core';
+
+const posts = await action().run(all());
+```
+
+#### Returns
+
+`{Promise<I[]>}` where `I` is an instance of the targeted model.

@@ -100,6 +100,10 @@ const config = {
                 label: 'GitHub',
                 href: 'https://github.com/paul-thebaud/func-client',
               },
+              {
+                href: 'https://www.npmjs.com/package/func-client',
+                label: 'NPM',
+              },
             ],
           },
         ],

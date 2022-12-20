@@ -1,0 +1,147 @@
+---
+sidebar_position: 2
+description: Available models utilities.
+---
+
+# Models utilities
+
+## List
+
+### `fill`
+
+Fill the model instance's values with the given values.
+
+#### Example
+
+```javascript
+import { fill } from 'func-client/core';
+
+const post = fill(new Post(), { title: 'Hello', description: 'World' });
+```
+
+#### Arguments
+
+- [`{I extends ModelInstance}`](/docs/api/types#modelinstanced) `instance`
+- [`{Partial<ModelValues<I>>}`](/docs/api/types#modelvaluesm) `values`
+
+#### Returns
+
+`{I}`, the affected instance.
+
+### `changed`
+
+Check if the given keys have been changed since last instance sync.
+If no keys are provided, will check all instance keys.
+
+#### Example
+
+```javascript
+import { changed } from 'func-client/core';
+
+const wasChanged = changed(post, ['title', 'description']);
+if (wasChanged) { /* do something */ }
+```
+
+#### Arguments
+
+- [`{I extends ModelInstance}`](/docs/api/types#modelinstanced) `instance`
+- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/types#modelkeym) `keys`
+
+#### Returns
+
+`{boolean}`
+
+### `syncOriginal`
+
+Sync the model instance's values as it was the original data source values.
+If no keys are provided, will sync all instance keys.
+
+#### Example
+
+```javascript
+import { syncOriginal } from 'func-client/core';
+
+syncOriginal(post, ['title', 'description']);
+```
+
+#### Arguments
+
+- [`{I extends ModelInstance}`](/docs/api/types#modelinstanced) `instance`
+- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/types#modelkeym) `keys`
+
+#### Returns
+
+`{I}`, the affected instance.
+
+### `reset`
+
+Reset the model instance's original values.
+If no keys are provided, will sync all instance keys.
+
+#### Example
+
+```javascript
+import { reset } from 'func-client/core';
+
+reset(post, ['title', 'description']);
+```
+
+#### Arguments
+
+- [`{I extends ModelInstance}`](/docs/api/types#modelinstanced) `instance`
+- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/types#modelkeym) `keys`
+
+#### Returns
+
+`{I}`, the affected instance.
+
+### `loaded`
+
+Check if the given relations are loaded on the instance or its related instances.
+Can check for sub relations using dot relation keys: will check each related instances regardless
+of the number of concerned instances.
+
+#### Example
+
+```javascript
+import { loaded } from 'func-client/core';
+
+const isFullyLoaded = loaded(post, ['comments', 'comments.author']);
+if (!isFullyLoaded) { /* do something */ }
+```
+
+#### Arguments
+
+- [`{I extends ModelInstance}`](/docs/api/types#modelinstanced) `instance`
+- [`{Arrayable<ModelRelationDotKey<I>>}`](/docs/api/types#modelrelationdotkeym) `relations`
+
+#### Returns
+
+`{boolean}`
+
+### `isSame`
+
+Check if two values are the same model instance. Ensure the equality by
+checking if the two instances:
+
+- Are FuncClient model instances
+- Have the same type
+- Have the same and non-NIL ID
+
+#### Example
+
+```javascript
+import { isSame } from 'func-client/core';
+
+const areSameInstances = isSame(unknownFoo, unknownBar);
+if (areSameInstances) { /* do something */ }
+```
+
+#### Arguments
+
+- `{unknown}` `value`
+- `{unknown}` `otherValue`
+
+#### Returns
+
+`{boolean}`

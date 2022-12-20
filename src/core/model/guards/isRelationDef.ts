@@ -1,7 +1,7 @@
-import { ModelProp, ModelRelation } from '@/core/model/types';
+import { ModelRelation } from '@/core/model/types';
 
 export default function isRelationDef(
-  def: ModelProp<unknown>,
-): def is ModelRelation<unknown> {
-  return (def as any).$MODEL_TYPE === 'relation';
+  value: unknown,
+): value is ModelRelation<unknown> {
+  return !!value && typeof value === 'object' && (value as any).$MODEL_TYPE === 'relation';
 }

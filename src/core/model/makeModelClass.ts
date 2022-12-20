@@ -1,6 +1,6 @@
-import FuncClientError from '@/core/errors/funcClientError';
-import compose from '@/core/model/compose';
+import isPropDef from '@/core/model/guards/isPropDef';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
+import { Dictionary } from '@/core/utilities/types';
 import warn from '@/core/utilities/warn';
 
 export default function makeModelClass(config: ModelConfig | string): Model {
@@ -43,33 +43,19 @@ export default function makeModelClass(config: ModelConfig | string): Model {
   ModelClass.$config = typeof config === 'string' ? {
     type: config,
   } : config;
-  ModelClass.$schema = {} as ModelSchema;
+  ModelClass.$schema = {} as Dictionary;
   ModelClass.$hooks = {};
-  ModelClass.prototype = {};
-  ModelClass.schema = (addSchema?: object) => {
-    if (addSchema) {
-      compose(ModelClass.$schema, addSchema);
-    }
+  ModelClass.extends = (extendsFrom?: object) => {
+    Object.entries(Object.getOwnPropertyDescriptors(extendsFrom ?? {}))
+      .forEach(([key, descriptor]) => {
+        if (descriptor.value && isPropDef(descriptor.value)) {
+          ModelClass.$schema[key] = descriptor.value;
+        } else {
+          Object.defineProperty(ModelClass.prototype, key, descriptor);
+        }
+      });
 
     return ModelClass;
-  };
-  ModelClass.extension = (addExtension?: object) => {
-    if (addExtension) {
-      compose(ModelClass.prototype, addExtension);
-    }
-
-    return ModelClass;
-  };
-  ModelClass.extends = (addSchemaAndExtension?: { schema?: object; extension?: object; }) => {
-    ModelClass.schema(addSchemaAndExtension?.schema);
-    ModelClass.extension(addSchemaAndExtension?.extension);
-
-    return ModelClass;
-  };
-  ModelClass.$rawSchema = () => {
-    throw new FuncClientError(
-      '`Model.$rawSchema` cannot be used as it only holds generic raw schema of model',
-    );
   };
 
   return ModelClass as unknown as Model;

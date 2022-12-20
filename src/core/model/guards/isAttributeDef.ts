@@ -1,7 +1,7 @@
-import { ModelAttribute, ModelProp } from '@/core/model/types';
+import { ModelAttribute } from '@/core/model/types';
 
 export default function isAttributeDef(
-  def: ModelProp<unknown>,
-): def is ModelAttribute<unknown, unknown> {
-  return (def as any).$MODEL_TYPE === 'attribute';
+  value: unknown,
+): value is ModelAttribute<unknown, unknown> {
+  return !!value && typeof value === 'object' && (value as any).$MODEL_TYPE === 'attribute';
 }

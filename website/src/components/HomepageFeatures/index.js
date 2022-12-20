@@ -4,29 +4,33 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
+    title: 'JSON:API ready',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        FuncClient comes with a set of tools to quickly integrate with a
+        JSON:API backend.
+        <br />
+        You may also create your own adapters to integrate with any data sources
+        (REST, IndexedDB, etc.).
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Modular and fully tree-shakable',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Thanks to functional programming, FuncClient can be used in many ways
+        to fit your needs and unused functions can be tree-shaken from your
+        production build easily.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Strongly typed',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        FuncClient is built with advanced TypeScript features to propose you
+        a secure and clean type experience, thanks to generic types.
       </>
     ),
   },

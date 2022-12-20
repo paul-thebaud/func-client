@@ -1,17 +1,13 @@
 import makeModelClass from '@/core/model/makeModelClass';
-import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
+import { Model, ModelConfig, ModelInstance } from '@/core/model/types';
 
-export default function makeModelFactory<BS extends ModelSchema = {}, BE extends object = {}>(
-  baseSchema?: BS,
-  baseExtension?: BE & ThisType<ModelInstance<BS & BE>>,
+export default function makeModelFactory<ND extends {} = {}>(
+  baseExtendsFrom?: ND & ThisType<ModelInstance<ND>>,
 ) {
-  return <S extends ModelSchema = {}, E extends object = {}>(
+  return <D extends {} = {}>(
     config: ModelConfig | string,
-    schema?: S,
-    extension?: E & ThisType<ModelInstance<BS & BE & S & E>>,
+    extendsFrom?: D & ThisType<ModelInstance<ND & D>>,
   ) => makeModelClass(config)
-    .schema(baseSchema)
-    .schema(schema)
-    .extension(baseExtension)
-    .extension(extension) as Model<BS & BE & S & E, ModelInstance<BS & BE & S & E>>;
+    .extends(baseExtendsFrom)
+    .extends(extendsFrom) as Model<ND & D, ModelInstance<ND & D>>;
 }

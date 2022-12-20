@@ -1,4 +1,5 @@
-import { ActionContext, FuncClientError, InstancesCacheI, isInstance, Model, ModelInstance, ModelsStoreI } from '@/core';
+import { ActionContext, FuncClientError, InstancesCacheI, Model, ModelInstance, ModelsStoreI } from '@/core';
+import isInstance from '@/core/model/guards/isInstance';
 import isNil from '@/core/utilities/isNil';
 import { NewJsonApiResource } from '@/json-api/types';
 

@@ -1,4 +1,5 @@
 import isInstance from '@/core/model/guards/isInstance';
+import isNil from '@/core/utilities/isNil';
 
 export default function isSame(
   value: unknown,
@@ -7,5 +8,6 @@ export default function isSame(
   return isInstance(value)
     && isInstance(otherValue)
     && value.$model.$config.type === otherValue.$model.$config.type
+    && !isNil(value.id)
     && value.id === otherValue.id;
 }

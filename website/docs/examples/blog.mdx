@@ -24,12 +24,10 @@ export default class Post {}
 import { attr, hasMany, makeModel } from 'func-client/core';
 import type Post from './post';
 
-const TagModel = makeModel({
+export default class Tag extends makeModel('tags', {
   name: attr<string>(),
   posts: hasMany<Post>(),
-});
-
-export default class Tag extends TagModel {
+}) {
 }
 ```
 
@@ -40,14 +38,15 @@ export default class Tag {}
 import { attr, hasMany, makeModel, toDate } from 'func-client/core';
 import type Tag from './tag';
 
-const PostModel = makeModel({
+export default class Post extends makeModel('posts', {
   title: attr<string>(),
   description: attr<string>(),
   publishedAt: attr(toDate()),
   tags: hasMany<Tag>(),
-});
-
-export default class Post extends PostModel {
+  get isDraft() {
+    return !this.publishedAt;
+  },
+}) {
 }
 ```
 
@@ -145,7 +144,7 @@ await deletePost(post);
 
 ## Non-standard actions
 
-You can also use FuncModel to run non-standard actions to your backend.
+You can also use FuncClient to run non-standard actions to your backend.
 
 Thanks to functional programming, you can easily combine non-standard action
 with classical context enhancers and runners.

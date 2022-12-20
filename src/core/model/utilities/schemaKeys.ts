@@ -11,5 +11,5 @@ export default function schemaKeys<I extends ModelInstance>(
     return wrap(keys);
   }
 
-  return Object.keys(instance.$model.$schema);
+  return Object.keys(instance.$model.$schema) as ModelKey<I>[];
 }

@@ -15,8 +15,7 @@ type ModelId = string | number;
 
 ### `ModelSchema<D>`
 
-An extracted schema (only attributes and relations, not extension) from a model
-definition `D`.
+An extracted schema (only attributes and relations) from a model definition `D`.
 
 ### `ModelClass<D>`
 
@@ -78,7 +77,7 @@ export type ActionContext = {
 ## Utilities types
 
 :::tip
-Many utilities types are used by FuncModel but are not exported to avoid
+Many utilities types are used by FuncClient but are not exported to avoid
 polluting your code or conflicting with your own utilities types.
 You may copy those types as you want and use them in your project.
 :::

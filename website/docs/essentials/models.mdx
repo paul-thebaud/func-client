@@ -1,13 +1,13 @@
 ---
 sidebar_position: 1
-description: Define models with attributes, relations and extensions.
+description: Define models with attributes, relations and hooks.
 ---
 
 # Models
 
 :::tip What you'll learn
 - Defining basic models with attributes and relationships
-- Extending your models with extensions and classes
+- Extending your models with custom properties
 - Registering hooks on models
 :::
 
@@ -16,19 +16,17 @@ description: Define models with attributes, relations and extensions.
 ```javascript
 import { makeModel } from 'func-client/core';
 
-makeModel('type', { /* schema */ }, { /* extensions */ })
+makeModel('type', { /* definition */ })
 ```
 
-`makeModel` is a model factory function to use when you wish to define your
-models. It takes 3 arguments:
+`makeModel` is the default model factory function. It defines a new model using
+2 arguments:
 
-- The string `type` or a configuration.
-- The optional `schema` of the model: an object map containing attributes and
-relations definition.
-- The optional `extensions` of the model: some custom properties you wish to add
-to your model to extends its features.
+- The string `type` or a configuration object.
+- The optional `definition` of the model: an object map containing
+attributes/relations definitions and custom properties and methods.
 
-The `schema` and `extension` represent the `definition` of the model.
+The attributes and relations definition represents the `schema` of the model.
 
 ### Extending a model class
 
@@ -38,17 +36,13 @@ The `schema` and `extension` represent the `definition` of the model.
 export default class Post extends makeModel('Post') {}
 ```
 
-The returned model class also provides static methods to extend the schema and
-extensions already provided to `makeModel`.
+The returned model class also provides static methods to extend the definition
+already provided to `makeModel`.
 
 ```javascript
-makeModel('Post')
-  .schema({ /* additional schema */ })
-  .extension({ /* additional extension */ })
-  .extend({
-    schema: {/* additional schema */ },
-    extension: {/* additional extension */ },
-  });
+makeModel('Post', { /* definition */ })
+  .extends({ /* additional definition */ })
+  .extends({ /* another additional definition */ });
 ```
 
 :::tip
@@ -57,10 +51,10 @@ timestamps, client side ID generation, etc.
 
 If you wish to learn more about the composition capabilities of models,
 you should read the
-[advanced guide about models composition](/docs/advanced/models-composition).
+[**advanced guide about models composition**](/docs/advanced/models-composition).
 :::
 
-## Schema
+## Definition
 
 ### Attributes
 
@@ -97,13 +91,14 @@ There are two types or transformer within FuncClient:
 - `ObjectTransform`: an object with two methods: `serialize` and `deserialize`.
 
 FuncClient propose you 4 transformers out of the box: `toDate`, `toNumber`, `toBoolean` and `toString`.
+[Read more about available transformers.](/docs/api/transformers)
 
 :::tip
 You may need other transformers in your implementation, for example when you
 are using a library to manage dates (momentjs, dayjs, etc.).
 
 You may read the
-[advanced guide on transformers](/docs/advanced/custom-transformers)
+[**advanced guide on transformers**](/docs/advanced/custom-transformers)
 to learn more about those.
 :::
 
@@ -152,6 +147,35 @@ You may customize your relation with the following options:
 | `readonly`    | `boolean`      | `false`     | The value won't be serialized when sending the data to your backend.                  |
 | `alias`       | `string`       | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend. |
 
+### Custom properties
+
+In addition to attributes and relations, you may want to implement additional
+properties to your model. It will be useful when you need computed values
+(getters) or specific instance methods.
+
+This can be done using the definition or an extending class:
+
+```javascript
+// Directly in the definition.
+export default makeModel('users', {
+  firstName: attr(),
+  lastName: attr(),
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`
+  }
+});
+
+// Inside an extending class.
+export default class User extends makeModel('users', {
+  firstName: attr(),
+  lastName: attr(),
+}) {
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`
+  }
+}
+```
+
 ## Hooks
 
 You may hook on multiple events which occurs on model instance using the hook
@@ -194,35 +218,4 @@ import { withoutHooks } from 'func-client/core';
 const resultOfCallback = await withoutHooks(User, async () => {
   // TODO Do something (a)sync and return it.
 });
-```
-
-## Extensions
-
-Sometimes, a model is not only composed by attributes and relations. As an
-example, a `User` model may have first name and last name attributes, and a
-convenience method to retrieve the full name.
-
-To solve this, you may extend the model class created by `makeModel`, or pass
-an extension as the `makeModel` call third arguments.
-
-```javascript
-// Using an extension.
-export default makeModel('users', {
-  firstName: attr(),
-  lastName: attr(),
-}, {
-  get fullName() {
-    return `${this.firstName} ${this.lastName}`
-  }
-});
-
-// Using an ES6 class.
-export default class User extends makeModel('users', {
-  firstName: attr(),
-  lastName: attr(),
-}) {
-  get fullName() {
-    return `${this.firstName} ${this.lastName}`
-  }
-}
 ```
