@@ -6,5 +6,5 @@ export default function onDestroyed<I extends ModelInstance>(
   model: Model<any, I>,
   callback: (instance: I) => Awaitable<void>,
 ) {
-  return registerHook(model, 'destroying', callback);
+  return registerHook(model, 'destroyed', callback);
 }
