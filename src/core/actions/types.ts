@@ -46,7 +46,6 @@ export type ContextRunner<C extends ActionContext, R> = (
 ) => R;
 
 export type ConsumeModel<M extends Model = Model> = {
-  type: string;
   model: M;
 };
 

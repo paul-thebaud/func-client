@@ -76,7 +76,7 @@ syncOriginal(post, ['title', 'description']);
 ### `reset`
 
 Reset the model instance's original values.
-If no keys are provided, will sync all instance keys.
+If no keys are provided, will reset all instance keys.
 
 #### Example
 
@@ -133,7 +133,7 @@ checking if the two instances:
 ```javascript
 import { isSame } from 'func-client/core';
 
-const areSameInstances = isSame(unknownFoo, unknownBar);
+const areSameInstances = isSame(foo, bar);
 if (areSameInstances) { /* do something */ }
 ```
 
