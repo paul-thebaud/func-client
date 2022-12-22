@@ -3,6 +3,8 @@
 ## General features
 
 - [ ] Rename one letter parameters to real name (`a` to `action`)
+- [ ] Rename "store" to "registry"
+- [ ] Rename "(de)serializer" to "document (de)serializer"
 - [ ] Generic context (ID, etc.) should not be mentioned in ActionContext type
 - [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Manage errors when users are bypassing types (relations not found, etc.)
