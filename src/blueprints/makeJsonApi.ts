@@ -1,7 +1,7 @@
 import makeCache from '@/blueprints/makeCache';
-import makeStore from '@/blueprints/makeStore';
+import makeRegistry from '@/blueprints/makeRegistry';
 import toKebab from '@/blueprints/utilities/toKebab';
-import { Action, withAdapter, withCache, withDeserializer, withSerializer, withStore } from '@/core';
+import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
 import { Dictionary } from '@/core/utilities/types';
 import {
   Adapter,
@@ -27,7 +27,7 @@ export type MakeJsonApiOptions = {
 };
 
 export default function makeJsonApi(options: MakeJsonApiOptions = {}) {
-  const store = makeStore();
+  const registry = makeRegistry();
 
   const cache = makeCache();
 
@@ -51,11 +51,11 @@ export default function makeJsonApi(options: MakeJsonApiOptions = {}) {
   });
 
   const makeAction = () => new Action()
-    .use(withStore(store))
+    .use(withRegistry(registry))
     .use(withCache(cache))
     .use(withAdapter(adapter))
     .use(withSerializer(serializer))
     .use(withDeserializer(deserializer));
 
-  return { store, cache, makeAction };
+  return { cache, registry, makeAction };
 }

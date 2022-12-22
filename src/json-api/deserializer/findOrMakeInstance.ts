@@ -1,10 +1,10 @@
-import { ActionContext, FuncClientError, InstancesCacheI, Model, ModelInstance, ModelsStoreI } from '@/core';
+import { ActionContext, CacheI, FuncClientError, Model, ModelInstance, RegistryI } from '@/core';
 import isInstance from '@/core/model/guards/isInstance';
 import isNil from '@/core/utilities/isNil';
 import { NewJsonApiResource } from '@/json-api/types';
 
 export default async function findOrMakeInstance(
-  context: ActionContext & { cache?: InstancesCacheI; store?: ModelsStoreI; model?: Model; },
+  context: ActionContext & { cache?: CacheI; registry?: RegistryI; model?: Model; },
   resource: NewJsonApiResource,
 ) {
   let instance: ModelInstance | undefined;
@@ -21,8 +21,8 @@ export default async function findOrMakeInstance(
   }
 
   if (!instance) {
-    if (context.store) {
-      const ModelClass = await context.store.modelFor(resource.type);
+    if (context.registry) {
+      const ModelClass = await context.registry.modelFor(resource.type);
 
       instance = new ModelClass();
     } else if (context.model && context.model.$config.type === resource.type) {
@@ -31,7 +31,7 @@ export default async function findOrMakeInstance(
       instance = new ModelClass();
     } else {
       throw new FuncClientError(
-        `No alternative found for JSON:API resource with type \`${resource.type}\`. You should use a Store and register a model for this type in it.`,
+        `No alternative found for JSON:API resource with type \`${resource.type}\`. You should use a Registry and register a model for this type in it.`,
       );
     }
 

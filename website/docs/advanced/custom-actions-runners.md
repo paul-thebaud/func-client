@@ -1,8 +1,8 @@
 ---
-sidebar_position: 3
+sidebar_position: 5
 description: WIP
 ---
 
-# Custom transformers
+# Custom actions enhancers
 
 <span class="chip chip--primary">Work in progress</span>

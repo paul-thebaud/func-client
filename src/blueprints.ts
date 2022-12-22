@@ -1,9 +1,9 @@
 import makeCache from '@/blueprints/makeCache';
 import makeJsonApi from '@/blueprints/makeJsonApi';
-import makeStore from '@/blueprints/makeStore';
+import makeRegistry from '@/blueprints/makeRegistry';
 
 export {
-  makeStore,
   makeCache,
   makeJsonApi,
+  makeRegistry,
 };

@@ -37,14 +37,14 @@ action()
 ```
 
 :::info
+All enhancers are listed in the
+[**actions' available enhancers API guide**](/docs/api/actions-enhancers).
+:::
+
+:::caution
 Please note that context enhancer are not instantly applied to the action
 context, but during the action run step.
 :::
-
-### Available enhancers
-
-All enhancers are listed in the
-[**actions' available enhancers API guide**](/docs/api/actions-enhancers).
 
 ## Run
 
@@ -67,10 +67,10 @@ action()
   .run(all());
 ```
 
-### Available enhancers
-
+:::info
 All runners are listed in the
 [**actions' available runners API guide**](/docs/api/actions-runners).
+:::
 
 ## Hooks
 
@@ -112,8 +112,8 @@ const users = await withoutHooks(action(), async (a) => {
 });
 ```
 
-:::info
-FuncClient will also register hooks when using some enhancers. Those will
-provide some library features
-([**models hooks**](/docs/essentials/models#hooks), etc.).
+:::caution
+FuncClient may also register hooks internally when using some enhancers.
+Those provide some library features ([**models hooks**](/docs/essentials/models#hooks), etc.).
+Be careful running actions without hooks, as those hooks will also be disable.
 :::

@@ -1,11 +1,11 @@
 import type { ActionContext } from '@/core/actions/types';
 import type { Model, ModelId, ModelInstance } from '@/core/model/types';
 
-export type ModelsStoreI = {
+export type RegistryI = {
   modelFor(type: string): Promise<Model>;
 };
 
-export type InstancesCacheI = {
+export type CacheI = {
   find(type: string, id: ModelId): Promise<ModelInstance | null>;
   put(type: string, id: ModelId, instance: ModelInstance): Promise<void>;
   forget(type: string, id: ModelId): Promise<void>;

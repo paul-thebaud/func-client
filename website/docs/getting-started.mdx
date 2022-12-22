@@ -87,13 +87,13 @@ interacts with.
 ```javascript title="action.js"
 import { makeJsonApi } from 'func-client/blueprints';
 
-const { makeAction, store } = makeJsonApi({
+const { makeAction, registry } = makeJsonApi({
   baseURL: 'https://example.com/api/v1',
 });
 
 // We need to register the models to allow the deserializer to know
 // to which model it should deserialize a JSON:API record.
-store.register([Comment, Post, /* User, Tag */]);
+registry.register([Comment, Post, /* User, Tag */]);
 
 export default function action() {
   return makeAction();

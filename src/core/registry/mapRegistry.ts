@@ -1,21 +1,21 @@
 import FuncClientError from '@/core/errors/funcClientError';
 import isModel from '@/core/model/guards/isModel';
 import { Model } from '@/core/model/types';
-import { ModelsStoreI } from '@/core/types';
-import wrap from '@/core/utilities/wrap';
+import { RegistryI } from '@/core/types';
 import { Arrayable, Dictionary } from '@/core/utilities/types';
+import wrap from '@/core/utilities/wrap';
 
-export default class ModelsStore implements ModelsStoreI {
-  private modelsMap: Map<string, () => Promise<Model>>;
+export default class MapRegistry implements RegistryI {
+  private models: Map<string, () => Promise<Model>>;
 
   public constructor() {
-    this.modelsMap = new Map();
+    this.models = new Map();
   }
 
   public modelFor(type: string) {
-    const modelResolver = this.modelsMap.get(type);
+    const modelResolver = this.models.get(type);
     if (!modelResolver) {
-      const registeredModels = [...this.modelsMap.keys()].map((t) => `- ${t}`).join('\n');
+      const registeredModels = [...this.models.keys()].map((t) => `- ${t}`).join('\n');
 
       throw new FuncClientError(
         `Model for type \`${type}\` is not registered. Did you forget registering it?\nRegistered models:\n${registeredModels}`,
@@ -35,7 +35,7 @@ export default class ModelsStore implements ModelsStoreI {
 
   public registerSync(models: Arrayable<Model>) {
     wrap(models).forEach((model) => {
-      this.modelsMap.set(model.$config.type, async () => model);
+      this.models.set(model.$config.type, async () => model);
     });
 
     return this;
@@ -43,7 +43,7 @@ export default class ModelsStore implements ModelsStoreI {
 
   public registerAsync(models: Dictionary<() => Promise<Model>>) {
     Object.entries(models).forEach(([type, modelResolver]) => {
-      this.modelsMap.set(type, modelResolver);
+      this.models.set(type, modelResolver);
     });
 
     return this;

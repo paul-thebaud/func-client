@@ -1,7 +1,7 @@
 import type Action from '@/core/actions/action';
 import { HookCallback } from '@/core/hooks/types';
 import { Model, ModelId, ModelInstance } from '@/core/model/types';
-import { AdapterI, DeserializerI, InstancesCacheI, SerializerI } from '@/core/types';
+import { AdapterI, DeserializerI, CacheI, SerializerI } from '@/core/types';
 import { Awaitable, Dictionary } from '@/core/utilities/types';
 
 export type ActionMethod =
@@ -53,7 +53,7 @@ export type ConsumeInstance<I extends ModelInstance = ModelInstance> = {
   instance: I;
 };
 
-export type ConsumeCache = { cache: InstancesCacheI; };
+export type ConsumeCache = { cache: CacheI; };
 
 export type ConsumeAdapter<R = unknown, RD = unknown> = { adapter: AdapterI<R, RD>; };
 

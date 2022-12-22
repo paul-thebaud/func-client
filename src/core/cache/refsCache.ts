@@ -1,14 +1,14 @@
-import { InstancesCacheOptions } from '@/core/cache/types';
+import { RefsCacheOptions } from '@/core/cache/types';
 import { ModelId, ModelInstance } from '@/core/model/types';
-import { InstancesCacheI } from '@/core/types';
+import { CacheI } from '@/core/types';
 
-export default class InstancesCache<R = unknown> implements InstancesCacheI {
-  private readonly instancesPerTypesMap: Map<string, Map<ModelId, R>>;
+export default class RefsCache<R = unknown> implements CacheI {
+  private readonly instances: Map<string, Map<ModelId, R>>;
 
-  private readonly options: InstancesCacheOptions<R>;
+  private readonly options: RefsCacheOptions<R>;
 
-  public constructor(options: InstancesCacheOptions<R>) {
-    this.instancesPerTypesMap = new Map();
+  public constructor(options: RefsCacheOptions<R>) {
+    this.instances = new Map();
     this.options = options;
   }
 
@@ -41,11 +41,11 @@ export default class InstancesCache<R = unknown> implements InstancesCacheI {
   }
 
   private useInstancesMap(type: string) {
-    let instancesMap = this.instancesPerTypesMap.get(type);
+    let instancesMap = this.instances.get(type);
     if (!instancesMap) {
       instancesMap = new Map();
 
-      this.instancesPerTypesMap.set(type, instancesMap);
+      this.instances.set(type, instancesMap);
     }
 
     return instancesMap;

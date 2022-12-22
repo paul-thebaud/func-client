@@ -1,3 +1,5 @@
+import { ObjectTransform } from '@/core/transforms/types';
+
 function dateFromUnix(unix: number): Date {
   const date = new Date();
 
@@ -6,7 +8,7 @@ function dateFromUnix(unix: number): Date {
   return date;
 }
 
-export default function toDate() {
+export default function toDate(): ObjectTransform<Date | undefined, unknown> {
   return {
     serialize(value: Date | undefined) {
       return value?.toISOString();

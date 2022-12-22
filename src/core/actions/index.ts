@@ -10,7 +10,7 @@ import withAdapter from '@/core/actions/context/enhancers/dependency/withAdapter
 import withCache from '@/core/actions/context/enhancers/dependency/withCache';
 import withDeserializer from '@/core/actions/context/enhancers/dependency/withDeserializer';
 import withSerializer from '@/core/actions/context/enhancers/dependency/withSerializer';
-import withStore from '@/core/actions/context/enhancers/dependency/withStore';
+import withRegistry from '@/core/actions/context/enhancers/dependency/withRegistry';
 import forId from '@/core/actions/context/enhancers/forId';
 import onError from '@/core/actions/context/enhancers/hooks/onError';
 import onFinally from '@/core/actions/context/enhancers/hooks/onFinally';
@@ -77,7 +77,7 @@ export {
   withAdapter,
   withDeserializer,
   withSerializer,
-  withStore,
+  withRegistry,
   withCache,
   context,
   forId,

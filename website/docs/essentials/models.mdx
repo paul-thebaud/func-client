@@ -68,10 +68,16 @@ console.log(post.isDraft); // true
 console.log(post.exists); // false
 ```
 
-### Available utilities
+:::info
+Most model's interaction (fetching, updating, etc.) are done through actions,
+so you may [**read the actions guide**](/docs/essentials/actions) to learn more
+about those.
+:::
 
-FuncModel propose you multiple utilities to work with models:
+:::info
+FuncModel also propose multiple utilities to work with models:
 [**read the models utilities API guide**](/docs/api/models-utilities).
+:::
 
 ## Definition
 
@@ -90,6 +96,12 @@ attr({ default: '', transformer: toDate() }); // With options.
 attr(toDate(), { readonly: true }); // With a transformer and options.
 attr({ default: () => [] }); // With a factory default (required for objects props).
 ```
+
+:::caution
+Note that FuncModel consider your attributes as non-nullable values by default.
+When one of your model contains nullable attributes, you may want to pass a type
+to the factory (`attr<string | null>()`) or set a default attribute value.
+:::
 
 #### Configuration
 
@@ -110,13 +122,15 @@ There are two types or transformer within FuncClient:
 - `FunctionTransform`: a function to call to transform the value whether we are serializing or deserializing it.
 - `ObjectTransform`: an object with two methods: `serialize` and `deserialize`.
 
-FuncClient propose you 4 transformers out of the box: `toDate`, `toNumber`, `toBoolean` and `toString`.
+FuncClient propose you 4 transformers out of the box:
+[`toDate`](/docs/api/func-client/modules/core#todate),
+[`toNumber`](/docs/api/func-client/modules/core#tonumber),
+[`toBoolean`](/docs/api/func-client/modules/core#toboolean) and
+[`toString`](/docs/api/func-client/modules/core#tostring).
 
 :::tip
 You may need other transformers in your implementation, for example when you
-are using a library to manage dates (momentjs, dayjs, etc.).
-
-You may read the
+are using a library to manage dates (momentjs, dayjs, etc.). You may read the
 [**advanced guide on transformers**](/docs/advanced/custom-transformers)
 to learn more about those.
 :::
@@ -154,6 +168,14 @@ hasMany<Comment>({ readonly: true }); // With options.
 When using TypeScript, you should define the type of the relation to get a
 fully strongly typed model. We suggest you to use `import type` to avoid
 creating circular dependencies when having circular model relations.
+:::
+
+:::caution
+Note that FuncModel consider your relations as non-nullable values by default.
+When one of your model contains nullable relations, you may want to pass a type
+to the factory (`hasOne<User | null>()`) or set a default relation value.
+
+Also consider that non-loaded relations will have a value of `undefined`.
 :::
 
 #### Configuration
@@ -223,7 +245,7 @@ const unregisterThisHook = onSaving(User, async (user) => {
 });
 ```
 
-:::tip
+:::info
 As you may notice above, hooks callback may be async and will be ran
 sequentially (one by one, not parallelized).
 :::

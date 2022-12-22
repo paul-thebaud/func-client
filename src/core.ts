@@ -1,4 +1,4 @@
-import InstancesCache from '@/core/cache/instancesCache';
+import RefsCache from '@/core/cache/refsCache';
 import weakRefCacheMode from '@/core/cache/weakRefMode';
 import AdapterError from '@/core/errors/adapterError';
 import FuncClientError from '@/core/errors/funcClientError';
@@ -28,7 +28,7 @@ import isSame from '@/core/model/utilities/isSame';
 import loaded from '@/core/model/utilities/loaded';
 import reset from '@/core/model/utilities/reset';
 import syncOriginal from '@/core/model/utilities/syncOriginal';
-import ModelsStore from '@/core/store/modelsStore';
+import MapRegistry from '@/core/registry/mapRegistry';
 import toBoolean from '@/core/transforms/toBoolean';
 import toDate from '@/core/transforms/toDate';
 import toNumber from '@/core/transforms/toNumber';
@@ -48,8 +48,8 @@ export {
   AdapterError,
   FuncClientError,
   RunFailureError,
-  ModelsStore,
-  InstancesCache,
+  MapRegistry,
+  RefsCache,
   weakRefCacheMode,
   attr,
   hasMany,
