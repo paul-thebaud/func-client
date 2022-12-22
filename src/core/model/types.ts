@@ -2,44 +2,108 @@ import { Hookable, HookCallback } from '@/core/hooks/types';
 import { Transform } from '@/core/transforms/types';
 import { Constructor, Dictionary, Prev } from '@/core/utilities/types';
 
+/**
+ * Configuration of a model class.
+ */
 export type ModelConfig = {
+  /**
+   * Type which uniquely identify this model.
+   * May be used by action's dependencies for different purpose
+   * (endpoint computing, caching, etc.).
+   */
   type: string;
+  /**
+   * Dedicated base URL. Will overwrite the default base URL.
+   */
   baseURL?: string;
+  /**
+   * Compare two values when checking model instance changed values.
+   *
+   * @param newValue
+   * @param prevValue
+   *
+   * @see {@link changed}
+   */
   comparator?: (newValue: unknown, prevValue: unknown) => boolean;
+  /**
+   * Clone two values when sync model instances values state.
+   *
+   * @param value
+   *
+   * @see {@link reset}
+   * @see {@link syncOriginal}
+   */
   cloner?: <T = unknown>(value: T) => T;
 };
 
+/**
+ * Unique identifier for a model instance.
+ */
 export type ModelId = string | number;
 
-export type DefaultFactory<T> = () => T;
-
+/**
+ * Configuration for a model's property (attribute or relation).
+ */
 export type ModelProp<T> = {
-  default?: T | DefaultFactory<T> | undefined;
+  /**
+   * Default value for the property.
+   */
+  default?: T | (() => T) | undefined;
+  /**
+   * Alias of the property (might be used when (de)serializing).
+   */
   alias?: string | undefined;
+  /**
+   * Avoid serializing the property (won't be sent to data source).
+   */
   readonly?: boolean;
 };
 
+/**
+ * Configuration for a model's attribute.
+ */
 export type ModelAttribute<T, S> = ModelProp<T> & {
+  /**
+   * Internal type identifier for FuncModel's type guards.
+   */
   $MODEL_TYPE: 'attribute';
   transformer?: Transform<T | undefined, S> | undefined;
 };
 
+/**
+ * Available model relation types.
+ */
 export type ModelRelationType = 'hasOne' | 'hasMany';
 
+/**
+ * Configuration for a model's relation.
+ */
 export type ModelRelation<T> = ModelProp<T> & {
+  /**
+   * Internal type identifier for FuncModel's type guards.
+   */
   $MODEL_TYPE: 'relation';
   $RELATION_TYPE: ModelRelationType;
   type?: string;
 };
 
+/**
+ * Extract model's attributes and relations from the whole definition.
+ */
 export type ModelSchema<D extends {} = {}> = {
   [K in keyof D]: D[K] extends ModelAttribute<any, any>
     ? D[K] : D[K] extends ModelRelation<any>
       ? D[K] : never;
 };
 
+/**
+ * Model hook callback function.
+ */
 export type ModelHookCallback = HookCallback<ModelInstance>;
 
+/**
+ * Model's hooks definition.
+ */
 export type ModelHooksDefinition = {
   retrieved: ModelHookCallback;
   creating: ModelHookCallback;
@@ -52,7 +116,13 @@ export type ModelHooksDefinition = {
   destroyed: ModelHookCallback;
 };
 
+/**
+ * Extendable model class holding the configuration and schema.
+ */
 export type ModelClass<D extends {} = any> = Hookable<ModelHooksDefinition> & {
+  /**
+   * Internal type identifier for FuncModel's type guards.
+   */
   readonly $MODEL_TYPE: 'model';
   readonly $config: ModelConfig;
   readonly $schema: ModelSchema<D>;
@@ -61,15 +131,29 @@ export type ModelClass<D extends {} = any> = Hookable<ModelHooksDefinition> & {
   ): Model<D & ND, ModelInstance<D & ND>>;
 };
 
+/**
+ * Model class of a dedicated instance.
+ * This type is used to keep instance generic typing across actions enhancements.
+ */
 export type Model<D extends {} = any, I extends ModelInstance<D> = any> =
   & ModelClass<D>
   & Constructor<I>;
 
+/**
+ * Model instance for a dedicated model class.
+ * This type is used to keep instance generic typing across actions enhancements.
+ */
 export type ModelClassInstance<D extends {} = any> = {
   readonly $model: ModelClass<D>;
 };
 
+/**
+ * Model instance holding state and values.
+ */
 export type ModelInstance<D extends {} = any> = {
+  /**
+   * Internal type identifier for FuncModel's type guards.
+   */
   readonly $MODEL_TYPE: 'instance';
   readonly $model: ModelClass<D>;
   // FIXME Should the model id be nullable in its type?
@@ -84,14 +168,23 @@ export type ModelInstance<D extends {} = any> = {
       ? T : D[K];
 };
 
+/**
+ * Infer the definition from a model class or model instance.
+ */
 export type ModelInferDefinition<M> = M extends ModelClass<infer D>
   ? D
   : M extends ModelClassInstance<infer D>
     ? D
     : {};
 
+/**
+ * Infer the schema from a model class or model instance.
+ */
 export type ModelInferSchema<M> = ModelSchema<ModelInferDefinition<M>>;
 
+/**
+ * Model class or instance values map (only attributes/relations).
+ */
 export type ModelValues<M> = {
   [K in keyof ModelInferDefinition<M>]:
   ModelInferDefinition<M>[K] extends ModelAttribute<infer T, any>
@@ -99,6 +192,9 @@ export type ModelValues<M> = {
       ? T : never;
 };
 
+/**
+ * Model class or instance attributes/relations key.
+ */
 export type ModelKey<M> = {
   [K in keyof ModelInferDefinition<M>]:
   ModelInferDefinition<M>[K] extends ModelAttribute<any, any>
@@ -106,6 +202,12 @@ export type ModelKey<M> = {
       ? K : never;
 }[keyof ModelInferDefinition<M>];
 
+/**
+ * Model class or instance relations key (only direct relations).
+ *
+ * @example
+ * const keys: ModelRelationKey<Post>[] = ['comments', 'tags'];
+ */
 export type ModelRelationKey<M> =
   keyof ModelInferSchema<M> extends infer K
     ? K extends string & keyof ModelInferSchema<M>
@@ -115,6 +217,12 @@ export type ModelRelationKey<M> =
           ? K
           : never : never : never;
 
+/**
+ * Model class or instance relations key (supports nested relation using dot separator).
+ *
+ * @example
+ * const keys: ModelRelationDotKey<Post>[] = ['comments', 'comments.author', 'tags'];
+ */
 export type ModelRelationDotKey<M, Depth extends number = 5> =
   [Depth] extends [0]
     ? never

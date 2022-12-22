@@ -28,5 +28,8 @@
     "dist",
     "tests",
     "vite.config.ts"
-  ]
+  ],
+  "typedocOptions": {
+    "readme": "none"
+  }
 }

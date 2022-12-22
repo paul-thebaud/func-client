@@ -42,7 +42,15 @@ const config = {
       }),
     ],
   ],
-
+  plugins: [
+    ['docusaurus-plugin-typedoc', {
+      id: 'api-func-client',
+      entryPoints: ['../src/core.ts', '../src/json-api.ts', '../src/blueprints.ts'],
+      tsconfig: '../tsconfig.json',
+      out: 'api/func-client',
+      sidebar: { position: 5, categoryLabel: 'API Reference' },
+    }],
+  ],
   themeConfig:
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({

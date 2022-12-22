@@ -54,6 +54,25 @@ you should read the
 [**advanced guide about models composition**](/docs/advanced/models-composition).
 :::
 
+### Using models classes
+
+Model classes can be used as any classical ES6 class. It can be instantiated,
+manipulated, etc. Properties will be defined on each instance from the model
+definition.
+
+```javascript
+const post = new Post();
+post.title = 'Hello World!';
+console.log(post.title); // "Hello World!"
+console.log(post.isDraft); // true
+console.log(post.exists); // false
+```
+
+### Available utilities
+
+FuncModel propose you multiple utilities to work with models:
+[**read the models utilities API guide**](/docs/api/models-utilities).
+
 ## Definition
 
 ### Attributes
@@ -69,6 +88,7 @@ attr<string>(); // Without options.
 attr(toDate()); // With a transformer.
 attr({ default: '', transformer: toDate() }); // With options.
 attr(toDate(), { readonly: true }); // With a transformer and options.
+attr({ default: () => [] }); // With a factory default (required for objects props).
 ```
 
 #### Configuration
@@ -91,7 +111,6 @@ There are two types or transformer within FuncClient:
 - `ObjectTransform`: an object with two methods: `serialize` and `deserialize`.
 
 FuncClient propose you 4 transformers out of the box: `toDate`, `toNumber`, `toBoolean` and `toString`.
-[Read more about available transformers.](/docs/api/transformers)
 
 :::tip
 You may need other transformers in your implementation, for example when you

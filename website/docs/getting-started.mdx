@@ -55,12 +55,11 @@ export default makeModel('posts', /* your model definition... */);
 [**Read the FAQ to understand the why.**](/docs/faq#why-classes-are-used-for-models-in-typescript)
 :::
 
-### Using models
+### Using models classes
 
-You can use this model as any Javascript classes:
-
-- Construct a new instance using `new`
-- Accessing instance's properties
+Model classes can be used as any classical ES6 class. It can be instantiated,
+manipulated, etc. Properties will be defined on each instance from the model
+definition.
 
 ```javascript
 const post = new Post();

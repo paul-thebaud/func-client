@@ -5,7 +5,7 @@ description: Available models utilities.
 
 # Models utilities
 
-## List
+## Functions
 
 ### `fill`
 
@@ -21,8 +21,8 @@ const post = fill(new Post(), { title: 'Hello', description: 'World' });
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/api/types#modelinstanced) `instance`
-- [`{Partial<ModelValues<I>>}`](/docs/api/types#modelvaluesm) `values`
+- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
+- [`{Partial<ModelValues<I>>}`](/docs/api/func-client/modules/core#modelvalues) `values`
 
 #### Returns
 
@@ -44,8 +44,8 @@ if (wasChanged) { /* do something */ }
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/api/types#modelinstanced) `instance`
-- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/types#modelkeym) `keys`
+- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
+- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/func-client/modules/core#modelkey) `keys`
 
 #### Returns
 
@@ -66,8 +66,8 @@ syncOriginal(post, ['title', 'description']);
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/api/types#modelinstanced) `instance`
-- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/types#modelkeym) `keys`
+- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
+- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/func-client/modules/core#modelkey) `keys`
 
 #### Returns
 
@@ -88,8 +88,8 @@ reset(post, ['title', 'description']);
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/api/types#modelinstanced) `instance`
-- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/types#modelkeym) `keys`
+- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
+- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/func-client/modules/core#modelkey) `keys`
 
 #### Returns
 
@@ -112,8 +112,8 @@ if (!isFullyLoaded) { /* do something */ }
 
 #### Arguments
 
-- [`{I extends ModelInstance}`](/docs/api/types#modelinstanced) `instance`
-- [`{Arrayable<ModelRelationDotKey<I>>}`](/docs/api/types#modelrelationdotkeym) `relations`
+- [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
+- [`{Arrayable<ModelRelationDotKey<I>>}`](/docs/api/func-client/modules/core#modelrelationdotkey) `relations`
 
 #### Returns
 
@@ -160,12 +160,12 @@ const PostModel = makeModel('posts', { /* definition */ });
 
 #### Arguments
 
-- [`{ModelConfig | string}`](/docs/api/types#modelconfig) `config`
-- [`{ModelDefinition}`](/docs/api/types#modeldefinition) `extendsFrom`
+- [`{ModelConfig | string}`](/docs/api/func-client/modules/core#modelconfig) `config`
+- [`{ModelDefinition}`](/docs/api/func-client/modules/core#modeldefinition) `extendsFrom`
 
 #### Returns
 
-[`{ModelClass}`](/docs/api/types#modelclass)
+[`{ModelClass}`](/docs/api/func-client/modules/core#modelclass)
 
 ### `makeModelFactory`
 
@@ -181,8 +181,8 @@ const makeModel = makeModelFactory({ /* definition */ }, { /* config */ });
 
 #### Arguments
 
-- [`{ModelDefinition | undefined}`](/docs/api/types#modeldefinition) `baseExtendsFrom`
-- [`{ModelConfig | undefined}`](/docs/api/types#modelconfig) `baseConfig` (omitting `type`)
+- [`{ModelDefinition | undefined}`](/docs/api/func-client/modules/core#modeldefinition) `baseExtendsFrom`
+- [`{ModelConfig | undefined}`](/docs/api/func-client/modules/core#modelconfig) `baseConfig` (omitting `type`)
 
 #### Returns
 

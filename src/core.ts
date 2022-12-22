@@ -1,3 +1,5 @@
+import InstancesCache from '@/core/cache/instancesCache';
+import weakRefCacheMode from '@/core/cache/weakRefMode';
 import AdapterError from '@/core/errors/adapterError';
 import FuncClientError from '@/core/errors/funcClientError';
 import RunFailureError from '@/core/errors/runFailureError';
@@ -26,6 +28,7 @@ import isSame from '@/core/model/utilities/isSame';
 import loaded from '@/core/model/utilities/loaded';
 import reset from '@/core/model/utilities/reset';
 import syncOriginal from '@/core/model/utilities/syncOriginal';
+import ModelsStore from '@/core/store/modelsStore';
 import toBoolean from '@/core/transforms/toBoolean';
 import toDate from '@/core/transforms/toDate';
 import toNumber from '@/core/transforms/toNumber';
@@ -33,6 +36,7 @@ import toString from '@/core/transforms/toString';
 import useTransform from '@/core/transforms/useTransform';
 
 export * from '@/core/actions/types';
+export * from '@/core/cache/types';
 export * from '@/core/hooks/types';
 export * from '@/core/model/types';
 export * from '@/core/transforms/types';
@@ -44,6 +48,9 @@ export {
   AdapterError,
   FuncClientError,
   RunFailureError,
+  ModelsStore,
+  InstancesCache,
+  weakRefCacheMode,
   attr,
   hasMany,
   hasOne,
