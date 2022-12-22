@@ -7,6 +7,6 @@ export default function instancePayload<D>(
   instance: ModelInstance,
 ) {
   return async <C extends ConsumeSerializer<D>>(a: Action<C>) => a.use(context({
-    payload: await (await a.getContext()).serializer.serializeOne((await a.getContext()), instance),
+    payload: await (await a.getContext()).serializer.serialize((await a.getContext()), instance),
   }));
 }

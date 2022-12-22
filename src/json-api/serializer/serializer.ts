@@ -10,15 +10,7 @@ export default class Serializer implements SerializerI<JsonApiDocument> {
     this.options = options;
   }
 
-  public async serializeMany(_context: ActionContext, instances: ModelInstance[]) {
-    return {
-      data: await Promise.all(instances.map(
-        (instance) => serializeOne(instance, this.options),
-      )),
-    };
-  }
-
-  public async serializeOne(_context: ActionContext, instance: ModelInstance) {
+  public async serialize(_context: ActionContext, instance: ModelInstance) {
     return {
       data: await serializeOne(instance, this.options),
     };

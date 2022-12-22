@@ -84,7 +84,6 @@ export type ModelRelation<T> = ModelProp<T> & {
    */
   $MODEL_TYPE: 'relation';
   $RELATION_TYPE: ModelRelationType;
-  type?: string;
 };
 
 /**

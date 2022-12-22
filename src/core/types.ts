@@ -19,8 +19,7 @@ export type AdapterI<R, RD> = {
 };
 
 export type SerializerI<D> = {
-  serializeMany(context: ActionContext, instances: ModelInstance[]): Promise<D>;
-  serializeOne(context: ActionContext, instance: ModelInstance): Promise<D>;
+  serialize(context: ActionContext, instance: ModelInstance): Promise<D>;
 };
 
 export type DeserializerI<D> = {
