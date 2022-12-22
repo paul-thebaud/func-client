@@ -6,7 +6,7 @@ export default function fill<I extends ModelInstance>(
   values: Partial<ModelValues<I>>,
 ) {
   Object.entries(values).forEach(([key, value]) => {
-    instance.$values[key] = value;
+    instance[key as keyof I] = value;
   });
 
   return instance;
