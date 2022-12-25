@@ -1,3 +1,4 @@
+import FuncClientError from '@/core/errors/funcClientError';
 import isPropDef from '@/core/model/guards/isPropDef';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
 import { Dictionary } from '@/core/utilities/types';
@@ -33,7 +34,7 @@ export default function makeModelClass(config: ModelConfig): Model {
         this.$values[key] = def.default;
 
         if (def.default && typeof def.default === 'object') {
-          warn('default object values must be defined using a factory function');
+          warn('Default object values must be defined using a factory function');
         }
       }
     });
@@ -46,6 +47,12 @@ export default function makeModelClass(config: ModelConfig): Model {
   ModelClass.extends = (extendsFrom?: object) => {
     Object.entries(Object.getOwnPropertyDescriptors(extendsFrom ?? {}))
       .forEach(([key, descriptor]) => {
+        if (['id', 'exists', 'type'].indexOf(key) !== -1) {
+          throw new FuncClientError(
+            `\`id\`, \`type\` and \`exists\` are forbidden as a definition keys (found \`${key}\`).`,
+          );
+        }
+
         if (descriptor.value && isPropDef(descriptor.value)) {
           ModelClass.$schema[key] = descriptor.value;
         } else {
