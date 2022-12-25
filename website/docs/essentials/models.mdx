@@ -81,6 +81,12 @@ FuncModel also propose multiple utilities to work with models:
 
 ## Definition
 
+:::caution
+You must not use `id`, `type` or `exists` as key of any
+attributes/relations/properties as those keys are internally used by FuncClient
+or may be used by some dependencies (JSON:API adapter for example).
+:::
+
 ### Attributes
 
 `attr` is an attribute definition factory function to use when you wish to
