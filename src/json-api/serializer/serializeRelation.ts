@@ -4,7 +4,7 @@ import type { SerializerOptions } from '@/json-api/serializer/types';
 import serializedKey from '@/json-api/utilities/serializedKey';
 
 export default async function serializeRelation(
-  def: ModelRelation<unknown>,
+  def: ModelRelation,
   key: string,
   value: unknown,
   options: SerializerOptions,

@@ -26,7 +26,7 @@ export type ActionContext = {
   path?: string;
   params?: Dictionary<any> | string;
   payload?: unknown;
-  [key: string]: unknown;
+  [K: string]: unknown;
 };
 
 export type ActionHooksDefinition<C extends ActionContext = any> = {

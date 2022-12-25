@@ -44,7 +44,7 @@ export type ModelId = string | number;
 /**
  * Configuration for a model's property (attribute or relation).
  */
-export type ModelProp<T> = {
+export type ModelProp<T = unknown> = {
   /**
    * Default value for the property.
    */
@@ -62,7 +62,7 @@ export type ModelProp<T> = {
 /**
  * Configuration for a model's attribute.
  */
-export type ModelAttribute<T, S> = ModelProp<T> & {
+export type ModelAttribute<T = unknown, S = unknown> = ModelProp<T> & {
   /**
    * Internal type identifier for FuncModel's type guards.
    */
@@ -78,7 +78,7 @@ export type ModelRelationType = 'hasOne' | 'hasMany';
 /**
  * Configuration for a model's relation.
  */
-export type ModelRelation<T> = ModelProp<T> & {
+export type ModelRelation<T = unknown> = ModelProp<T> & {
   /**
    * Internal type identifier for FuncModel's type guards.
    */
@@ -212,7 +212,7 @@ export type ModelRelationKey<M> =
     ? K extends string & keyof ModelInferSchema<M>
       ? ModelInferSchema<M>[K] extends never
         ? never
-        : ModelInferSchema<M>[K] extends ModelRelation<unknown>
+        : ModelInferSchema<M>[K] extends ModelRelation
           ? K
           : never : never : never;
 

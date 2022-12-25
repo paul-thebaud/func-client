@@ -5,7 +5,7 @@ export type SerializesKeysOptions = {
 };
 
 export default function serializedKey(
-  def: ModelProp<unknown>,
+  def: ModelProp,
   key: string,
   options: SerializesKeysOptions,
 ) {

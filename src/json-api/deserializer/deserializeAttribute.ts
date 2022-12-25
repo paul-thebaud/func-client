@@ -1,7 +1,7 @@
 import { ModelAttribute, useTransform } from '@/core';
 
 export default async function deserializeAttribute(
-  def: ModelAttribute<unknown, unknown>,
+  def: ModelAttribute,
   key: string,
   value: unknown,
 ) {
