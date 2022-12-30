@@ -55,7 +55,7 @@ export default async function deserializeOne(
   const instance = await instancePromise;
 
   await Promise.all(Object.entries(instance.$model.$schema).map(async ([key, def]) => {
-    const resourceKey = serializedKey(def, key, options);
+    const resourceKey = await serializedKey(def, key, options);
 
     if (isAttributeDef(def)) {
       const value = resource.attributes?.[resourceKey];

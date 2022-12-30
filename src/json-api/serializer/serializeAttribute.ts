@@ -11,6 +11,6 @@ export default async function serializeAttribute(
   const transform = useTransform(def.transformer, 'serialize');
 
   return {
-    [serializedKey(def, key, options)]: await transform(value),
+    [await serializedKey(def, key, options)]: await transform(value),
   };
 }

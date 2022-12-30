@@ -17,6 +17,6 @@ export default async function serializeRelation(
   }
 
   return {
-    [serializedKey(def, key, options)]: { data: refValue },
+    [await serializedKey(def, key, options)]: { data: refValue },
   };
 }

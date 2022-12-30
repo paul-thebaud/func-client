@@ -1,6 +1,6 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
 import { Transform } from '@/core/transforms/types';
-import { Constructor, Dictionary, Prev } from '@/core/utilities/types';
+import { Awaitable, Constructor, Dictionary, Prev } from '@/core/utilities/types';
 
 /**
  * Configuration of a model class.
@@ -52,11 +52,15 @@ export type ModelProp<T = unknown> = {
   /**
    * Alias of the property (might be used when (de)serializing).
    */
-  alias?: string | undefined;
+  alias?: string | ((instance: ModelInstance, key: string) => Awaitable<string>) | undefined;
   /**
    * Avoid serializing the property (won't be sent to data source).
+   *
+   * TODO Rename this prop to something else ("localOnly"?). Keep readonly to avoid affectation.
    */
   readonly?: boolean;
+  // TODO Doc.
+  localOnly?: boolean;
 };
 
 /**
@@ -73,7 +77,7 @@ export type ModelAttribute<T = unknown, S = unknown> = ModelProp<T> & {
 /**
  * Available model relation types.
  */
-export type ModelRelationType = 'hasOne' | 'hasMany';
+export type ModelRelationType = 'hasOne' | 'hasMany' | 'morphOne' | 'morphMany';
 
 /**
  * Configuration for a model's relation.

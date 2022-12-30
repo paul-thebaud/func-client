@@ -3,14 +3,27 @@
 ## General features
 
 - [ ] Rename one letter parameters to real name (`a` to `action`)
-- [ ] Rename "store" to "registry"
 - [ ] Rename "(de)serializer" to "document (de)serializer"
 - [ ] Try to make adapter and fetch client generic (non-JSON:API specific)
+- [ ] Add @tag, @category or @group to enhancers, runners, etc.
+- [ ] Use optional type instead of allowing null or undefined when possible.
+- [ ] Use variadic in addition to arrayable in functions.
 - [ ] Generic context (ID, etc.) should not be mentioned in ActionContext type
 - [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Manage errors when users are bypassing types (relations not found, etc.)
 - [ ] Probably merge "discover" docs in "getting started"
 - [ ] Tests using vitest
+
+## Questions
+
+- Extended services? All methods protected? Good?
+- Configuration of services? Options object? Properties? Wrapped object? Methods
+  to override options?
+- Configuration of some behaviors (type serialization, type in URL, etc.): model
+  config? Per service config?
+- Decomposition of services OK?
+- REST standard for classic relation? And polymorphic? Where to configure
+  behavior?
 
 ## Documentation
 

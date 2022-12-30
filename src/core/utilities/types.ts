@@ -13,6 +13,8 @@ export type Awaitable<T> = T | Promise<T>;
 
 export type Arrayable<T> = T | T[];
 
+export type Optional<T> = T | null | undefined;
+
 export type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 
 export type OnlyTruthy<T> = T extends Falsy ? never : T;

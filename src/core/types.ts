@@ -1,5 +1,6 @@
 import type { ActionContext } from '@/core/actions/types';
 import type { Model, ModelId, ModelInstance } from '@/core/model/types';
+import { Awaitable } from '@/core/utilities/types';
 
 export type RegistryI = {
   modelFor(type: string): Promise<Model>;
@@ -10,6 +11,24 @@ export type CacheI = {
   put(type: string, id: ModelId, instance: ModelInstance): Promise<void>;
   forget(type: string, id: ModelId): Promise<void>;
   forgetAll(type: string): Promise<void>;
+};
+
+export type NewAdapterI<R> = {
+  execute(context: ActionContext): Awaitable<R>;
+};
+
+// TODO Normalize result.
+// TODO Normalize instance.
+export type NewNormalizerI<R, D> = {
+  normalize(result: R, context: ActionContext): Awaitable<D>;
+};
+
+export type NewSerializerI<D> = {
+  serialize(instance: ModelInstance, context: ActionContext): Awaitable<D>;
+};
+
+export type NewDeserializerI<D> = {
+  deserialize(data: D, context: ActionContext): Awaitable<ModelInstance[]>;
 };
 
 export type AdapterI<R, RD> = {

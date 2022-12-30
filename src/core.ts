@@ -2,7 +2,7 @@ import RefsCache from '@/core/cache/refsCache';
 import weakRefCacheMode from '@/core/cache/weakRefMode';
 import AdapterError from '@/core/errors/adapterError';
 import FuncClientError from '@/core/errors/funcClientError';
-import RunFailureError from '@/core/errors/runFailureError';
+import ExpectedRunFailureError from '@/core/errors/expectedRunFailureError';
 import registerHook from '@/core/hooks/registerHook';
 import runHook from '@/core/hooks/runHook';
 import unregisterHook from '@/core/hooks/unregisterHook';
@@ -47,7 +47,7 @@ export * from '@/core/actions';
 export {
   AdapterError,
   FuncClientError,
-  RunFailureError,
+  ExpectedRunFailureError,
   MapRegistry,
   RefsCache,
   weakRefCacheMode,

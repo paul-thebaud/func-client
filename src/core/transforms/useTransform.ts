@@ -1,10 +1,9 @@
-import { Transform } from '@/core/transforms/types';
+import { ObjectTransform, Transform } from '@/core/transforms/types';
 
-export type UseTransformAction = 'serialize' | 'deserialize';
-
-export default function useTransform<T, S, A extends UseTransformAction>(
-  transformer: Transform<T, S> | undefined,
-  action: A,
+// TODO Do not export this function.
+export default function useTransform(
+  transformer: Transform<unknown, unknown> | undefined,
+  action: keyof ObjectTransform<unknown, unknown>,
 ) {
   if (!transformer) {
     return (value: unknown) => value;

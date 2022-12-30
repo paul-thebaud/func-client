@@ -6,6 +6,6 @@ export type RefsCacheMode<R> = {
   deref(ref: R): Awaitable<ModelInstance | undefined>;
 };
 
-export type RefsCacheOptions<R> = {
-  mode: RefsCacheMode<R>;
+export type RefsCacheOptions = {
+  mode: RefsCacheMode<unknown>;
 };

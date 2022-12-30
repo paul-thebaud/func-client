@@ -2,6 +2,7 @@ import FuncClientError from '@/core/errors/funcClientError';
 import isPropDef from '@/core/model/guards/isPropDef';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
 import { Dictionary } from '@/core/utilities/types';
+import value from '@/core/utilities/value';
 import warn from '@/core/utilities/warn';
 
 export default function makeModelClass(config: ModelConfig): Model {
@@ -23,15 +24,13 @@ export default function makeModelClass(config: ModelConfig): Model {
       Object.defineProperty(this, key, {
         enumerable: true,
         get: () => this.$values[key],
-        set: (value) => {
-          this.$values[key] = value;
+        set: (newValue) => {
+          this.$values[key] = newValue;
         },
       });
 
-      if (typeof def.default === 'function') {
-        this.$values[key] = def.default();
-      } else if (def.default !== undefined) {
-        this.$values[key] = def.default;
+      if (def.default !== undefined) {
+        this.$values[key] = value(def.default);
 
         if (def.default && typeof def.default === 'object') {
           warn('Default object values must be defined using a factory function');

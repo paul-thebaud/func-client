@@ -1,4 +1,5 @@
 import { ModelProp } from '@/core';
+import value from '@/core/utilities/value';
 
 export type SerializesKeysOptions = {
   transformKeys?: (localKey: string) => string;
@@ -10,7 +11,7 @@ export default function serializedKey(
   options: SerializesKeysOptions,
 ) {
   if (def.alias !== undefined) {
-    return def.alias;
+    return value(def.alias);
   }
 
   if (options.transformKeys) {

@@ -17,14 +17,19 @@ export type ActionMethod =
   | 'unlink' | 'UNLINK';
 
 export type ActionContext = {
+  // TODO Remove "method", replace with "action".
   method?: ActionMethod;
+  // TODO Remove "baseURL".
   baseURL?: string;
   type?: string;
   id?: ModelId;
   relation?: string;
   includes?: string[];
+  // TODO Remove "path".
   path?: string;
+  // TODO Remove "params"?
   params?: Dictionary<any> | string;
+  // TODO Remove "payload", replace with "data"?
   payload?: unknown;
   [K: string]: unknown;
 };
