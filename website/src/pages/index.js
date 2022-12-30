@@ -1,6 +1,9 @@
+import '@fontsource/readex-pro';
+import '@fontsource/fira-mono';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HomepageExamples from '@site/src/components/HomepageExamples';
 import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import React from 'react';
@@ -10,22 +13,22 @@ import styles from './index.module.css';
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <header className={clsx('hero', styles.heroBanner)}>
+    <header className={clsx('gradient-background', 'hero', styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title">{siteConfig.title}</h1>
+        <h1 className={clsx('hero__title', styles.hero__title)}>{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg margin-right--sm"
+            className="button button--secondary button--lg margin--sm"
             to="/docs/about"
           >
             Discover
           </Link>
           <Link
-            className="button button--primary button--lg margin-left--sm"
+            className="button button--secondary button--lg margin--sm"
             to="/docs/getting-started"
           >
-            Getting started
+            Getting started 🚀
           </Link>
         </div>
       </div>
@@ -43,6 +46,7 @@ export default function Home() {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
+        <HomepageExamples />
       </main>
     </Layout>
   );

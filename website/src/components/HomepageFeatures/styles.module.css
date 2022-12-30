@@ -1,11 +1,21 @@
 .features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+    width: 100%;
+}
+
+.featureSvgWrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    height: 80px;
+    width: 80px;
 }
 
 .featureSvg {
-  height: 200px;
-  width: 200px;
+    fill: white;
+    height: 48px;
+    width: 48px;
 }

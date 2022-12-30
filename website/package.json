@@ -16,6 +16,8 @@
   "dependencies": {
     "@docusaurus/core": "2.2.0",
     "@docusaurus/preset-classic": "2.2.0",
+    "@fontsource/fira-mono": "^4.5.10",
+    "@fontsource/readex-pro": "^4.5.11",
     "@mdx-js/react": "^1.6.22",
     "clsx": "^1.2.1",
     "docusaurus-plugin-typedoc": "^0.18.0",
