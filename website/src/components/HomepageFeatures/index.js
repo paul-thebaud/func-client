@@ -24,9 +24,9 @@ const FeatureList = [
     title: 'Modular and fully tree-shakable',
     description: (
       <>
-        With to functional programming, FuncClient can be used in many ways
+        With functional programming, FuncClient can be used in many ways
         to fit your needs and unused functions can be tree-shaken from your
-        production build easily.
+        production build automatically.
       </>
     ),
   },
@@ -35,8 +35,8 @@ const FeatureList = [
     title: 'Strongly typed',
     description: (
       <>
-        FuncClient is built with advanced TypeScript features to propose you
-        a secure and clean type experience, thanks to generic types.
+        FuncClient was build at start with TypeScript to propose you
+        a secure and clean typings experience with consistent generic types.
       </>
     ),
   },
@@ -46,7 +46,7 @@ function Feature({ Icon, title, description }) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center padding-horiz--md">
-        <div className={`${styles.featureSvgWrapper} gradient-background margin-bottom--lg`}>
+        <div className={`${styles.featureSvgWrapper} bg--primary-gradient margin-bottom--lg`}>
           <Icon className={styles.featureSvg} />
         </div>
         <h2>{title}</h2>

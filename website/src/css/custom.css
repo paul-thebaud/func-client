@@ -40,8 +40,9 @@ html[data-theme="dark"] {
     --ifm-color-primary-lightest: #ffd8ee;
 }
 
-.gradient-background {
+.bg--primary-gradient {
     color: white;
+    fill: white;
     background: linear-gradient(322deg, #7421e6, #b21452);
     background-size: 200% 200%;
 

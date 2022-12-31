@@ -1,9 +1,9 @@
-import '@fontsource/readex-pro';
-import '@fontsource/fira-mono';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import '@fontsource/fira-mono';
+import '@fontsource/readex-pro';
 import HomepageExamples from '@site/src/components/HomepageExamples';
+import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import React from 'react';
@@ -13,7 +13,7 @@ import styles from './index.module.css';
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <header className={clsx('gradient-background', 'hero', styles.heroBanner)}>
+    <header className={clsx('bg--primary-gradient', 'hero', styles.heroBanner)}>
       <div className="container">
         <h1 className={clsx('hero__title', styles.hero__title)}>{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>

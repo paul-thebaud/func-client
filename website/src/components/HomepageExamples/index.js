@@ -1,6 +1,7 @@
 import Link from '@docusaurus/Link';
 import CodeBlock from '@theme/CodeBlock';
 import React from 'react';
+import ArrowRightSvg from '../../icons/arrow-right.svg';
 import styles from './styles.module.css';
 
 const ExempleList = [
@@ -12,7 +13,7 @@ const ExempleList = [
 import { makeModel, attr, hasOne } from 'func-client/core';
 import type User from './User';
 
-export default class Post from makeModel('posts', {
+export default class Post extends makeModel('posts', {
   title: attr<string>(),
   content: attr<string>(),
   author: hasOne<User>(),
@@ -55,10 +56,11 @@ function Example({ title, description, link, code }) {
       <CodeBlock language="ts">{code}</CodeBlock>
       <div className="text--right">
         <Link
+          className={`button bg--primary-gradient ${styles.examplesBtn}`}
           to={link.to}
-          className="button button--primary"
         >
           {link.text}
+          <ArrowRightSvg className={styles.examplesBtnSvg} />
         </Link>
       </div>
     </div>
