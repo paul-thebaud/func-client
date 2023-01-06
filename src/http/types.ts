@@ -18,7 +18,7 @@ export type HttpRequestConfig = {
   baseURL?: string;
   path?: string;
   params?: Dictionary<any> | string;
-  headers?: HeadersInit;
+  headers?: Dictionary<string>;
   // TODO "dataAs"?
   body?: BodyInit;
   requestTransformers?: RequestTransformer[];
@@ -41,7 +41,7 @@ export type HttpParamsSerializer = (params: Dictionary) => string | undefined;
 
 export type HttpRequestInit = {
   method: HttpMethod;
-  headers: Headers;
+  headers: Dictionary<string>;
   body: BodyInit;
 };
 
