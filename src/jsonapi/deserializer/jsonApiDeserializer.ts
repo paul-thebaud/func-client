@@ -1,9 +1,9 @@
 import { DeserializedData, DeserializerError, ModelInstance } from '@/core';
-import JsonDeserializer, { ExtractedData } from '@/json/deserializer/jsonDeserializer';
+import { JsonDeserializer, JsonExtractedData } from '@/json';
 import { JsonApiDocument, JsonApiNewResource, JsonApiResource, JsonApiResourceIdentifier } from '@/jsonapi/types';
 import { IdentifiersMap, wrap } from '@/utilities';
 
-export type JsonApiExtractedData = ExtractedData<JsonApiNewResource> & {
+export type JsonApiExtractedData = JsonExtractedData<JsonApiNewResource> & {
   included: IdentifiersMap<JsonApiResource>;
   document: JsonApiDocument;
   response: Response;

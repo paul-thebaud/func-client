@@ -13,12 +13,12 @@ export type CacheI = {
   forgetAll(type: string): Promise<void>;
 };
 
-export type NewAdapterI<Data> = {
+export type AdapterI<Data> = {
   execute(context: ActionContext): Awaitable<Data>;
   isNotFound(error: unknown): Awaitable<boolean>;
 };
 
-export type NewSerializerI<Data> = {
+export type SerializerI<Data> = {
   serialize(instance: ModelInstance, context: ActionContext): Awaitable<Data>;
 };
 
@@ -26,6 +26,6 @@ export type DeserializedData<I extends ModelInstance = ModelInstance> = {
   instances: I[];
 };
 
-export type NewDeserializerI<AdapterData, Data extends DeserializedData> = {
+export type DeserializerI<AdapterData, Data extends DeserializedData> = {
   deserialize(data: AdapterData, context: ActionContext): Awaitable<Data>;
 };

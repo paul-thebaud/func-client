@@ -1,7 +1,6 @@
-import HttpAdapter from '@/http/adapter/httpAdapter';
-import { HttpActionContext } from '@/http/types';
+import { HttpActionContext, HttpAdapter } from '@/http';
 
-export default class RestAdapter extends HttpAdapter {
+export default class JsonRestAdapter extends HttpAdapter {
   protected makeRequestInit(context: HttpActionContext) {
     const init = super.makeRequestInit(context);
 

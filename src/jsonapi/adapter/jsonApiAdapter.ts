@@ -1,5 +1,4 @@
-import HttpAdapter from '@/http/adapter/httpAdapter';
-import { HttpActionContext } from '@/http/types';
+import { HttpActionContext, HttpAdapter } from '@/http';
 import { isNone, optionalJoin } from '@/utilities';
 
 export default class JsonApiAdapter extends HttpAdapter {

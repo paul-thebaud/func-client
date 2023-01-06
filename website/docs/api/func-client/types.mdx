@@ -11,6 +11,24 @@ polluting your code or conflicting with your own utilities types.
 You may copy those types as you want and use them in your project.
 :::
 
+## Arrayable
+
+```typescript
+type Arrayable<T> = T | T[];
+```
+
+## ArrayableVariadic
+
+```typescript
+export type ArrayableVariadic<T> = T[] | [T[]];
+```
+
+## Awaitable
+
+```typescript
+type Awaitable<T> = T | Promise<T>;
+```
+
 ## Constructor
 
 ```typescript
@@ -23,14 +41,8 @@ type Constructor<T> = new (...args: any[]) => T;
 type Dictionary<T = unknown> = { [K: string]: T };
 ```
 
-## Arrayable
+## Optional
 
 ```typescript
-type Arrayable<T> = T | T[];
-```
-
-## Awaitable
-
-```typescript
-type Awaitable<T> = T | Promise<T>;
+export type Optional<T> = T | null | undefined;
 ```

@@ -1,8 +1,8 @@
 import { ModelInstance, ModelRelation } from '@/core';
-import JsonSerializer from '@/json/serializer/jsonSerializer';
-import { RestNewResource } from '@/rest/types';
+import { JsonSerializer } from '@/json';
+import { JsonRestNewResource } from '@/jsonrest/types';
 
-export default class RestSerializer extends JsonSerializer<RestNewResource> {
+export default class JsonRestSerializer extends JsonSerializer<JsonRestNewResource> {
   /**
    * @inheritDoc
    */
@@ -14,7 +14,7 @@ export default class RestSerializer extends JsonSerializer<RestNewResource> {
    * @inheritDoc
    */
   protected async hydratePropInResource(
-    resource: RestNewResource,
+    resource: JsonRestNewResource,
     serializedKey: string,
     serializedValue: unknown,
   ) {

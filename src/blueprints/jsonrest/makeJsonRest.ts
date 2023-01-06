@@ -1,21 +1,24 @@
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
 import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
-import { HttpAdapterOptions } from '@/http';
-import { RestAdapter, RestDeserializer, RestSerializer } from '@/rest';
+import { JsonRestAdapter, JsonRestDeserializer, JsonRestSerializer } from '@/jsonrest';
 
-type RestFactoryOptions = HttpAdapterOptions;
+type JsonRestFactoryOptions = {
+  baseURL?: string;
+};
 
-export default function makeRest(options: RestFactoryOptions = {}) {
+export default function makeJsonRest(options: JsonRestFactoryOptions = {}) {
   const cache = makeCache();
 
   const registry = makeRegistry();
 
-  const adapter = new RestAdapter(options);
+  const adapter = new JsonRestAdapter({
+    baseURL: options.baseURL,
+  });
 
-  const deserializer = new RestDeserializer();
+  const deserializer = new JsonRestDeserializer();
 
-  const serializer = new RestSerializer();
+  const serializer = new JsonRestSerializer();
 
   function makeAction() {
     return new Action()

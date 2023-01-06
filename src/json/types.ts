@@ -1,4 +1,5 @@
 import { ModelId } from '@/core';
+import { Optional } from '@/utilities';
 
 export type JsonOptionalIdentifier = {
   type?: string;
@@ -10,29 +11,6 @@ export type JsonNormalizedIdentifier = {
   id?: ModelId;
 };
 
-export type JsonNormalizedRecordId = ModelId;
-
-export type JsonNormalizedRecordRef = {
-  id: JsonNormalizedRecordId;
-  type: string;
-};
-
-export type JsonNormalizedAttribute = unknown;
-
-export type JsonNormalizedRelation = JsonNormalizedRecordRef[] | JsonNormalizedRecordRef | null;
-
-export type JsonNormalizedRecord = {
-  id?: JsonNormalizedRecordId;
-  type?: string;
-  [K: string]: JsonNormalizedAttribute | JsonNormalizedRelation;
-};
-
-export type JsonNormalizedData = {
-  data: JsonNormalizedRecord[];
-  included: JsonNormalizedRecord[];
-};
-
-export type JsonRawData<D> = {
-  data: D[];
-  included: D[];
+export type JsonExtractedData<R> = {
+  resources: Optional<R[] | R>;
 };

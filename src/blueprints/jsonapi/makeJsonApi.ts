@@ -1,10 +1,12 @@
 import makeCache from '@/blueprints/makeCache';
 import makeRegistry from '@/blueprints/makeRegistry';
 import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
-import { deepParamsSerializer, HttpAdapterOptions } from '@/http';
+import { deepParamsSerializer } from '@/http';
 import { JsonApiAdapter, JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
 
-type JsonApiFactoryOptions = HttpAdapterOptions;
+type JsonApiFactoryOptions = {
+  baseURL?: string;
+};
 
 export default function makeJsonApi(options: JsonApiFactoryOptions = {}) {
   const cache = makeCache();
@@ -12,8 +14,8 @@ export default function makeJsonApi(options: JsonApiFactoryOptions = {}) {
   const registry = makeRegistry();
 
   const adapter = new JsonApiAdapter({
-    ...options,
-    paramsSerializer: options.paramsSerializer ?? deepParamsSerializer,
+    baseURL: options.baseURL,
+    paramsSerializer: deepParamsSerializer,
   });
 
   const deserializer = new JsonApiDeserializer();

@@ -14,7 +14,7 @@ Many actions enhancers are available. Each may:
 
 - <Chip>depend</Chip> on a minimal package version
 - <Chip color="primary">only</Chip> be available in a given use case
-(JSON:API, etc.)
+(JSON:API, REST, HTTP, etc.)
 - <Chip color="success">provide</Chip> a given context to next enhancers
 or runners
 - <Chip color="danger">require</Chip> a given context from previous enhancers
@@ -38,7 +38,7 @@ enhancers.
 ```javascript
 import { context } from 'func-client/core';
 
-action().use(context({ method: 'GET', path: 'hello-world' }));
+action().use(context({ /* additional context */ }));
 ```
 
 #### Arguments
@@ -101,12 +101,14 @@ previous ones.
 ```javascript
 import { include } from 'func-client/core';
 
+action().use(include('author'));
+action().use(include('author', 'comments', 'comments.reactions'));
 action().use(include(['author', 'comments', 'comments.reactions']));
 ```
 
 #### Arguments
 
-- [`{Arrayable<ModelRelationDotKey<M>>}`](/docs/api/func-client/modules/core#modelrelationdotkey)
+- [`{ArrayableVariadic<ModelRelationDotKey<M>>}`](/docs/api/func-client/modules/core#modelrelationdotkey)
 `relations` a relation or a set of relation to eager load
 
 ### `fields`
@@ -126,12 +128,14 @@ previous ones.
 ```javascript
 import { fields } from 'func-client/jsonapi';
 
+action().use(fields('title'));
+action().use(fields('title', 'description'));
 action().use(fields(['title', 'description']));
 ```
 
 #### Arguments
 
-- [`{Arrayable<ModelKey<M>>}`](/docs/api/func-client/modules/core#modelkey) `fieldset` a
+- [`{ArrayableVariadic<ModelKey<M>>}`](/docs/api/func-client/modules/core#modelkey) `fieldset` a
 field or a set of field to select for the current context's model
 
 ### `fieldsFor`
@@ -148,6 +152,9 @@ previous ones.
 ```javascript
 import { fieldsFor } from 'func-client/jsonapi';
 
+
+action().use(fieldsFor(Post, 'title'));
+action().use(fieldsFor(Post, 'title', 'description'));
 action().use(fieldsFor(Post, ['title', 'description']));
 ```
 
@@ -155,7 +162,7 @@ action().use(fieldsFor(Post, ['title', 'description']));
 
 - [`{M extends ModelClass<D>}`](/docs/api/func-client/modules/core#modelclass) `model` the model
 to select the fieldsets for
-- [`{Arrayable<ModelKey<M>>}`](/docs/api/func-client/modules/core#modelkey) `fieldset` a
+- [`{ArrayableVariadic<ModelKey<M>>}`](/docs/api/func-client/modules/core#modelkey) `fieldset` a
 field or a set of field to select for the given model
 
 ### `sortBy`

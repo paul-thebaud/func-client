@@ -7,16 +7,18 @@ import styles from './styles.module.css';
 const ExempleList = [
   {
     title: 'Define your models',
-    description: 'FuncModel provides a simple way to define your models, which may combine attributes, relations or custom properties and methods.',
+    description: 'FuncClient provides a simple way to define your models, which may combine attributes, relations or custom properties and methods.',
     link: { to: '/docs/essentials/models', text: 'Learn more about models' },
     code: `
 import { makeModel, attr, hasOne } from 'func-client/core';
 import type User from './User';
+import type Tag from './Tag';
 
 export default class Post extends makeModel('posts', {
   title: attr<string>(),
   content: attr<string>(),
   author: hasOne<User>(),
+  tags: hasMany<Tag>(),
   get titleWithAuthor() {
     return \`\${this.title} by \${this.author.name}\`;
   },
@@ -25,7 +27,7 @@ export default class Post extends makeModel('posts', {
   },
   {
     title: 'Play with your models',
-    description: 'Once your models are ready, you can define an action factory which you will use to run actions over your models. FuncModel proposes many functions to run action, from classic CRUD to custom actions...',
+    description: 'Once your models are ready, you can define an action factory which you will use to run actions over your models. FuncClient proposes many functions to run action, from classic CRUD to custom actions...',
     link: { to: '/docs/essentials/actions', text: 'Learn more about actions' },
     code: `
 import { find, update, include, oneOrFail, oneOrCurrent } from 'func-client/core';
@@ -34,7 +36,7 @@ import action from './action';
 
 const post = await action()
   .use(find(Post, 123))
-  .use(include('author'))
+  .use(include('author', 'tags'))
   .run(oneOrFail());
 
 fill(post, { title: 'Hello World!' });

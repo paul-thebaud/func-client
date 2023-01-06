@@ -1,8 +1,8 @@
 import { Action, ConsumeAdapter } from '@/core';
-import makeRequest, { RequestConfig } from '@/http/actions/context/runners/makeRequest';
+import makeRequest, { RequestConfig } from '@/http/actions/context/enhancers/makeRequest';
 import { HttpActionContext } from '@/http/types';
 
-export default function makeDelete<AD>(
+export default function makePost<AD>(
   pathOrBaseURL: string,
   body?: BodyInit,
   config?: Omit<RequestConfig, 'method' | 'body'>,

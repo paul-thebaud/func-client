@@ -8,13 +8,13 @@ import {
   ModelInstance,
   ModelProp,
   ModelRelation,
-  NewSerializerI,
+  SerializerI,
   SerializerError,
   useTransform,
 } from '@/core';
 import normalizeKey from '@/json/normalizer/normalizeKey';
 
-export default abstract class JsonSerializer<Data> implements NewSerializerI<Data> {
+export default abstract class JsonSerializer<Data> implements SerializerI<Data> {
   public async serialize(instance: ModelInstance, context: ActionContext) {
     const resource = await this.makeResource(instance, context);
 

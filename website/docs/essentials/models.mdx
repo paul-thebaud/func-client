@@ -75,7 +75,7 @@ about those.
 :::
 
 :::info
-FuncModel also propose multiple utilities to work with models:
+FuncClient also propose multiple utilities to work with models:
 [**read the models utilities API guide**](/docs/api/models-utilities).
 :::
 
@@ -104,7 +104,7 @@ attr({ default: () => [] }); // With a factory default (required for objects pro
 ```
 
 :::caution
-Note that FuncModel consider your attributes as non-nullable values by default.
+Note that FuncClient consider your attributes as non-nullable values by default.
 When one of your model contains nullable attributes, you may want to pass a type
 to the factory (`attr<string | null>()`) or set a default attribute value.
 :::
@@ -177,7 +177,7 @@ creating circular dependencies when having circular model relations.
 :::
 
 :::caution
-Note that FuncModel consider your relations as non-nullable values by default.
+Note that FuncClient consider your relations as non-nullable values by default.
 When one of your model contains nullable relations, you may want to pass a type
 to the factory (`hasOne<User | null>()`) or set a default relation value.
 

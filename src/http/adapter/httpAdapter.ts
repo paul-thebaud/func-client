@@ -1,4 +1,4 @@
-import { NewAdapterI } from '@/core';
+import { AdapterI } from '@/core';
 import paramsSerializer from '@/http/adapter/paramsSerializer';
 import ConflictError from '@/http/errors/conflictError';
 import ForbiddenError from '@/http/errors/forbiddenError';
@@ -20,7 +20,7 @@ import {
 } from '@/http/types';
 import { Dictionary, isNil, optionalJoin, sequentialTransform } from '@/utilities';
 
-export default abstract class HttpAdapter implements NewAdapterI<Response> {
+export default abstract class HttpAdapter implements AdapterI<Response> {
   private fetch!: typeof fetch;
 
   private paramsSerializer!: HttpParamsSerializer;

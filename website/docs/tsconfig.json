@@ -30,8 +30,8 @@
       "func-client/jsonapi": [
         "src/jsonapi.ts"
       ],
-      "func-client/rest": [
-        "src/rest.ts"
+      "func-client/jsonrest": [
+        "src/jsonrest.ts"
       ],
       "func-client/blueprints": [
         "src/blueprints.ts"

@@ -68,7 +68,7 @@ export type ModelProp<T = unknown> = {
  */
 export type ModelAttribute<T = unknown, S = unknown> = ModelProp<T> & {
   /**
-   * Internal type identifier for FuncModel's type guards.
+   * Internal type identifier for FuncClient's type guards.
    */
   $MODEL_TYPE: 'attribute';
   transformer?: Transform<T | undefined, S> | undefined;
@@ -84,7 +84,7 @@ export type ModelRelationType = 'hasOne' | 'hasMany' | 'morphOne' | 'morphMany';
  */
 export type ModelRelation<T = unknown> = ModelProp<T> & {
   /**
-   * Internal type identifier for FuncModel's type guards.
+   * Internal type identifier for FuncClient's type guards.
    */
   $MODEL_TYPE: 'relation';
   $RELATION_TYPE: ModelRelationType;
@@ -125,7 +125,7 @@ export type ModelHooksDefinition = {
  */
 export type ModelClass<D extends {} = any> = Hookable<ModelHooksDefinition> & {
   /**
-   * Internal type identifier for FuncModel's type guards.
+   * Internal type identifier for FuncClient's type guards.
    */
   readonly $MODEL_TYPE: 'model';
   readonly $config: ModelConfig;
@@ -156,7 +156,7 @@ export type ModelClassInstance<D extends {} = any> = {
  */
 export type ModelInstance<D extends {} = any> = {
   /**
-   * Internal type identifier for FuncModel's type guards.
+   * Internal type identifier for FuncClient's type guards.
    */
   readonly $MODEL_TYPE: 'instance';
   readonly $model: ModelClass<D>;

@@ -1,5 +1,5 @@
 import { ModelInstance, ModelRelation } from '@/core';
-import JsonSerializer from '@/json/serializer/jsonSerializer';
+import { JsonSerializer } from '@/json';
 import { JsonApiDocument, JsonApiNewResource } from '@/jsonapi/types';
 
 export default class JsonApiSerializer extends JsonSerializer<JsonApiDocument> {

@@ -4,9 +4,8 @@ sidebar_position: 2
 
 # Installation
 
-FuncClient is only composed by a single package for now, providing the model base
-function (factory, helpers, etc.) and the JSON:API implementation (adapter and
-(de)serializer).
+FuncClient is only composed by a single package for now, providing all features
+(from core features to various implementations, such as JSON:API and JSON REST).
 
 ## NPM
 

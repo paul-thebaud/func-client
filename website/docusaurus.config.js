@@ -49,7 +49,7 @@ const config = {
         '../src/http.ts',
         '../src/json.ts',
         '../src/jsonapi.ts',
-        '../src/rest.ts',
+        '../src/jsonrest.ts',
         '../src/blueprints.ts',
       ],
       tsconfig: '../tsconfig.json',

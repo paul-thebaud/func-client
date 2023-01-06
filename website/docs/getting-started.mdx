@@ -2,11 +2,15 @@
 sidebar_position: 3
 ---
 
+import Link from '@docusaurus/Link';
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+
 # Getting started
 
 :::tip What you'll learn
 - Creating your first model and using it through model instances
-- Creating your action factory using blueprints for a JSON:API backend
+- Creating your action factory using blueprints
 - Running basic actions on your models with your action factory
 :::
 
@@ -17,11 +21,13 @@ strongly type your backend interactions.
 
 ### Defining a model
 
-To declare a model, you just need to use the `makeModel` function. This function takes 3 arguments:
+To declare a model, you just need to use the `makeModel` function.
+This function takes up to 2 arguments:
 
-- The model `type`, which is used by other services to identify your model or interact with an API.
-- The model `definition`, which contains your attributes/relations definitions and custom properties
-and methods.
+- The model `type`, which is used by other services to identify your model
+or interact with a data source.
+- The model `definition`, which contains your attributes/relations
+definitions and custom properties and methods.
 
 ```ts title="models/post.ts"
 // file: models/comment.ts noEmit
@@ -45,12 +51,9 @@ export default class Post extends makeModel('posts', {
 ```
 
 :::tip
-If you never need to import only a model's type (such as in Typescript to avoid circular deps),
-you can directly use the `makeModel` returned value instead of extending it:
-
-```javascript
-export default makeModel('posts', /* your model definition... */);
-```
+If you never need to import only a model's type (such as in Typescript to
+avoid circular deps), you can directly use the `makeModel` returned value
+instead of extending it: `export default makeModel('posts', {});`
 
 [**Read the FAQ to understand the why.**](/docs/faq#why-classes-are-used-for-models-in-typescript)
 :::
@@ -69,54 +72,126 @@ console.log(post.isDraft); // true
 console.log(post.exists); // false
 ```
 
+<Link
+  className="button bg--primary-gradient"
+  to="/docs/"
+>
+  Read the full guide on models
+</Link>
+
 ## Your first actions
 
 ### Action factory with blueprints
 
-Once your models are set up, you will probably want to interact with a data store, such as an API.
-For this, you will need an action factory which initialize a preconfigured context
-for all your future action. Running actions using this action factory will be seen in the next part
-of this guide.
+Once your models are set up, you will probably want to interact with a
+data source, such as an API.
+For this, you will need an action factory which initialize a preconfigured
+context for all your future actions.
+Running actions using this action factory will be seen in the
+[next part of this guide](#running-simple-actions).
 
-Blueprints provide a quick initialization of your action factory.
+Blueprints provide a quick initialization of your action factory for different
+common use-cases. Currently, you may choose between the two available
+blueprints: [JSON:API](https://jsonapi.org) or JSON REST.
 
-With the complete JSON:API action factory blueprint (named `makeJsonApi`), you can
-set up your action factory for a JSON:API by providing a root URL and the models it
-interacts with.
+<Tabs groupId="implementation">
+  <TabItem
+    value="jsonapi"
+    label="JSON:API"
+    default
+  >
+
+`makeJsonApi` is a blueprint to quickly initiate an action factory to
+interact with a normalized [JSON:API backend](https://jsonapi.org).
+It provides all the available tooling, such as a model registry, an instance
+cache, a serializer and deserializer and an adapter.
+
+You can read more details on this implementation on the
+[JSON:API details page](/docs/advanced/jsonapi-details).
 
 ```javascript title="action.js"
 import { makeJsonApi } from 'func-client/blueprints';
+import Comment from './models/comment';
+import Post from './models/post';
 
 const { makeAction, registry } = makeJsonApi({
   baseURL: 'https://example.com/api/v1',
 });
 
 // We need to register the models to allow the deserializer to know
-// to which model it should deserialize a JSON:API record.
-registry.register([Comment, Post, /* User, Tag */]);
+// to which model it should deserialize from an API record.
+registry.register(Comment, Post, /* User, Tag */);
 
 export default function action() {
   return makeAction();
 }
 ```
 
-In this example, `makeJsonApi` will initialize all dependencies to read/write on a JSON:API.
-It must only be called once, because instances may be cached after a read for example.
-`makeAction` is a default preconfigured action factory. It should be called on each new action
-you are making, and not only once, because context enhancers are modifying the action context.
+  </TabItem>
+  <TabItem
+    value="jsonrest"
+    label="JSON REST"
+  >
 
-:::caution
-Using blueprints is a simple and quick way to set up an action factory. However, it has some downsides:
+`makeJsonRest` is a blueprint to quickly initiate an action factory to
+interact with a normalized JSON REST backend.
+It provides all the available tooling, such as a model registry, an instance
+cache, a serializer and deserializer and an adapter.
 
-- **Only a JSON:API implementation of actions dependencies is available for now;**
-- You may not be able to configure all the behaviors you want;
-- You may increase your bundle size by importing useless actions dependencies;
+You can read more details on this implementation on the
+[JSON REST details page](/docs/advanced/jsonrest-details).
 
-If you want more control over your action factory and dependencies, you should
-read [the advanced guide on actions dependencies and factories (TODO)](#todo).
+```javascript title="action.js"
+import { makeJsonRest } from 'func-client/blueprints';
+import Comment from './models/comment';
+import Post from './models/post';
+
+const { makeAction, registry } = makeJsonRest({
+  baseURL: 'https://example.com/api/v1',
+});
+
+// We need to register the models to allow the deserializer to know
+// to which model it should deserialize from an API record.
+registry.register(Comment, Post, /* User, Tag */);
+
+export default function action() {
+  return makeAction();
+}
+```
+
+  </TabItem>
+  <TabItem
+    value="other"
+    label="Other"
+  >
+
+:::danger Whoops
+For the moment, there is no other official implementation available besides
+JSON:API and JSON REST.
+
+You should open an issue or a pull request on the
+[**GitHub repository**](https://github.com/paul-thebaud/func-client/issues)
+to submit your implementation idea.
 :::
 
-### Running actions
+  </TabItem>
+</Tabs>
+
+#### Notice on blueprints
+
+Using blueprints is a simple and quick way to set up an action factory.
+However, it may have some downsides:
+
+- Only some implementations are available for now, so you may not found
+something which fits your needs
+- Some dependencies (e.g. serializer in a readonly context) may imported
+even if you don't use them, and it may increase your production bundle size;
+- Some behaviors may not be configurable;
+
+If you want more control over your action factory and its dependencies, you should read
+[**the advanced guide on custom action factory**](/docs/advanced/custom-action-factory).
+
+### Running simple actions
 
 To run an action, you can initialize a new action instance by calling your factory.
 With this instance, you can call **context enhancers** through `use` to modify
@@ -135,8 +210,8 @@ const posts = await action()
 
 Generally in FuncClient, the context enhancers are doing the majority of work to
 customize the action you will run. Context runners only exists to tell how
-you wish to run the action and retrieve the result (raw response,
-model instance, etc.).
+you wish to run the action and retrieve the result (raw result, model instance,
+etc.).
 
 A great example of this is when finding a model using its ID. You'll not use
 a `find` context runner. Instead, you will need to use a `find` context
@@ -157,7 +232,7 @@ This works the same to send write operations through actions. In the following
 example, we are retrieving a raw adapter response instead of model instances.
 
 ```javascript
-import { create, one, fill } from 'func-client/core';
+import { create, fill, oneOrCurrent } from 'func-client/core';
 import Post from './models/post';
 import action from './action';
 
@@ -168,14 +243,23 @@ const post = fill(new Post(), {
 
 const response = await action()
   .use(create(post))
-  .run(one());
+  .run(oneOrCurrent());
 ```
 
-Finally, you may also want to use FuncClient to make non-standard API calls
-which are unrelated to models.
+<Link
+  className="button bg--primary-gradient"
+  to="/docs/"
+>
+  Read the full guide on actions
+</Link>
+
+### Running HTTP custom actions
+
+Using JSON:API or JSON REST blueprints, you may also want to use FuncClient
+to make non-standard API calls.
 
 ```javascript
-import { instance, knownData } from 'func-client/core';
+import { instance, raw } from 'func-client/core';
 import { makePost } from 'func-client/http';
 import action from './action';
 
@@ -185,17 +269,15 @@ const post = await action()
 
 // Make a POST call to "https://example.com/api/v1/services/posts/1/publish"
 // Admitting it returns: {"message":"Successfully published post."}
-const data = await action()
+const response = await action()
   .use(instance(post))
-  .use(makePost('publish'))
-  .run(knownData());
+  .use(makePost('publish', {
+    data: { publishedAt: new Date() },
+  }))
+  .run(raw());
 
-console.log(data.message); // "Successfully published post."
+console.log(response.status); // 204
 ```
 
-:::info
-`data` runner will return the adapter response data (for JSON:API, it is a JSON:API document).
-
-`knownData` will the same data but with a generic type (which defaults to any). This can be useful
-when creating non-standard JSON:API services.
-:::
+This way, you can standardize all API calls across your application, even when
+those are non JSON:API/JSON REST related.

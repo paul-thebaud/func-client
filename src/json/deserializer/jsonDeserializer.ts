@@ -7,6 +7,7 @@ import {
   ConsumeRegistry,
   DeserializedData,
   DeserializerError,
+  DeserializerI,
   eachAttributes,
   eachRelations,
   ModelAttribute,
@@ -14,25 +15,20 @@ import {
   ModelInstance,
   ModelProp,
   ModelRelation,
-  NewDeserializerI,
   runHook,
   syncOriginal,
   useTransform,
 } from '@/core';
 import normalizeKey from '@/json/normalizer/normalizeKey';
-import { JsonNormalizedIdentifier, JsonOptionalIdentifier } from '@/json/types';
+import { JsonExtractedData, JsonNormalizedIdentifier, JsonOptionalIdentifier } from '@/json/types';
 import { IdentifiersMap, isNil, Optional, wrap } from '@/utilities';
-
-export type ExtractedData<R> = {
-  resources: Optional<R[] | R>;
-};
 
 export default abstract class JsonDeserializer<
   AdapterData,
   Resource,
-  Extract extends ExtractedData<Resource> = ExtractedData<Resource>,
+  Extract extends JsonExtractedData<Resource> = JsonExtractedData<Resource>,
   Data extends DeserializedData = DeserializedData,
-> implements NewDeserializerI<AdapterData, Data> {
+> implements DeserializerI<AdapterData, Data> {
   public async deserialize(data: AdapterData, context: ActionContext) {
     const extractedData = await this.extractData(data, context);
     const instancesMap = new IdentifiersMap<Promise<ModelInstance>>();
@@ -105,7 +101,7 @@ export default abstract class JsonDeserializer<
         context,
       );
       if (await this.shouldDeserializeAttribute(instance, key, def, rawValue, context)) {
-        const deserializedValue = await this.deserializeAttributeValue(
+        const value = await this.deserializeAttributeValue(
           instance,
           key,
           def,
@@ -113,7 +109,7 @@ export default abstract class JsonDeserializer<
           context,
         );
 
-        await this.hydrateAttributeInInstance(instance, key, deserializedValue);
+        await this.hydrateAttributeInInstance(instance, key, value);
       }
     }));
 
@@ -126,7 +122,7 @@ export default abstract class JsonDeserializer<
         context,
       );
       if (await this.shouldDeserializeRelation(instance, key, def, rawValue, context)) {
-        const deserializedValue = await this.deserializeRelationValue(
+        const value = await this.deserializeRelationValue(
           extractedData,
           instancesMap,
           instance,
@@ -136,7 +132,7 @@ export default abstract class JsonDeserializer<
           context,
         );
 
-        await this.hydrateRelationInInstance(instance, key, deserializedValue);
+        await this.hydrateRelationInInstance(instance, key, value);
       }
     }));
 
@@ -290,27 +286,30 @@ export default abstract class JsonDeserializer<
 
   protected hydratePropInInstance(
     instance: ModelInstance,
-    deserializedKey: string,
-    deserializedValue: unknown,
+    key: string,
+    value: unknown,
   ) {
     // eslint-disable-next-line no-param-reassign
-    instance[deserializedKey] = deserializedValue;
+    instance[key] = value;
   }
 
   protected async hydrateAttributeInInstance(
     instance: ModelInstance,
-    deserializedKey: string,
-    deserializedValue: unknown,
+    key: string,
+    value: unknown,
   ) {
-    await this.hydratePropInInstance(instance, deserializedKey, deserializedValue);
+    await this.hydratePropInInstance(instance, key, value);
   }
 
   protected async hydrateRelationInInstance(
     instance: ModelInstance,
-    deserializedKey: string,
-    deserializedValue: unknown,
+    key: string,
+    value: unknown,
   ) {
-    await this.hydratePropInInstance(instance, deserializedKey, deserializedValue);
+    await this.hydratePropInInstance(instance, key, value);
+
+    // eslint-disable-next-line no-param-reassign
+    instance.$loaded[key] = true;
   }
 
   protected deserializeAttributeKey(

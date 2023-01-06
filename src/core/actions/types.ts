@@ -1,7 +1,7 @@
 import type Action from '@/core/actions/action';
 import { HookCallback } from '@/core/hooks/types';
 import { Model, ModelId, ModelInstance } from '@/core/model/types';
-import { CacheI, DeserializedData, NewAdapterI, NewDeserializerI, NewSerializerI, RegistryI } from '@/core/types';
+import { CacheI, DeserializedData, AdapterI, DeserializerI, SerializerI, RegistryI } from '@/core/types';
 import { Awaitable } from '@/utilities';
 
 export type ActionMethod =
@@ -55,16 +55,16 @@ export type ConsumeCache = { cache: CacheI; };
 export type ConsumeRegistry = { registry: RegistryI; };
 
 export type ConsumeAdapter<Data = unknown> = {
-  adapter: NewAdapterI<Data>;
+  adapter: AdapterI<Data>;
 };
 
 export type ConsumeDeserializer<
   AdapterData = unknown,
   Data extends DeserializedData = DeserializedData,
 > = {
-  deserializer: NewDeserializerI<AdapterData, Data>;
+  deserializer: DeserializerI<AdapterData, Data>;
 };
 
 export type ConsumeSerializer<Data = unknown> = {
-  serializer: NewSerializerI<Data>;
+  serializer: SerializerI<Data>;
 };
