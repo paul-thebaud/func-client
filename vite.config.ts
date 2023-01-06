@@ -5,8 +5,12 @@ type LibFormat = 'es' | 'cjs' | 'umd';
 
 const libChunks = [
   { name: 'core', dir: resolve(__dirname, 'src/core') },
-  { name: 'json-api', dir: resolve(__dirname, 'src/json-api') },
+  { name: 'http', dir: resolve(__dirname, 'src/http') },
+  { name: 'json', dir: resolve(__dirname, 'src/json') },
+  { name: 'jsonapi', dir: resolve(__dirname, 'src/jsonapi') },
+  { name: 'rest', dir: resolve(__dirname, 'src/rest') },
   { name: 'blueprints', dir: resolve(__dirname, 'src/blueprints') },
+  { name: 'utilities', dir: resolve(__dirname, 'src/utilities') },
 ];
 
 const makeLibOptions = (format: LibFormat) => ({
@@ -21,6 +25,7 @@ const makeRollupOptions = (ext: 'js' | 'cjs') => ({
     minifyInternalExports: false,
     chunkFileNames: '[name]',
     manualChunks(id: string) {
+      console.log(id);
       if (id.endsWith('func-client.ts')) {
         return 'func-client';
       }

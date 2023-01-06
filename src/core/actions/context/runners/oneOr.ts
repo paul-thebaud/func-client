@@ -1,18 +1,17 @@
 import Action from '@/core/actions/action';
 import oneOrUsing from '@/core/actions/context/runners/oneOrUsing';
-import {
-  ActionContext,
-  ConsumeAdapter,
-  ConsumeDeserializer,
-  ContextRunner,
-  ConsumeModel,
-} from '@/core/actions/types';
+import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel, ContextRunner } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
+import { DeserializedData } from '@/core/types';
 
-export default function oneOr<C extends ActionContext, R, RD, M extends Model, DD>(
-  nilRunner: ContextRunner<C, DD>,
-) {
+export default function oneOr<
+  C extends ActionContext,
+  M extends Model,
+  AD,
+  DD extends DeserializedData,
+  RD,
+>(nilRunner: ContextRunner<C, RD>) {
   return (
-    action: Action<C & ConsumeAdapter<R, RD> & ConsumeDeserializer<RD> & ConsumeModel<M>>,
-  ) => action.run(oneOrUsing((d) => d, nilRunner));
+    action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
+  ) => action.run(oneOrUsing(({ instance }) => instance, nilRunner));
 }

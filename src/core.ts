@@ -1,8 +1,10 @@
 import RefsCache from '@/core/cache/refsCache';
-import weakRefCacheMode from '@/core/cache/weakRefMode';
+import weakRefCacheMode from '@/core/cache/weakRefCacheMode';
 import AdapterError from '@/core/errors/adapterError';
-import FuncClientError from '@/core/errors/funcClientError';
+import DeserializerError from '@/core/errors/deserializerError';
 import ExpectedRunFailureError from '@/core/errors/expectedRunFailureError';
+import FuncClientError from '@/core/errors/funcClientError';
+import SerializerError from '@/core/errors/serializerError';
 import registerHook from '@/core/hooks/registerHook';
 import runHook from '@/core/hooks/runHook';
 import unregisterHook from '@/core/hooks/unregisterHook';
@@ -23,6 +25,8 @@ import attr from '@/core/model/props/attr';
 import hasMany from '@/core/model/props/hasMany';
 import hasOne from '@/core/model/props/hasOne';
 import changed from '@/core/model/utilities/changed';
+import eachAttributes from '@/core/model/utilities/eachAttributes';
+import eachRelations from '@/core/model/utilities/eachRelations';
 import fill from '@/core/model/utilities/fill';
 import isSame from '@/core/model/utilities/isSame';
 import loaded from '@/core/model/utilities/loaded';
@@ -47,6 +51,8 @@ export * from '@/core/actions';
 export {
   AdapterError,
   FuncClientError,
+  DeserializerError,
+  SerializerError,
   ExpectedRunFailureError,
   MapRegistry,
   RefsCache,
@@ -60,6 +66,8 @@ export {
   syncOriginal,
   changed,
   isSame,
+  eachAttributes,
+  eachRelations,
   makeComposable,
   makeModel,
   makeModelFactory,

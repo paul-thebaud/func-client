@@ -3,34 +3,36 @@ import { ActionContext, ConsumeCache, ConsumeModel, ContextRunner } from '@/core
 import FuncClientError from '@/core/errors/funcClientError';
 import { Model } from '@/core/model/types';
 import loaded from '@/core/model/utilities/loaded';
-import isNil from '@/core/utilities/isNil';
-import isNone from '@/core/utilities/isNone';
-import { Awaitable } from '@/core/utilities/types';
+import { Awaitable, isNil, isNone } from '@/utilities';
 
-export default function cachedOrUsing<C extends ActionContext, M extends Model, ND, DD>(
-  transformData: (data: InstanceType<M>, context: C) => Awaitable<ND>,
-  nilRunner: ContextRunner<C, DD>,
+export default function cachedOrUsing<
+  C extends ActionContext,
+  M extends Model,
+  I extends InstanceType<M>,
+  ND,
+  RD,
+>(
+  using: (data: { context: C; instance: I; }) => Awaitable<ND>,
+  nilRunner: ContextRunner<C, RD>,
 ) {
-  return async (
-    action: Action<C & ConsumeCache & ConsumeModel<M>>,
-  ) => {
-    const context = await action.getContext();
+  return async (action: Action<C & ConsumeCache & ConsumeModel<M>>) => {
+    const context = await action.context;
     if (isNone(context.id)) {
       throw new FuncClientError('cannot use cached runner without ID context');
     }
 
-    const cachedInstance = await context.cache.find(
+    const instance = await context.cache.find(
       context.model.$config.type,
       context.id,
     );
-    if (isNil(cachedInstance)) {
+    if (isNil(instance)) {
       return action.run(nilRunner);
     }
 
-    if (context.includes && !loaded(cachedInstance, context.includes as never[])) {
+    if (context.includes && !loaded(instance, context.includes as never[])) {
       return action.run(nilRunner);
     }
 
-    return transformData(cachedInstance as InstanceType<M>, context);
+    return using({ context, instance });
   };
 }

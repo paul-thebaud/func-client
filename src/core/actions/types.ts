@@ -1,8 +1,8 @@
 import type Action from '@/core/actions/action';
 import { HookCallback } from '@/core/hooks/types';
 import { Model, ModelId, ModelInstance } from '@/core/model/types';
-import { AdapterI, DeserializerI, CacheI, SerializerI } from '@/core/types';
-import { Awaitable, Dictionary } from '@/core/utilities/types';
+import { CacheI, DeserializedData, NewAdapterI, NewDeserializerI, NewSerializerI, RegistryI } from '@/core/types';
+import { Awaitable } from '@/utilities';
 
 export type ActionMethod =
   | 'get' | 'GET'
@@ -17,20 +17,12 @@ export type ActionMethod =
   | 'unlink' | 'UNLINK';
 
 export type ActionContext = {
-  // TODO Remove "method", replace with "action".
-  method?: ActionMethod;
-  // TODO Remove "baseURL".
-  baseURL?: string;
+  action?: 'READ' | 'CREATE' | 'UPDATE' | 'DESTROY';
   type?: string;
   id?: ModelId;
   relation?: string;
   includes?: string[];
-  // TODO Remove "path".
-  path?: string;
-  // TODO Remove "params"?
-  params?: Dictionary<any> | string;
-  // TODO Remove "payload", replace with "data"?
-  payload?: unknown;
+  data?: unknown;
   [K: string]: unknown;
 };
 
@@ -43,11 +35,11 @@ export type ActionHooksDefinition<C extends ActionContext = any> = {
 };
 
 export type ContextEnhancer<PC extends ActionContext, NC extends ActionContext> = (
-  a: Action<PC>,
+  action: Action<PC>,
 ) => Awaitable<Action<NC> | void>;
 
 export type ContextRunner<C extends ActionContext, R> = (
-  a: Action<C>,
+  action: Action<C>,
 ) => R;
 
 export type ConsumeModel<M extends Model = Model> = {
@@ -60,8 +52,19 @@ export type ConsumeInstance<I extends ModelInstance = ModelInstance> = {
 
 export type ConsumeCache = { cache: CacheI; };
 
-export type ConsumeAdapter<R = unknown, RD = unknown> = { adapter: AdapterI<R, RD>; };
+export type ConsumeRegistry = { registry: RegistryI; };
 
-export type ConsumeDeserializer<D = unknown> = { deserializer: DeserializerI<D> };
+export type ConsumeAdapter<Data = unknown> = {
+  adapter: NewAdapterI<Data>;
+};
 
-export type ConsumeSerializer<D = unknown> = { serializer: SerializerI<D> };
+export type ConsumeDeserializer<
+  AdapterData = unknown,
+  Data extends DeserializedData = DeserializedData,
+> = {
+  deserializer: NewDeserializerI<AdapterData, Data>;
+};
+
+export type ConsumeSerializer<Data = unknown> = {
+  serializer: NewSerializerI<Data>;
+};

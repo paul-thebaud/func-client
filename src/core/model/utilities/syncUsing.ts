@@ -2,19 +2,20 @@
 import { ModelInstance, ModelKey } from '@/core/model/types';
 import cloneModelValue from '@/core/model/utilities/cloneModelValue';
 import schemaKeys from '@/core/model/utilities/schemaKeys';
-import { Arrayable } from '@/core/utilities/types';
+import { ArrayableVariadic, wrapVariadic } from '@/utilities';
 
 export default function syncUsing<I extends ModelInstance>(
   source: '$original' | '$values',
   target: '$original' | '$values',
   instance: I,
-  keys?: Arrayable<ModelKey<I>>,
+  ...keys: ArrayableVariadic<ModelKey<I>>
 ) {
-  if (keys === undefined) {
+  const wrappedKeys = wrapVariadic(...keys);
+  if (wrappedKeys.length === 0) {
     instance[target] = {};
   }
 
-  schemaKeys(instance, keys).forEach((key) => {
+  schemaKeys(instance, wrappedKeys).forEach((key) => {
     if (Object.prototype.hasOwnProperty.call(instance[source], key)) {
       instance[target][key] = cloneModelValue(
         instance.$model,

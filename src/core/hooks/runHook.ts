@@ -1,5 +1,5 @@
 import { Hookable, HookCallback, HooksDefinition } from '@/core/hooks/types';
-import sequentialTransform from '@/core/utilities/sequentialTransform';
+import { sequentialTransform } from '@/utilities';
 
 export default async function runHook<D extends HooksDefinition, K extends keyof D>(
   hookable: Hookable<D>,

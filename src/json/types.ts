@@ -1,5 +1,15 @@
 import { ModelId } from '@/core';
 
+export type JsonOptionalIdentifier = {
+  type?: string;
+  id?: ModelId;
+};
+
+export type JsonNormalizedIdentifier = {
+  type: string;
+  id?: ModelId;
+};
+
 export type JsonNormalizedRecordId = ModelId;
 
 export type JsonNormalizedRecordRef = {

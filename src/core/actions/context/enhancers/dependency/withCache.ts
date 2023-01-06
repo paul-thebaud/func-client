@@ -3,6 +3,6 @@ import context from '@/core/actions/context/enhancers/context';
 import { ActionContext } from '@/core/actions/types';
 import { CacheI } from '@/core/types';
 
-export default function withCache<IC extends CacheI>(cache: IC) {
-  return <C extends ActionContext>(a: Action<C>) => a.use(context({ cache }));
+export default function withCache<Cache extends CacheI>(cache: Cache) {
+  return <C extends ActionContext>(action: Action<C>) => action.use(context({ cache }));
 }

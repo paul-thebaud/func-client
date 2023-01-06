@@ -2,8 +2,7 @@ import FuncClientError from '@/core/errors/funcClientError';
 import isModel from '@/core/model/guards/isModel';
 import { Model } from '@/core/model/types';
 import { RegistryI } from '@/core/types';
-import { Arrayable, Dictionary } from '@/core/utilities/types';
-import wrap from '@/core/utilities/wrap';
+import { ArrayableVariadic, Dictionary, isNil, wrapVariadic } from '@/utilities';
 
 export default class MapRegistry implements RegistryI {
   private models: Map<string, () => Promise<Model>>;
@@ -25,16 +24,16 @@ export default class MapRegistry implements RegistryI {
     return modelResolver();
   }
 
-  public register(models: Arrayable<Model> | Dictionary<() => Promise<Model>>) {
-    if (isModel(models) || Array.isArray(models)) {
-      return this.registerSync(models);
+  public register(...models: ArrayableVariadic<Model> | [Dictionary<() => Promise<Model>>]) {
+    if (!isNil(models[0]) && !Array.isArray(models[0]) && !isModel(models[0])) {
+      return this.registerAsync(models[0]);
     }
 
-    return this.registerAsync(models);
+    return this.registerSync(...models as ArrayableVariadic<Model>);
   }
 
-  public registerSync(models: Arrayable<Model>) {
-    wrap(models).forEach((model) => {
+  public registerSync(...models: ArrayableVariadic<Model>) {
+    wrapVariadic(...models).forEach((model) => {
       this.models.set(model.$config.type, async () => model);
     });
 

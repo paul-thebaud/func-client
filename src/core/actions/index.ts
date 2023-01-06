@@ -3,14 +3,14 @@ import context from '@/core/actions/context/enhancers/context';
 import create from '@/core/actions/context/enhancers/crud/create';
 import destroy from '@/core/actions/context/enhancers/crud/destroy';
 import find from '@/core/actions/context/enhancers/crud/find';
-import instancePayload from '@/core/actions/context/enhancers/crud/instancePayload';
+import instanceData from '@/core/actions/context/enhancers/crud/instanceData';
 import save from '@/core/actions/context/enhancers/crud/save';
 import update from '@/core/actions/context/enhancers/crud/update';
 import withAdapter from '@/core/actions/context/enhancers/dependency/withAdapter';
 import withCache from '@/core/actions/context/enhancers/dependency/withCache';
 import withDeserializer from '@/core/actions/context/enhancers/dependency/withDeserializer';
-import withSerializer from '@/core/actions/context/enhancers/dependency/withSerializer';
 import withRegistry from '@/core/actions/context/enhancers/dependency/withRegistry';
+import withSerializer from '@/core/actions/context/enhancers/dependency/withSerializer';
 import forId from '@/core/actions/context/enhancers/forId';
 import onError from '@/core/actions/context/enhancers/hooks/onError';
 import onFinally from '@/core/actions/context/enhancers/hooks/onFinally';
@@ -21,19 +21,14 @@ import include from '@/core/actions/context/enhancers/include';
 import instance from '@/core/actions/context/enhancers/instance';
 import model from '@/core/actions/context/enhancers/model';
 import target from '@/core/actions/context/enhancers/target';
-import fullPath from '@/core/actions/context/enhancers/requests/fullPath';
-import param from '@/core/actions/context/enhancers/requests/param';
-import params from '@/core/actions/context/enhancers/requests/params';
-import path from '@/core/actions/context/enhancers/requests/path';
 import all from '@/core/actions/context/runners/all';
 import allUsing from '@/core/actions/context/runners/allUsing';
 import cached from '@/core/actions/context/runners/cached';
 import cachedOr from '@/core/actions/context/runners/cachedOr';
 import cachedOrFail from '@/core/actions/context/runners/cachedOrFail';
 import cachedOrUsing from '@/core/actions/context/runners/cachedOrUsing';
-import data from '@/core/actions/context/runners/data';
-import dataUsing from '@/core/actions/context/runners/dataUsing';
-import knownData from '@/core/actions/context/runners/knownData';
+import deserializedData from '@/core/actions/context/runners/deserializedData';
+import deserializedDataUsing from '@/core/actions/context/runners/deserializedDataUsing';
 import none from '@/core/actions/context/runners/none';
 import one from '@/core/actions/context/runners/one';
 import oneOr from '@/core/actions/context/runners/oneOr';
@@ -41,18 +36,11 @@ import oneOrCurrent from '@/core/actions/context/runners/oneOrCurrent';
 import oneOrFail from '@/core/actions/context/runners/oneOrFail';
 import oneOrUsing from '@/core/actions/context/runners/oneOrUsing';
 import raw from '@/core/actions/context/runners/raw';
-import toManyInstances from '@/core/actions/context/runners/transformers/toManyInstances';
-import toOneInstance from '@/core/actions/context/runners/transformers/toOneInstance';
 import when from '@/core/actions/when';
 
 export {
-  toManyInstances,
-  toOneInstance,
   all,
   allUsing,
-  data,
-  dataUsing,
-  knownData,
   none,
   one,
   oneOr,
@@ -69,11 +57,8 @@ export {
   update,
   save,
   destroy,
-  instancePayload,
-  path,
-  fullPath,
-  param,
-  params,
+  deserializedDataUsing,
+  deserializedData,
   withAdapter,
   withDeserializer,
   withSerializer,
@@ -85,6 +70,7 @@ export {
   model,
   target,
   include,
+  instanceData,
   when,
   onPreparing,
   onRunning,

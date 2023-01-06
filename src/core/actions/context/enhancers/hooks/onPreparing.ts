@@ -1,7 +1,7 @@
 import Action from '@/core/actions/action';
 import { ActionContext } from '@/core/actions/types';
 import registerHook from '@/core/hooks/registerHook';
-import { Awaitable } from '@/core/utilities/types';
+import { Awaitable } from '@/utilities';
 
 export default function onPreparing<C extends ActionContext>(
   callback: () => Awaitable<void>,

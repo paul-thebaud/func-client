@@ -1,37 +1,37 @@
 import Action from '@/core/actions/action';
-import dataUsing from '@/core/actions/context/runners/dataUsing';
-import toOneInstance from '@/core/actions/context/runners/transformers/toOneInstance';
-import {
-  ActionContext,
-  ConsumeAdapter,
-  ConsumeDeserializer,
-  ContextRunner,
-  ConsumeModel,
-} from '@/core/actions/types';
+import raw from '@/core/actions/context/runners/raw';
+import deserializeInstances, { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
+import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel, ContextRunner } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
-import isNil from '@/core/utilities/isNil';
-import { Awaitable } from '@/core/utilities/types';
+import { DeserializedData } from '@/core/types';
+import { Awaitable } from '@/utilities';
 
-export default function oneOrUsing<C extends ActionContext, R, RD, M extends Model, ND, DD>(
-  transformData: (data: InstanceType<M>, realData: RD, context: C) => Awaitable<ND>,
-  nilRunner: ContextRunner<C, DD>,
+export default function oneOrUsing<
+  C extends ActionContext,
+  M extends Model,
+  I extends InstanceType<M>,
+  AD,
+  DD extends DeserializedData,
+  ND,
+  RD,
+>(
+  using: (data: { context: C; data: DeserializedDataOf<I, DD>; instance: I; }) => Awaitable<ND>,
+  nilRunner: ContextRunner<C, RD>,
 ) {
   return async (
-    action: Action<C & ConsumeAdapter<R, RD> & ConsumeDeserializer<RD> & ConsumeModel<M>>,
+    action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
   ) => {
     try {
-      return await action.run(dataUsing(
-        async (context, realData) => {
-          const data = await toOneInstance(context, realData);
-          if (isNil(data)) {
-            return action.run(nilRunner);
-          }
+      const rawData = await action.run(raw());
+      const data = await deserializeInstances<I, AD, DD>(action, rawData);
+      const { instances } = data;
+      if (instances.length === 0) {
+        return await action.run(nilRunner);
+      }
 
-          return transformData(data, realData, context);
-        },
-      ));
+      return await using({ context: await action.context, data, instance: instances[0] });
     } catch (error) {
-      if ((await action.getContext()).adapter.isNotFound(error)) {
+      if (await (await action.context).adapter.isNotFound(error)) {
         return action.run(nilRunner);
       }
 

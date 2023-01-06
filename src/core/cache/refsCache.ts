@@ -1,25 +1,25 @@
 import { RefsCacheMode, RefsCacheOptions } from '@/core/cache/types';
+import weakRefCacheMode from '@/core/cache/weakRefCacheMode';
 import { ModelId, ModelInstance } from '@/core/model/types';
 import { CacheI } from '@/core/types';
+import { IdentifiersMap } from '@/utilities';
 
 export default class RefsCache implements CacheI {
-  private readonly instances: Map<string, Map<ModelId, unknown>>;
+  private readonly instances: IdentifiersMap<unknown>;
 
   private mode!: RefsCacheMode<unknown>;
 
   public constructor(options: RefsCacheOptions) {
-    this.instances = new Map();
-    this.withMode(options.mode);
+    this.instances = new IdentifiersMap();
+    this.withOptions(options);
   }
 
-  public withMode<T>(mode: RefsCacheMode<T>) {
-    this.mode = mode;
-
-    return this;
+  public withOptions(options: RefsCacheOptions) {
+    this.mode = options.mode ?? weakRefCacheMode;
   }
 
   public async find(type: string, id: ModelId) {
-    const ref = this.useInstancesMap(type).get(id);
+    const ref = this.instances.get(type, id);
     if (!ref) {
       return null;
     }
@@ -35,25 +35,14 @@ export default class RefsCache implements CacheI {
   }
 
   public async put(type: string, id: ModelId, instance: ModelInstance) {
-    this.useInstancesMap(type).set(id, await this.mode.ref(instance));
+    this.instances.set(type, id, await this.mode.ref(instance));
   }
 
   public async forget(type: string, id: ModelId) {
-    this.useInstancesMap(type).delete(id);
+    this.instances.delete(type, id);
   }
 
   public async forgetAll(type: string) {
-    this.useInstancesMap(type).clear();
-  }
-
-  private useInstancesMap(type: string) {
-    let instancesMap = this.instances.get(type);
-    if (!instancesMap) {
-      instancesMap = new Map();
-
-      this.instances.set(type, instancesMap);
-    }
-
-    return instancesMap;
+    this.instances.clear(type);
   }
 }

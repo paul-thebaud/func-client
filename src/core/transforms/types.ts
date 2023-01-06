@@ -1,4 +1,4 @@
-import { Awaitable } from '@/core/utilities/types';
+import { Awaitable } from '@/utilities';
 
 export type FunctionTransform<T, S> = (value: S) => Awaitable<T>;
 

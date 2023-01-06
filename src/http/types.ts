@@ -1,5 +1,5 @@
-import { ModelId } from '@/core/model/types';
-import { Awaitable, Dictionary } from '@/core/utilities/types';
+import { ActionContext } from '@/core';
+import { Awaitable, Dictionary } from '@/utilities';
 
 export type HttpMethod =
   | 'get' | 'GET'
@@ -13,20 +13,11 @@ export type HttpMethod =
   | 'link' | 'LINK'
   | 'unlink' | 'UNLINK';
 
-// TODO real ActionContext.
-type ActionContext = {
-  action?: 'READ' | 'CREATE' | 'UPDATE' | 'DESTROY';
-  type?: string;
-  id?: ModelId;
-  relation?: string;
-  includes?: string[];
-};
-
-export type HttpActionContext = ActionContext & {
+export type HttpRequestConfig = {
   method?: HttpMethod;
   baseURL?: string;
   path?: string;
-  params?: Dictionary | string;
+  params?: Dictionary<any> | string;
   headers?: HeadersInit;
   // TODO "dataAs"?
   body?: BodyInit;
@@ -35,12 +26,29 @@ export type HttpActionContext = ActionContext & {
   errorTransformers?: ErrorTransformer[];
 };
 
+export type HttpAdapterOptions = {
+  fetch?: typeof fetch;
+  baseURL?: string;
+  paramsSerializer?: HttpParamsSerializer;
+  requestTransformers?: RequestTransformer[];
+  responseTransformers?: ResponseTransformer[];
+  errorTransformers?: ErrorTransformer[];
+};
+
+export type HttpActionContext = ActionContext & HttpRequestConfig;
+
 export type HttpParamsSerializer = (params: Dictionary) => string | undefined;
+
+export type HttpRequestInit = {
+  method: HttpMethod;
+  headers: Headers;
+  body: BodyInit;
+};
 
 export type HttpRequest = {
   context: HttpActionContext;
   url: string;
-  init: RequestInit;
+  init: HttpRequestInit;
 };
 
 export type RequestTransformer = (request: HttpRequest) => Awaitable<HttpRequest>;

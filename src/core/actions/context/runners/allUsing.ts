@@ -1,20 +1,28 @@
 import Action from '@/core/actions/action';
-import dataUsing from '@/core/actions/context/runners/dataUsing';
-import toManyInstances from '@/core/actions/context/runners/transformers/toManyInstances';
+import deserializeInstances, { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
 import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
-import { Awaitable } from '@/core/utilities/types';
+import { DeserializedData } from '@/core/types';
+import { Awaitable } from '@/utilities';
+import raw from './raw';
 
-export default function allUsing<C extends ActionContext, R, RD, M extends Model, ND>(
-  transformData: (data: InstanceType<M>[], realData: RD, context: C) => Awaitable<ND>,
+export default function allUsing<
+  C extends ActionContext,
+  M extends Model,
+  I extends InstanceType<M>,
+  AD,
+  DD extends DeserializedData,
+  ND,
+>(
+  using: (data: { context: C; data: DeserializedDataOf<I, DD>; instances: I[]; }) => Awaitable<ND>,
 ) {
-  return (
-    action: Action<C & ConsumeAdapter<R, RD> & ConsumeDeserializer<RD> & ConsumeModel<M>>,
-  ) => action.run(
-    dataUsing(async (context, realData) => transformData(
-      await toManyInstances(context, realData),
-      realData,
-      context,
-    )),
-  );
+  return async (
+    action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
+  ) => {
+    const rawData = await action.run(raw());
+    const data = await deserializeInstances<I, AD, DD>(action, rawData);
+    const { instances } = data;
+
+    return using({ context: await action.context, data, instances });
+  };
 }

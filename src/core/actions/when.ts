@@ -1,7 +1,6 @@
 import Action from '@/core/actions/action';
 import { ActionContext } from '@/core/actions/types';
-import { OnlyFalsy, OnlyTruthy, Value } from '@/core/utilities/types';
-import value from '@/core/utilities/value';
+import { OnlyFalsy, OnlyTruthy, Value, value } from '@/utilities';
 
 export default function when<C extends ActionContext, E, TR, FR = void>(
   expression: E,
@@ -9,7 +8,7 @@ export default function when<C extends ActionContext, E, TR, FR = void>(
   falsyCallback?: (action: Action<C>, value: OnlyFalsy<Value<E>>) => FR,
 ): (action: Action<C>) => TR | FR {
   return (action: Action<C>) => {
-    const exprValue = value(expression);
+    const exprValue = value(expression as Function);
     if (exprValue) {
       return truthyCallback(action, exprValue as OnlyTruthy<Value<E>>);
     }

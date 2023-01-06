@@ -1,8 +1,5 @@
 import { NewAdapterI } from '@/core';
-import isNil from '@/core/utilities/isNil';
-import optionalJoin from '@/core/utilities/optionalJoin';
-import sequentialTransform from '@/core/utilities/sequentialTransform';
-import { Dictionary } from '@/core/utilities/types';
+import paramsSerializer from '@/http/adapter/paramsSerializer';
 import ConflictError from '@/http/errors/conflictError';
 import ForbiddenError from '@/http/errors/forbiddenError';
 import InterruptedError from '@/http/errors/interruptedError';
@@ -14,27 +11,21 @@ import UnauthorizedError from '@/http/errors/unauthorizedError';
 import {
   ErrorTransformer,
   HttpActionContext,
+  HttpAdapterOptions,
   HttpParamsSerializer,
   HttpRequest,
+  HttpRequestInit,
   RequestTransformer,
   ResponseTransformer,
 } from '@/http/types';
-
-export type FetchAdapterOptions = {
-  fetch?: typeof fetch;
-  baseURL?: string;
-  paramsSerializer: HttpParamsSerializer;
-  requestTransformers?: RequestTransformer[];
-  responseTransformers?: ResponseTransformer[];
-  errorTransformers?: ErrorTransformer[];
-};
+import { Dictionary, isNil, optionalJoin, sequentialTransform } from '@/utilities';
 
 export default abstract class HttpAdapter implements NewAdapterI<Response> {
   private fetch!: typeof fetch;
 
-  private baseURL!: string | undefined;
-
   private paramsSerializer!: HttpParamsSerializer;
+
+  private baseURL!: string | undefined;
 
   private requestTransformers!: RequestTransformer[];
 
@@ -42,50 +33,17 @@ export default abstract class HttpAdapter implements NewAdapterI<Response> {
 
   private errorTransformers!: ErrorTransformer[];
 
-  public constructor(options: FetchAdapterOptions) {
-    this
-      .withFetch(options.fetch ?? fetch)
-      .withBaseURL(options.baseURL)
-      .withParamsSerializer(options.paramsSerializer)
-      .withRequestTransformers(options.requestTransformers)
-      .withResponseTransformers(options.responseTransformers)
-      .withErrorTransformers(options.errorTransformers);
+  public constructor(options: HttpAdapterOptions) {
+    this.withOptions(options);
   }
 
-  public withFetch(fetchImpl: typeof fetch) {
-    this.fetch = fetchImpl;
-
-    return this;
-  }
-
-  public withBaseURL(baseURL?: string) {
-    this.baseURL = baseURL;
-
-    return this;
-  }
-
-  public withParamsSerializer(paramsSerializer: HttpParamsSerializer) {
-    this.paramsSerializer = paramsSerializer;
-
-    return this;
-  }
-
-  public withRequestTransformers(transformers?: RequestTransformer[]) {
-    this.requestTransformers = transformers ?? [];
-
-    return this;
-  }
-
-  public withResponseTransformers(transformers?: ResponseTransformer[]) {
-    this.responseTransformers = transformers ?? [];
-
-    return this;
-  }
-
-  public withErrorTransformers(transformers?: ErrorTransformer[]) {
-    this.errorTransformers = transformers ?? [];
-
-    return this;
+  public withOptions(options: HttpAdapterOptions) {
+    this.fetch = options.fetch ?? fetch;
+    this.paramsSerializer = options.paramsSerializer ?? paramsSerializer;
+    this.baseURL = options.baseURL;
+    this.requestTransformers = options.requestTransformers ?? [];
+    this.responseTransformers = options.responseTransformers ?? [];
+    this.errorTransformers = options.errorTransformers ?? [];
   }
 
   /**
@@ -112,6 +70,13 @@ export default abstract class HttpAdapter implements NewAdapterI<Response> {
     throw await this.transformError(context, await this.makeError(request, response));
   }
 
+  /**
+   * @inheritDoc
+   */
+  public isNotFound(error: unknown) {
+    return error instanceof NotFoundError;
+  }
+
   protected async makeRequest(context: HttpActionContext): Promise<HttpRequest> {
     return {
       context,
@@ -130,9 +95,9 @@ export default abstract class HttpAdapter implements NewAdapterI<Response> {
   protected makeRequestInit(context: HttpActionContext) {
     return {
       method: this.makeRequestMethod(context),
-      headers: context.headers,
+      headers: new Headers(context.headers),
       body: context.body,
-    };
+    } as HttpRequestInit;
   }
 
   protected makeRequestMethod(context: HttpActionContext) {
@@ -176,7 +141,10 @@ export default abstract class HttpAdapter implements NewAdapterI<Response> {
   }
 
   protected runRequest(request: HttpRequest) {
-    return this.fetch(request.url, request.init);
+    // Destructure to avoid calling fetch with this context.
+    const { fetch } = this;
+
+    return fetch(request.url, request.init);
   }
 
   protected async makeError(request: HttpRequest, response: Response): Promise<unknown> {

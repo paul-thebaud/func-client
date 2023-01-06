@@ -1,2 +1,2 @@
 /// <reference path="./core.d.ts" />
-/// <reference path="./json-api.d.ts" />
+/// <reference path="./jsonapi.d.ts" />

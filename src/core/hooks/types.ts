@@ -1,4 +1,4 @@
-import { Awaitable, Dictionary } from '@/core/utilities/types';
+import { Awaitable, Dictionary } from '@/utilities';
 
 export type HookCallback<E> = (event: E) => Awaitable<void>;
 

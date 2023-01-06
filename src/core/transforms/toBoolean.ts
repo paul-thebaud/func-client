@@ -1,5 +1,5 @@
 import { FunctionTransform } from '@/core/transforms/types';
-import isNone from '@/core/utilities/isNone';
+import { isNone } from '@/utilities';
 
 export default function toBoolean(
   trueValues: unknown[] = [true, 1, '1', 'true', 'yes'],

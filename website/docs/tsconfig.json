@@ -21,8 +21,17 @@
       "func-client/core": [
         "src/core.ts"
       ],
-      "func-client/json-api": [
-        "src/json-api.ts"
+      "func-client/http": [
+        "src/http.ts"
+      ],
+      "func-client/json": [
+        "src/json.ts"
+      ],
+      "func-client/jsonapi": [
+        "src/jsonapi.ts"
+      ],
+      "func-client/rest": [
+        "src/rest.ts"
       ],
       "func-client/blueprints": [
         "src/blueprints.ts"

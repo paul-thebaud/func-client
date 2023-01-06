@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0-alpha.64",
   "license": "MIT",
-  "description": "Functional programming oriented API client for TS and JS, with strong typing and tree-shaking capabilities.",
+  "description": "Functional programming oriented client for TS and JS, with strong typing and tree-shaking capabilities",
   "homepage": "https://github.com/paul-thebaud/func-client",
   "repository": {
     "type": "git",
@@ -18,13 +18,17 @@
     "functional programming",
     "model",
     "api",
-    "json:api"
+    "json:api",
+    "rest"
   ],
   "sideEffects": false,
   "files": [
     "dist/*",
     "core.d.ts",
-    "json-api.d.ts",
+    "http.d.ts",
+    "json.d.ts",
+    "jsonapi.d.ts",
+    "rest.d.ts",
     "blueprints.d.ts",
     "index.d.ts"
   ],
@@ -35,9 +39,21 @@
       "import": "./dist/core.js",
       "require": "./dist/core.cjs"
     },
-    "./json-api": {
-      "import": "./dist/json-api.js",
-      "require": "./dist/json-api.cjs"
+    "./json": {
+      "import": "./dist/json.js",
+      "require": "./dist/json.cjs"
+    },
+    "./http": {
+      "import": "./dist/http.js",
+      "require": "./dist/http.cjs"
+    },
+    "./jsonapi": {
+      "import": "./dist/jsonapi.js",
+      "require": "./dist/jsonapi.cjs"
+    },
+    "./rest": {
+      "import": "./dist/rest.js",
+      "require": "./dist/rest.cjs"
     },
     "./blueprints": {
       "import": "./dist/blueprints.js",

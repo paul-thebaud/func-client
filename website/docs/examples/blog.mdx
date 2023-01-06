@@ -56,7 +56,7 @@ export default class Post extends makeModel('posts', {
 
 ```javascript
 import { model, when } from 'func-client/core';
-import { filter, sortByDesc, paginate, allMeta } from 'func-client/json-api';
+import { filter, sortByDesc, paginate, allMeta } from 'func-client/jsonapi';
 import action from './action';
 import Post from './models/post';
 
@@ -151,7 +151,7 @@ with classical context enhancers and runners.
 
 ```javascript
 import { model, instance, include, when, oneOrFail } from 'func-client/core';
-import { makeGet, makePost } from 'func-client/json-api';
+import { makeGet, makePost } from 'func-client/http';
 import action from './action';
 import Post from './models/post';
 

@@ -1,6 +1,5 @@
-import RefsCache from '@/core/cache/refsCache';
-import weakRefCacheMode from '@/core/cache/weakRefMode';
+import { RefsCache, RefsCacheOptions } from '@/core';
 
-export default function makeCache() {
-  return new RefsCache({ mode: weakRefCacheMode });
+export default function makeCache(options: RefsCacheOptions = {}) {
+  return new RefsCache(options);
 }

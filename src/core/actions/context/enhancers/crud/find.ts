@@ -8,7 +8,7 @@ export default function find<D extends {}, I extends ModelInstance<D>, M extends
   modelToUse: M,
   id: ModelId,
 ) {
-  return <C extends ActionContext>(a: Action<C>) => a
+  return <C extends ActionContext>(action: Action<C>) => action
     .use(model(modelToUse))
     .use(forId(id));
 }

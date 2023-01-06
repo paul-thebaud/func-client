@@ -1,15 +1,13 @@
 import runHook from '@/core/hooks/runHook';
 import { ModelHooksDefinition, ModelInstance } from '@/core/model/types';
-import sequentialTransform from '@/core/utilities/sequentialTransform';
-import { Arrayable } from '@/core/utilities/types';
-import wrap from '@/core/utilities/wrap';
+import { ArrayableVariadic, sequentialTransform, wrapVariadic } from '@/utilities';
 
 export default function runInstanceHooks(
   instance: ModelInstance,
-  hooks: Arrayable<keyof ModelHooksDefinition>,
+  ...hooks: ArrayableVariadic<keyof ModelHooksDefinition>
 ) {
   return async () => {
-    await sequentialTransform(wrap(hooks).map(
+    await sequentialTransform(wrapVariadic(...hooks).map(
       (hook) => () => runHook(instance.$model, hook, instance),
     ));
   };

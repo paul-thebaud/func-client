@@ -1,11 +1,10 @@
-/* eslint-disable no-param-reassign */
 import { ModelInstance, ModelKey } from '@/core/model/types';
 import syncUsing from '@/core/model/utilities/syncUsing';
-import { Arrayable } from '@/core/utilities/types';
+import { ArrayableVariadic } from '@/utilities';
 
 export default function syncOriginal<I extends ModelInstance>(
   instance: I,
-  keys?: Arrayable<ModelKey<I>>,
+  ...keys: ArrayableVariadic<ModelKey<I>>
 ) {
-  return syncUsing('$values', '$original', instance, keys);
+  return syncUsing('$values', '$original', instance, ...keys);
 }

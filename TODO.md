@@ -2,16 +2,11 @@
 
 ## General features
 
-- [ ] Rename one letter parameters to real name (`a` to `action`)
-- [ ] Rename "(de)serializer" to "document (de)serializer"
-- [ ] Try to make adapter and fetch client generic (non-JSON:API specific)
 - [ ] Add @tag, @category or @group to enhancers, runners, etc.
-- [ ] Use optional type instead of allowing null or undefined when possible.
-- [ ] Use variadic in addition to arrayable in functions.
+- [ ] Manage `lid` on models
 - [ ] Generic context (ID, etc.) should not be mentioned in ActionContext type
 - [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Manage errors when users are bypassing types (relations not found, etc.)
-- [ ] Probably merge "discover" docs in "getting started"
 - [ ] Tests using vitest
 
 ## Questions

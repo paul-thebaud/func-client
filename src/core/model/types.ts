@@ -1,6 +1,6 @@
 import { Hookable, HookCallback } from '@/core/hooks/types';
 import { Transform } from '@/core/transforms/types';
-import { Awaitable, Constructor, Dictionary, Prev } from '@/core/utilities/types';
+import { Awaitable, Constructor, Dictionary, Prev } from '@/utilities';
 
 /**
  * Configuration of a model class.
@@ -60,7 +60,7 @@ export type ModelProp<T = unknown> = {
    */
   readonly?: boolean;
   // TODO Doc.
-  localOnly?: boolean;
+  readOnly?: boolean;
 };
 
 /**
@@ -88,6 +88,7 @@ export type ModelRelation<T = unknown> = ModelProp<T> & {
    */
   $MODEL_TYPE: 'relation';
   $RELATION_TYPE: ModelRelationType;
+  type?: string;
 };
 
 /**

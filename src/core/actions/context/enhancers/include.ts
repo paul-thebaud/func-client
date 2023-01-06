@@ -2,19 +2,17 @@ import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
 import { ActionContext, ConsumeModel } from '@/core/actions/types';
 import { Model, ModelRelationDotKey } from '@/core/model/types';
-import { Arrayable } from '@/core/utilities/types';
-import uniqueValues from '@/core/utilities/uniqueValues';
-import wrap from '@/core/utilities/wrap';
+import { ArrayableVariadic, uniqueValues, wrapVariadic } from '@/utilities';
 
 export default function include<C extends ActionContext, M extends Model>(
-  relations: Arrayable<ModelRelationDotKey<M>>,
+  ...relations: ArrayableVariadic<ModelRelationDotKey<M>>
 ) {
   return async (
     action: Action<C & ConsumeModel<M>>,
   ) => action.use(context({
     includes: uniqueValues([
-      ...((await action.getContext()).includes ?? []),
-      ...wrap(relations),
+      ...((await action.context).includes ?? []),
+      ...wrapVariadic(...relations),
     ]),
   }));
 }

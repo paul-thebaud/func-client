@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { Hookable } from '@/core/hooks/types';
-import { Awaitable } from '@/core/utilities/types';
+import { Awaitable } from '@/utilities';
 
 export default async function withoutHooks<T extends Hookable<any>, R>(
   hookable: T,

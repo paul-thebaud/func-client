@@ -1,10 +1,16 @@
 import Action from '@/core/actions/action';
 import allUsing from '@/core/actions/context/runners/allUsing';
-import { ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
+import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
 import { Model } from '@/core/model/types';
+import { DeserializedData } from '@/core/types';
 
-export default function all<R, RD, M extends Model>() {
+export default function all<
+  C extends ActionContext,
+  M extends Model,
+  AD,
+  DD extends DeserializedData,
+>() {
   return (
-    action: Action<ConsumeAdapter<R, RD> & ConsumeDeserializer<RD> & ConsumeModel<M>>,
-  ) => action.run(allUsing((d) => d));
+    action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
+  ) => action.run(allUsing(({ data }) => data.instances));
 }

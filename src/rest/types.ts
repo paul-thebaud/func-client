@@ -1,5 +1,5 @@
 import { ModelId } from '@/core';
-import { Dictionary } from '@/core/utilities/types';
+import { Dictionary } from '@/utilities';
 
 export type RestResourceId = ModelId;
 
@@ -13,4 +13,8 @@ export type RestResource = RestAbstractResource & {
 
 export type RestNewResource = RestAbstractResource & {
   id?: RestResourceId;
+};
+
+export type RestDocument = {
+  data?: RestResource[] | RestResource | RestNewResource | null;
 };

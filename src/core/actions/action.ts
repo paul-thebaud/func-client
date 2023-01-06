@@ -2,49 +2,51 @@ import type { ActionContext, ActionHooksDefinition, ContextEnhancer, ContextRunn
 import runHook from '@/core/hooks/runHook';
 import { HooksRegistrar } from '@/core/hooks/types';
 import withoutHooks from '@/core/hooks/withoutHooks';
-import sequentialTransform from '@/core/utilities/sequentialTransform';
+import { sequentialTransform } from '@/utilities';
 
-export default class Action<C extends ActionContext> {
+export default class Action<Context extends ActionContext> {
   public $hooks: HooksRegistrar<ActionHooksDefinition> | null;
 
   private $enhancementsQueue: ContextEnhancer<any, any>[];
 
-  private $context: C;
+  private $context: Context;
 
   public constructor() {
     this.$enhancementsQueue = [];
-    this.$context = {} as C;
+    this.$context = {} as Context;
     this.$hooks = {};
   }
 
   public get context() {
-    return this.$context;
+    return (async () => {
+      await this.dequeueEnhancements();
+
+      return this.$context;
+    })();
   }
 
-  public async getContext() {
-    await this.dequeueEnhancements();
-
-    return this.$context;
-  }
-
-  public setContext<NC extends ActionContext>(newContext: NC): Action<NC> {
+  public updateContext<NewContext extends ActionContext>(
+    newContext: NewContext,
+  ): Action<NewContext> {
     this.$context = newContext as any;
 
     return this as any;
   }
 
-  public use<NC extends ActionContext = C>(
-    enhancer: ContextEnhancer<C, NC>,
-  ): Action<NC> {
+  public use<NewContext extends ActionContext = Context>(
+    enhancer: ContextEnhancer<Context, NewContext>,
+  ): Action<NewContext> {
     this.$enhancementsQueue.push(enhancer);
 
     return this as any;
   }
 
-  public async run<NR>(runner: ContextRunner<C, NR>): Promise<Awaited<NR>> {
+  public async run<Result>(
+    runner: ContextRunner<Context, Result>,
+  ): Promise<Awaited<Result>> {
     await runHook(this, 'preparing', undefined);
 
-    const context = await this.getContext();
+    const context = await this.context;
 
     await runHook(this, 'running', { context });
 

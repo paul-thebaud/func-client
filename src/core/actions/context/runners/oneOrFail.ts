@@ -1,12 +1,18 @@
 import Action from '@/core/actions/action';
 import oneOr from '@/core/actions/context/runners/oneOr';
-import { ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
+import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel } from '@/core/actions/types';
 import ExpectedRunFailureError from '@/core/errors/expectedRunFailureError';
 import { Model } from '@/core/model/types';
+import { DeserializedData } from '@/core/types';
 
-export default function oneOrFail<R, RD, M extends Model>() {
+export default function oneOrFail<
+  C extends ActionContext,
+  M extends Model,
+  AD,
+  DD extends DeserializedData,
+>() {
   return (
-    action: Action<ConsumeAdapter<R, RD> & ConsumeDeserializer<RD> & ConsumeModel<M>>,
+    action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
   ) => action.run(oneOr(async (): Promise<never> => {
     throw new ExpectedRunFailureError('`oneOrFail` failed.');
   }));

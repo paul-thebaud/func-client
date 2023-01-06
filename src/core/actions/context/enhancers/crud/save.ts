@@ -4,12 +4,12 @@ import update from '@/core/actions/context/enhancers/crud/update';
 import { ConsumeAdapter, ConsumeInstance, ConsumeModel, ConsumeSerializer } from '@/core/actions/types';
 import { Model, ModelClassInstance, ModelInstance } from '@/core/model/types';
 
-export default function save<R, AD, D extends {}, I extends ModelInstance<D>>(
+export default function save<AD, SD, D extends {}, I extends ModelInstance<D>>(
   instance: ModelClassInstance<D> & I,
 ) {
-  return <C extends ConsumeAdapter<R, AD> & ConsumeSerializer<AD>>(a: Action<C>) => (
+  return <C extends ConsumeAdapter<AD> & ConsumeSerializer<SD>>(action: Action<C>) => (
     instance.exists
-      ? a.use(update(instance))
-      : a.use(create(instance))
+      ? action.use(update(instance))
+      : action.use(create(instance))
   ) as Action<C & ConsumeModel<Model<D, I>> & ConsumeInstance<I>>;
 }

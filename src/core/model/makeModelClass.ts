@@ -1,9 +1,7 @@
 import FuncClientError from '@/core/errors/funcClientError';
 import isPropDef from '@/core/model/guards/isPropDef';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
-import { Dictionary } from '@/core/utilities/types';
-import value from '@/core/utilities/value';
-import warn from '@/core/utilities/warn';
+import { Dictionary, value, warn } from '@/utilities';
 
 export default function makeModelClass(config: ModelConfig): Model {
   function ModelClass(this: ModelInstance) {

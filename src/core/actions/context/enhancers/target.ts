@@ -7,10 +7,13 @@ import { Model, ModelInstance } from '@/core/model/types';
  * Target the given model.
  *
  * @param modelToUse
+ *
+ * @category Enhancers
  */
 export default function target<D extends {}, I extends ModelInstance<D>, M extends Model<D, I>>(
   modelToUse: M,
 ) {
-  return <C extends ActionContext>(action: Action<C>) => action
-    .use(context({ model: modelToUse }));
+  return <C extends ActionContext>(
+    action: Action<C>,
+  ) => action.use(context({ model: modelToUse }));
 }

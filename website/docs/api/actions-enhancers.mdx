@@ -124,7 +124,7 @@ previous ones.
 #### Example
 
 ```javascript
-import { fields } from 'func-client/json-api';
+import { fields } from 'func-client/jsonapi';
 
 action().use(fields(['title', 'description']));
 ```
@@ -146,7 +146,7 @@ previous ones.
 #### Example
 
 ```javascript
-import { fieldsFor } from 'func-client/json-api';
+import { fieldsFor } from 'func-client/jsonapi';
 
 action().use(fieldsFor(Post, ['title', 'description']));
 ```
@@ -169,7 +169,7 @@ previous ones. **Sorts priority are kept**.
 #### Example
 
 ```javascript
-import { sortBy } from 'func-client/json-api';
+import { sortBy } from 'func-client/jsonapi';
 
 action().use(sortBy('createdAt'));
 ```
@@ -188,7 +188,7 @@ Shortcut for the [`sortBy` function](#sortby) with a `desc` direction.
 #### Example
 
 ```javascript
-import { sortByDesc } from 'func-client/json-api';
+import { sortByDesc } from 'func-client/jsonapi';
 
 action().use(sortByDesc('createdAt'));
 ```

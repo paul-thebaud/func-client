@@ -9,6 +9,8 @@ import { Model, ModelInstance } from '@/core/model/types';
  * Use its baseURL and type.
  *
  * @param modelToUse
+ *
+ * @category Enhancers
  */
 export default function model<D extends {}, I extends ModelInstance<D>, M extends Model<D, I>>(
   modelToUse: M,
@@ -16,6 +18,7 @@ export default function model<D extends {}, I extends ModelInstance<D>, M extend
   return <C extends ActionContext>(action: Action<C>) => action
     .use(target<D, I, M>(modelToUse))
     .use(context({
+      // TODO Should baseURL be here?
       baseURL: modelToUse.$config.baseURL,
       type: modelToUse.$config.type,
     }));

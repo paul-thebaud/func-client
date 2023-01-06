@@ -1,14 +1,13 @@
 import isInstance from '@/core/model/guards/isInstance';
 import isRelationDef from '@/core/model/guards/isRelationDef';
 import { ModelInstance, ModelRelationDotKey } from '@/core/model/types';
-import { Arrayable } from '@/core/utilities/types';
-import wrap from '@/core/utilities/wrap';
+import { ArrayableVariadic, wrapVariadic } from '@/utilities';
 
 export default function loaded<I extends ModelInstance>(
   instance: I,
-  relations: Arrayable<ModelRelationDotKey<I>>,
+  ...relations: ArrayableVariadic<ModelRelationDotKey<I>>
 ): boolean {
-  return wrap(relations).every((key) => {
+  return wrapVariadic(...relations).every((key) => {
     const [localKey, ...relatedKeys] = key.split('.');
     const def = instance.$model.$schema[localKey];
     if (!isRelationDef(def)) {

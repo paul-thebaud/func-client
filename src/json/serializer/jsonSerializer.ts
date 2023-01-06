@@ -2,19 +2,19 @@
 import {
   ActionContext,
   changed,
+  eachAttributes,
+  eachRelations,
   ModelAttribute,
   ModelInstance,
   ModelProp,
   ModelRelation,
   NewSerializerI,
+  SerializerError,
   useTransform,
 } from '@/core';
-import eachAttributes from '@/core/model/utilities/eachAttributes';
-import eachRelations from '@/core/model/utilities/eachRelations';
-import value from '@/core/utilities/value';
-import JsonSerializerError from '@/json/errors/jsonSerializerError';
+import normalizeKey from '@/json/normalizer/normalizeKey';
 
-export default abstract class JsonSerializer<D extends {}> implements NewSerializerI<D> {
+export default abstract class JsonSerializer<Data> implements NewSerializerI<Data> {
   public async serialize(instance: ModelInstance, context: ActionContext) {
     const resource = await this.makeResource(instance, context);
 
@@ -53,7 +53,7 @@ export default abstract class JsonSerializer<D extends {}> implements NewSeriali
     return resource;
   }
 
-  protected abstract makeResource(instance: ModelInstance, context: ActionContext): Promise<D>;
+  protected abstract makeResource(instance: ModelInstance, context: ActionContext): Promise<Data>;
 
   protected abstract serializeRelatedInstance(
     instance: ModelInstance,
@@ -64,17 +64,17 @@ export default abstract class JsonSerializer<D extends {}> implements NewSeriali
   ): Promise<unknown>;
 
   protected hydratePropInResource(
-    _resource: D,
+    _resource: Data,
     _serializedKey: string,
     _serializedValue: unknown,
   ): Promise<void> {
-    throw new JsonSerializerError(
+    throw new SerializerError(
       'You should either implement `hydratePropInResource` or `hydrateAttributeInResource` and `hydrateRelationInResource` in your JsonSerializer implementation.',
     );
   }
 
   protected async hydrateAttributeInResource(
-    resource: D,
+    resource: Data,
     serializedKey: string,
     serializedValue: unknown,
   ) {
@@ -82,7 +82,7 @@ export default abstract class JsonSerializer<D extends {}> implements NewSeriali
   }
 
   protected async hydrateRelationInResource(
-    resource: D,
+    resource: Data,
     serializedKey: string,
     serializedValue: unknown,
   ) {
@@ -113,13 +113,7 @@ export default abstract class JsonSerializer<D extends {}> implements NewSeriali
     def: ModelProp,
     _context: ActionContext,
   ) {
-    if (def.alias) {
-      return value(def.alias, instance, key);
-    }
-
-    // TODO Model configuration or passed option?
-
-    return key;
+    return normalizeKey(instance, key, def);
   }
 
   protected shouldSerializeAttribute(
@@ -149,7 +143,7 @@ export default abstract class JsonSerializer<D extends {}> implements NewSeriali
     rawValue: unknown,
     _context: ActionContext,
   ) {
-    return !def.localOnly
+    return !def.readOnly
       && rawValue !== undefined
       && changed(instance, key);
   }
