@@ -1,7 +1,7 @@
 {
   "name": "func-client",
   "type": "module",
-  "version": "1.0.0-alpha.64",
+  "version": "1.0.0-alpha.65",
   "license": "MIT",
   "description": "Functional programming oriented client for TS and JS, with strong typing and tree-shaking capabilities",
   "homepage": "https://paul-thebaud.github.io/func-client",
