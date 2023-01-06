@@ -1,46 +1,55 @@
 import clsx from 'clsx';
 import React from 'react';
+import AlarmLightOutlineSvg from '../../icons/alarm-light-outline.svg';
+import SwapHorizontalSvg from '../../icons/swap-horizontal.svg';
+import ToyBrickOutlineSvg from '../../icons/toy-brick-outline.svg';
 import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'JSON:API ready',
+    Icon: SwapHorizontalSvg,
+    title: 'REST and JSON:API ready',
     description: (
       <>
         FuncClient comes with a set of tools to quickly integrate with a
-        JSON:API backend.
+        REST or JSON:API backend.
         <br />
         You may also create your own adapters to integrate with any data sources
-        (REST, IndexedDB, etc.).
+        (Soap, SQL, IndexedDB, etc.).
       </>
     ),
   },
   {
+    Icon: ToyBrickOutlineSvg,
     title: 'Modular and fully tree-shakable',
     description: (
       <>
-        Thanks to functional programming, FuncClient can be used in many ways
+        With functional programming, FuncClient can be used in many ways
         to fit your needs and unused functions can be tree-shaken from your
-        production build easily.
+        production build automatically.
       </>
     ),
   },
   {
+    Icon: AlarmLightOutlineSvg,
     title: 'Strongly typed',
     description: (
       <>
-        FuncClient is built with advanced TypeScript features to propose you
-        a secure and clean type experience, thanks to generic types.
+        FuncClient was build at start with TypeScript to propose you
+        a secure and clean typings experience with consistent generic types.
       </>
     ),
   },
 ];
 
-function Feature({ title, description }) {
+function Feature({ Icon, title, description }) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center padding-horiz--md">
-        <h3>{title}</h3>
+        <div className={`${styles.featureSvgWrapper} bg--primary-gradient margin-bottom--lg`}>
+          <Icon className={styles.featureSvg} />
+        </div>
+        <h2>{title}</h2>
         <p>{description}</p>
       </div>
     </div>

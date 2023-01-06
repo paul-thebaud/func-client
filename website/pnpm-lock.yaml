@@ -4,6 +4,8 @@ specifiers:
   '@docusaurus/core': 2.2.0
   '@docusaurus/module-type-aliases': 2.2.0
   '@docusaurus/preset-classic': 2.2.0
+  '@fontsource/fira-mono': ^4.5.10
+  '@fontsource/readex-pro': ^4.5.11
   '@mdx-js/react': ^1.6.22
   clsx: ^1.2.1
   docusaurus-plugin-typedoc: ^0.18.0
@@ -18,6 +20,8 @@ specifiers:
 dependencies:
   '@docusaurus/core': 2.2.0_56jbash75ng5psbctf36wqywr4
   '@docusaurus/preset-classic': 2.2.0_56jbash75ng5psbctf36wqywr4
+  '@fontsource/fira-mono': 4.5.10
+  '@fontsource/readex-pro': 4.5.11
   '@mdx-js/react': 1.6.22_react@17.0.2
   clsx: 1.2.1
   docusaurus-plugin-typedoc: 0.18.0_e5d6zdlrllhuqvr7rr6w7fp65a
@@ -2446,6 +2450,14 @@ packages:
       - supports-color
       - uglify-js
       - webpack-cli
+    dev: false
+
+  /@fontsource/fira-mono/4.5.10:
+    resolution: {integrity: sha512-bxUnRP8xptGRo8YXeY073DSpfK74XpSb0ZyRNpHV9WvLnJ7TwPOjZll8hTMin7zLC6iOp59pDZ8EQDj1gzgAQQ==}
+    dev: false
+
+  /@fontsource/readex-pro/4.5.11:
+    resolution: {integrity: sha512-vfM6xW/NbAtSGPLzL931smgprvnOPDexHbLbeIOnF1oKCaLDp8RhViDtN/6ehz8e+OnJtFnRzcIsjXFuJDbIFg==}
     dev: false
 
   /@hapi/hoek/9.3.0:
