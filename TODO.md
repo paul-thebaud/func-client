@@ -16,7 +16,6 @@
   to override options?
 - Configuration of some behaviors (type serialization, type in URL, etc.): model
   config? Per service config?
-- Decomposition of services OK?
 - REST standard for classic relation? And polymorphic? Where to configure
   behavior?
 
