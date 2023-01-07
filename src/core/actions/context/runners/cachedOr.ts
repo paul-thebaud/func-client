@@ -8,5 +8,5 @@ export default function cachedOr<C extends ActionContext, M extends Model, RD>(
 ) {
   return async (
     action: Action<C & ConsumeCache & ConsumeModel<M>>,
-  ) => action.run(cachedOrUsing((d) => d, nilRunner));
+  ) => action.run(cachedOrUsing(({ instance }) => instance, nilRunner));
 }
