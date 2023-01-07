@@ -1,10 +1,10 @@
-import relation, { RelationOptions } from '@/core/model/props/relation';
+import relation, { RelationConfig } from '@/core/model/props/relation';
 import { ModelRelation } from '@/core/model/types';
 
-export type HasOneOptions<T> = RelationOptions<T>;
+export type HasOneConfig<T> = RelationConfig<T>;
 
 export default function hasOne<T>(
-  options: HasOneOptions<T> = {},
+  config: HasOneConfig<T> = {},
 ): ModelRelation<T> {
-  return relation('hasOne', options);
+  return relation('hasOne', config);
 }

@@ -3,17 +3,17 @@ import makeRegistry from '@/blueprints/makeRegistry';
 import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
 import { JsonRestAdapter, JsonRestDeserializer, JsonRestSerializer } from '@/jsonrest';
 
-type JsonRestFactoryOptions = {
+type JsonRestFactoryConfig = {
   baseURL?: string;
 };
 
-export default function makeJsonRest(options: JsonRestFactoryOptions = {}) {
+export default function makeJsonRest(config: JsonRestFactoryConfig = {}) {
   const cache = makeCache();
 
   const registry = makeRegistry();
 
   const adapter = new JsonRestAdapter({
-    baseURL: options.baseURL,
+    baseURL: config.baseURL,
   });
 
   const deserializer = new JsonRestDeserializer();

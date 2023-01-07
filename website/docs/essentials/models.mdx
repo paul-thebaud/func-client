@@ -96,10 +96,10 @@ what you want to do.
 ```ts
 import { attr, toDate } from 'func-client/core';
 
-attr<string>(); // Without options.
+attr<string>(); // Without config.
 attr(toDate()); // With a transformer.
-attr({ default: '', transformer: toDate() }); // With options.
-attr(toDate(), { readonly: true }); // With a transformer and options.
+attr({ default: '', transformer: toDate() }); // With config.
+attr(toDate(), { readonly: true }); // With a transformer and config.
 attr({ default: () => [] }); // With a factory default (required for objects props).
 ```
 
@@ -111,7 +111,7 @@ to the factory (`attr<string | null>()`) or set a default attribute value.
 
 #### Configuration
 
-You may customize your attribute with the following options:
+You may customize your attribute with the following config:
 
 | Key           | Type           | Defaults    | Description                                                                           |
 |---------------|----------------|-------------|---------------------------------------------------------------------------------------|
@@ -163,11 +163,11 @@ import { hasOne, hasMany } from 'func-client/core';
 import type User from './user';
 import type Comment from './comment';
 
-hasOne<User>(); // Without options.
-hasOne<User>({ readonly: true }); // With options.
+hasOne<User>(); // Without config.
+hasOne<User>({ readonly: true }); // With config.
 
-hasMany<Comment>(); // Without options.
-hasMany<Comment>({ readonly: true }); // With options.
+hasMany<Comment>(); // Without config.
+hasMany<Comment>({ readonly: true }); // With config.
 ```
 
 :::tip
@@ -186,7 +186,7 @@ Also consider that non-loaded relations will have a value of `undefined`.
 
 #### Configuration
 
-You may customize your relation with the following options:
+You may customize your relation with the following config:
 
 | Key           | Type           | Defaults    | Description                                                                           |
 |---------------|----------------|-------------|---------------------------------------------------------------------------------------|

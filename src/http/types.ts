@@ -26,7 +26,7 @@ export type HttpRequestConfig = {
   errorTransformers?: ErrorTransformer[];
 };
 
-export type HttpAdapterOptions = {
+export type HttpAdapterConfig = {
   fetch?: typeof fetch;
   baseURL?: string;
   paramsSerializer?: HttpParamsSerializer;

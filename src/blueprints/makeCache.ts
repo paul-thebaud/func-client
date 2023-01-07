@@ -1,5 +1,5 @@
-import { RefsCache, RefsCacheOptions } from '@/core';
+import { RefsCache, RefsCacheConfig } from '@/core';
 
-export default function makeCache(options: RefsCacheOptions = {}) {
-  return new RefsCache(options);
+export default function makeCache(config: RefsCacheConfig = {}) {
+  return new RefsCache(config);
 }

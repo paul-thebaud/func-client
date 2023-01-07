@@ -1,4 +1,4 @@
-import { RefsCacheMode, RefsCacheOptions } from '@/core/cache/types';
+import { RefsCacheMode, RefsCacheConfig } from '@/core/cache/types';
 import { ModelId, ModelInstance } from '@/core/model/types';
 import { CacheI } from '@/core/types';
 import { IdentifiersMap } from '@/utilities';
@@ -8,13 +8,13 @@ export default class RefsCache implements CacheI {
 
   private mode!: RefsCacheMode<unknown>;
 
-  public constructor(options: RefsCacheOptions) {
+  public constructor(config: RefsCacheConfig) {
     this.instances = new IdentifiersMap();
-    this.withOptions(options);
+    this.configure(config);
   }
 
-  public withOptions(options: RefsCacheOptions) {
-    Object.assign(this, options);
+  public configure(config: RefsCacheConfig) {
+    Object.assign(this, config);
 
     return this;
   }

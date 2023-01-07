@@ -10,7 +10,7 @@ import UnauthorizedError from '@/http/errors/unauthorizedError';
 import {
   ErrorTransformer,
   HttpActionContext,
-  HttpAdapterOptions,
+  HttpAdapterConfig,
   HttpParamsSerializer,
   HttpRequest,
   HttpRequestInit,
@@ -32,12 +32,12 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
 
   private errorTransformers!: ErrorTransformer[];
 
-  public constructor(options: HttpAdapterOptions) {
-    this.withOptions(options);
+  public constructor(config: HttpAdapterConfig) {
+    this.configure(config);
   }
 
-  public withOptions(options: HttpAdapterOptions) {
-    Object.assign(this, options);
+  public configure(config: HttpAdapterConfig) {
+    Object.assign(this, config);
 
     return this;
   }

@@ -4,17 +4,17 @@ import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSer
 import { deepParamsSerializer } from '@/http';
 import { JsonApiAdapter, JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
 
-type JsonApiFactoryOptions = {
+type JsonApiFactoryConfig = {
   baseURL?: string;
 };
 
-export default function makeJsonApi(options: JsonApiFactoryOptions = {}) {
+export default function makeJsonApi(config: JsonApiFactoryConfig = {}) {
   const cache = makeCache();
 
   const registry = makeRegistry();
 
   const adapter = new JsonApiAdapter({
-    baseURL: options.baseURL,
+    baseURL: config.baseURL,
     paramsSerializer: deepParamsSerializer,
   });
 
