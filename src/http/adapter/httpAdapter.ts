@@ -93,7 +93,7 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
     return {
       method: this.makeRequestMethod(context),
       headers: context.headers ?? {},
-      body: context.body,
+      body: context.body ?? context.data,
     } as HttpRequestInit;
   }
 

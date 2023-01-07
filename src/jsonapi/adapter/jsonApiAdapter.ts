@@ -10,8 +10,8 @@ export default class JsonApiAdapter extends HttpAdapter {
     }
 
     if (!init.headers['Content-Type']
-      && context.body !== undefined
-      && !(context.body instanceof FormData)
+      && init.body !== undefined
+      && !(init.body instanceof FormData)
     ) {
       init.headers['Content-Type'] = 'application/vnd.api+json';
       init.body = JSON.stringify(init.body);
