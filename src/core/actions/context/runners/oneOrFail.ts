@@ -14,6 +14,8 @@ export default function oneOrFail<
   return (
     action: Action<C & ConsumeAdapter<AD> & ConsumeDeserializer<AD, DD> & ConsumeModel<M>>,
   ) => action.run(oneOr(async (): Promise<never> => {
-    throw new ExpectedRunFailureError('`oneOrFail` failed.');
+    throw new ExpectedRunFailureError(
+      '`oneOrFail` failed. You may globally handle this error as a "not found" record.',
+    );
   }));
 }

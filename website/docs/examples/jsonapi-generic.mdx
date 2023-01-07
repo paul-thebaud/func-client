@@ -15,7 +15,7 @@ description: Generic CRUD functions setup using your own action factory.
 
 ```typescript
 import { ModelRelationDotKey, Model, model, when, include } from 'func-client/core';
-import { filterBy, sortByDesc, paginate, allMeta } from 'func-client/jsonapi';
+import { filterBy, sortByDesc, paginateBy, allMeta } from 'func-client/jsonapi';
 import action from './action';
 import Post from './models/post';
 
@@ -34,7 +34,7 @@ export default async function fetchAll<M extends Model>(
     .use(when(query.search, (a, s) => a.use(filterBy('search', s))))
     .use(when(query.include, (a, i) => a.use(include(i))))
     .use(sortByDesc('createdAt'))
-    .use(paginate({ number: query.page ?? 1 }))
+    .use(paginateBy({ number: query.page ?? 1 }))
     .run(allMeta())
 }
 

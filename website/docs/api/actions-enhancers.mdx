@@ -118,8 +118,7 @@ action().use(include(['author', 'comments', 'comments.reactions']));
   requires="Model"
 />
 
-Select the given
-[JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
+[Select the given JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
 for the current context's model. The new fieldsets will be merged with the
 previous ones.
 
@@ -142,8 +141,7 @@ field or a set of field to select for the current context's model
 
 <FunctionInfo only="JSON:API" />
 
-Select the given
-[JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
+[Select the given JSON:API fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets)
 for the given model. The new fieldsets will be merged with the
 previous ones.
 
@@ -164,6 +162,28 @@ action().use(fieldsFor(Post, ['title', 'description']));
 to select the fieldsets for
 - [`{ArrayableVariadic<ModelKey<M>>}`](/docs/api/func-client/modules/core#modelkey) `...fieldset` a
 field or a set of field to select for the given model
+
+### `filterBy`
+
+<FunctionInfo only="JSON:API" />
+
+[Filter the JSON:API resource](https://jsonapi.org/format/#fetching-filtering)
+by the given key and value.
+The new filter will be merged with the previous ones.
+
+#### Example
+
+```javascript
+import { filterBy } from 'func-client/jsonapi';
+
+
+action().use(filterBy('isPublished', true));
+```
+
+#### Arguments
+
+- `{string}` `key` a key for the filter
+- `{unknown}` `value` a value for the filter
 
 ### `sortBy`
 
@@ -203,3 +223,67 @@ action().use(sortByDesc('createdAt'));
 #### Arguments
 
 - `{string}` `key` the key for the sort
+
+### `paginateBy`
+
+<FunctionInfo only="JSON:API" />
+
+[Paginate the JSON:API resource](https://jsonapi.org/format/#fetching-pagination)
+by the given params.
+JSON:API specification on pagination is agnostic, so page params may be
+anything used by your implementation.
+
+#### Example
+
+```javascript
+import { paginateBy } from 'func-client/jsonapi';
+
+
+action().use(paginateBy({ number: 1, size: 10 }));
+```
+
+#### Arguments
+
+- `{unknown}` `page` a pagination value which match your implementation
+
+### `rawFilterBy`
+
+<FunctionInfo only="JSON:API" />
+
+[Filter the JSON:API resource](https://jsonapi.org/format/#fetching-filtering)
+with a custom raw filter param.
+The new filter will replace the previous ones.
+
+#### Example
+
+```javascript
+import { rawFilterBy } from 'func-client/jsonapi';
+
+
+action().use(rawFilterBy({ isPublished: true }));
+```
+
+#### Arguments
+
+- `{unknown | undefined}` `filter` a raw filter value
+
+### `rawSortBy`
+
+<FunctionInfo only="JSON:API" />
+
+[Sort the JSON:API resource](https://jsonapi.org/format/#fetching-sorting)
+with a custom raw sort param.
+The new sort will replace the previous ones.
+
+#### Example
+
+```javascript
+import { rawSortBy } from 'func-client/jsonapi';
+
+
+action().use(rawSortBy('-createdAt,-updatedAt'));
+```
+
+#### Arguments
+
+- `{string | undefined}` `sort` a raw sort value

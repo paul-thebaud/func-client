@@ -1,7 +1,8 @@
 import FuncClientError from '@/core/errors/funcClientError';
+import logger from '@/core/logger/logger';
 import isPropDef from '@/core/model/guards/isPropDef';
 import { Model, ModelConfig, ModelInstance, ModelSchema } from '@/core/model/types';
-import { Dictionary, value, warn } from '@/utilities';
+import { Dictionary, value } from '@/utilities';
 
 export default function makeModelClass(config: ModelConfig): Model {
   function ModelClass(this: ModelInstance) {
@@ -31,7 +32,7 @@ export default function makeModelClass(config: ModelConfig): Model {
         this.$values[key] = value(def.default);
 
         if (def.default && typeof def.default === 'object') {
-          warn('Default object values must be defined using a factory function');
+          logger.warn('Default object values must be defined using a factory function.');
         }
       }
     });

@@ -8,6 +8,8 @@ export default function cachedOrFail<M extends Model>() {
   return (
     action: Action<ConsumeCache & ConsumeModel<M>>,
   ) => action.run(cachedOr(async (): Promise<never> => {
-    throw new ExpectedRunFailureError('`cachedOrFail` failed.');
+    throw new ExpectedRunFailureError(
+      '`cachedOrFail` failed. You may globally handle this error as a "not found" record.',
+    );
   }));
 }

@@ -16,7 +16,7 @@ The goal of FuncClient is to provide a lot of simple function to affect model
 instances or their context. If all of those functions were included in classes,
 it will be in your final production bundle even if you are not using them.
 Thanks to the way FuncClient works, **all unused models helpers or actions
-enhancers/runners can be tree shaken.**
+enhancers/runners can be tree-shaken.**
 
 ## Is it strongly typed?
 

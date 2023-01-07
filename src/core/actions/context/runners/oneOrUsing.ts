@@ -1,4 +1,5 @@
 import Action from '@/core/actions/action';
+import useAdapterContext from '@/core/actions/context/consumers/useAdapterContext';
 import raw from '@/core/actions/context/runners/raw';
 import deserializeInstances, { DeserializedDataOf } from '@/core/actions/context/utilities/deserializeInstances';
 import { ActionContext, ConsumeAdapter, ConsumeDeserializer, ConsumeModel, ContextRunner } from '@/core/actions/types';
@@ -31,7 +32,8 @@ export default function oneOrUsing<
 
       return await using({ context: await action.context, data, instance: instances[0] });
     } catch (error) {
-      if (await (await action.context).adapter.isNotFound(error)) {
+      const adapter = await useAdapterContext(action);
+      if (await adapter.isNotFound(error)) {
         return action.run(nilRunner);
       }
 

@@ -1,9 +1,9 @@
 import fields from '@/jsonapi/actions/context/enhancers/fields';
 import fieldsFor from '@/jsonapi/actions/context/enhancers/fieldsFor';
 import filterBy from '@/jsonapi/actions/context/enhancers/filterBy';
-import paginate from '@/jsonapi/actions/context/enhancers/paginate';
-import rawFilter from '@/jsonapi/actions/context/enhancers/rawFilter';
-import rawSort from '@/jsonapi/actions/context/enhancers/rawSort';
+import paginateBy from '@/jsonapi/actions/context/enhancers/paginateBy';
+import rawFilterBy from '@/jsonapi/actions/context/enhancers/rawFilterBy';
+import rawSortBy from '@/jsonapi/actions/context/enhancers/rawSortBy';
 import sortBy from '@/jsonapi/actions/context/enhancers/sortBy';
 import sortByDesc from '@/jsonapi/actions/context/enhancers/sortByDesc';
 import allMeta from '@/jsonapi/actions/context/runners/allMeta';
@@ -19,11 +19,11 @@ export {
   JsonApiSerializer,
   fields,
   fieldsFor,
-  rawFilter,
+  rawFilterBy,
   filterBy,
-  rawSort,
+  rawSortBy,
   sortBy,
   sortByDesc,
-  paginate,
+  paginateBy,
   allMeta,
 };

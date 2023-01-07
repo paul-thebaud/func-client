@@ -1,6 +1,6 @@
 import Action from '@/core/actions/action';
 import context from '@/core/actions/context/enhancers/context';
-import instanceData from '@/core/actions/context/enhancers/crud/instanceData';
+import serializeInstance from '@/core/actions/context/enhancers/crud/serializeInstance';
 import forId from '@/core/actions/context/enhancers/forId';
 import changeInstanceExistence from '@/core/actions/context/enhancers/hooks/changeInstanceExistence';
 import onPreparing from '@/core/actions/context/enhancers/hooks/onPreparing';
@@ -13,7 +13,7 @@ import { ModelInstance } from '@/core/model/types';
 export default function create<AD, SD, I extends ModelInstance>(instanceToCreate: I) {
   return <C extends ConsumeAdapter<AD> & ConsumeSerializer<SD>>(action: Action<C>) => action
     .use(instance(instanceToCreate))
-    .use(instanceData(instanceToCreate))
+    .use(serializeInstance(instanceToCreate))
     .use(forId(undefined))
     .use(context({ action: 'CREATE' }))
     .use(changeInstanceExistence(true))

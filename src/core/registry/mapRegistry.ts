@@ -14,7 +14,7 @@ export default class MapRegistry implements RegistryI {
   public modelFor(type: string) {
     const modelResolver = this.models.get(type);
     if (!modelResolver) {
-      const registeredModels = [...this.models.keys()].map((t) => `- ${t}`).join('\n');
+      const registeredModels = [...this.models.keys()].map((t) => `- \`${t}\``).join('\n');
 
       throw new FuncClientError(
         `Model for type \`${type}\` is not registered. Did you forget registering it?\nRegistered models:\n${registeredModels}`,

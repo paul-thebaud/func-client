@@ -1,6 +1,7 @@
 import { ModelInstance, ModelRelation } from '@/core';
 import { JsonSerializer } from '@/json';
 import { JsonApiDocument, JsonApiNewResource } from '@/jsonapi/types';
+import { isNil } from '@/utilities';
 
 /**
  * Serializer implementation for JSON:API.
@@ -13,7 +14,7 @@ export default class JsonApiSerializer extends JsonSerializer<JsonApiDocument> {
     return {
       data: {
         type: instance.$model.$config.type,
-        id: instance.id,
+        id: !isNil(instance.id) ? String(instance.id) : undefined,
         attributes: {},
         relationships: {},
       },

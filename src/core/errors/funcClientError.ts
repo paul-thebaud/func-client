@@ -1,4 +1,12 @@
+/**
+ * Extendable error class used inside FuncClient.
+ */
 export default class FuncClientError extends Error {
+  /**
+   * Construct a new FuncClientError. Prefix the given message with "[func-client]".
+   *
+   * @param message
+   */
   public constructor(message: string) {
     super(`[func-client] ${message}`);
 

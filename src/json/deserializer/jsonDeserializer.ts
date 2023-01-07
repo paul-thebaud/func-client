@@ -158,7 +158,7 @@ export default abstract class JsonDeserializer<
 
     if (isNil(identifier.type)) {
       if (isNil(relation)) {
-        identifier.type = context.model?.$config?.type;
+        identifier.type = context.type ?? context.model?.$config.type;
       } else {
         identifier.type = relation.type;
       }
@@ -232,7 +232,7 @@ export default abstract class JsonDeserializer<
     }
 
     throw new DeserializerError(
-      `No alternative found to deserialize resource with type \`${identifier.type}\`. You should use a Registry and register your models their corresponding types.`,
+      `No alternative found to deserialize resource with type \`${identifier.type}\`. You should use a Registry and register your models using their corresponding types.`,
     );
   }
 
@@ -247,7 +247,7 @@ export default abstract class JsonDeserializer<
 
     await runHook(instance.$model, 'retrieved', instance);
 
-    if (!isNil(instance.id) && context.cache) {
+    if (context.cache && !isNil(instance.id)) {
       await context.cache.put(instance.$model.$config.type, instance.id, instance);
     }
   }

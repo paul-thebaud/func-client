@@ -4,6 +4,7 @@
 
 - [ ] Add @tag, @category or @group to enhancers, runners, etc.
 - [ ] Manage `lid` on models
+- [ ] `useModelContext` and other contextual user with exception throwing
 - [ ] Generic context (ID, etc.) should not be mentioned in ActionContext type
 - [ ] Model and relations metadata (missing, loading, etc.)
 - [ ] Manage errors when users are bypassing types (relations not found, etc.)

@@ -99,3 +99,22 @@ const posts = await action().run(all());
 #### Returns
 
 `{Promise<I[]>}` where `I` is an instance of the targeted model.
+
+### `allMeta`
+
+<FunctionInfo requires="Adapter, Deserializer, Model" only="JSON:API" />
+
+Run the action and deserialize an array of model's instance.
+Also returns the JSON:API document meta.
+
+#### Example
+
+```javascript
+import { allMeta } from 'func-client/jsonapi';
+
+const { instances, meta } = await action().run(allMeta());
+```
+
+#### Returns
+
+`{Promise<{ instances: I[]; meta: JsonApiMeta; }>}` where `I` is an instance of the targeted model.

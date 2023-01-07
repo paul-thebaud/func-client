@@ -30,6 +30,8 @@ export type ContextRunner<C extends ActionContext, R> = (
   action: Action<C>,
 ) => R;
 
+export type ConsumableContext<C extends ActionContext> = Action<C> | C;
+
 export type ConsumeModel<M extends Model = Model> = {
   model: M;
 };
@@ -42,8 +44,8 @@ export type ConsumeCache = { cache: CacheI; };
 
 export type ConsumeRegistry = { registry: RegistryI; };
 
-export type ConsumeAdapter<Data = unknown> = {
-  adapter: AdapterI<Data>;
+export type ConsumeAdapter<AdapterData = unknown> = {
+  adapter: AdapterI<AdapterData>;
 };
 
 export type ConsumeDeserializer<

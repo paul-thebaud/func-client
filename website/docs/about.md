@@ -10,7 +10,7 @@ sidebar_position: 1
 framework-agnostic and can integrate with any Web app using JavaScript or
 TypeScript, and with any data source.
 
-- Modular, highly extensible and fully tree shakable thanks to functional
+- Modular, highly extensible and fully tree-shakable thanks to functional
   programming
 - Ready to use functions to integrate with any [JSON:API](https://jsonapi.org/)
   and JSON REST backends

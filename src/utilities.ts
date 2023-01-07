@@ -6,7 +6,6 @@ import optionalJoin from '@/utilities/optionalJoin';
 import sequentialTransform from '@/utilities/sequentialTransform';
 import uniqueValues from '@/utilities/uniqueValues';
 import value from '@/utilities/value';
-import warn from '@/utilities/warn';
 import wrap from '@/utilities/wrap';
 import wrapVariadic from '@/utilities/wrapVariadic';
 
@@ -21,7 +20,6 @@ export {
   IdentifiersMap,
   uniqueValues,
   value,
-  warn,
   wrap,
   wrapVariadic,
 };

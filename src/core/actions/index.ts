@@ -3,7 +3,7 @@ import context from '@/core/actions/context/enhancers/context';
 import create from '@/core/actions/context/enhancers/crud/create';
 import destroy from '@/core/actions/context/enhancers/crud/destroy';
 import find from '@/core/actions/context/enhancers/crud/find';
-import instanceData from '@/core/actions/context/enhancers/crud/instanceData';
+import serializeInstance from '@/core/actions/context/enhancers/crud/serializeInstance';
 import save from '@/core/actions/context/enhancers/crud/save';
 import update from '@/core/actions/context/enhancers/crud/update';
 import withAdapter from '@/core/actions/context/enhancers/dependency/withAdapter';
@@ -27,8 +27,6 @@ import cached from '@/core/actions/context/runners/cached';
 import cachedOr from '@/core/actions/context/runners/cachedOr';
 import cachedOrFail from '@/core/actions/context/runners/cachedOrFail';
 import cachedOrUsing from '@/core/actions/context/runners/cachedOrUsing';
-import deserializedData from '@/core/actions/context/runners/deserializedData';
-import deserializedDataUsing from '@/core/actions/context/runners/deserializedDataUsing';
 import none from '@/core/actions/context/runners/none';
 import one from '@/core/actions/context/runners/one';
 import oneOr from '@/core/actions/context/runners/oneOr';
@@ -57,8 +55,6 @@ export {
   update,
   save,
   destroy,
-  deserializedDataUsing,
-  deserializedData,
   withAdapter,
   withDeserializer,
   withSerializer,
@@ -70,7 +66,7 @@ export {
   model,
   target,
   include,
-  instanceData,
+  serializeInstance,
   when,
   onPreparing,
   onRunning,

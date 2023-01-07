@@ -3,6 +3,8 @@ sidebar_position: 2
 description: Build actions, registering hooks, discover enhancers and runners.
 ---
 
+import Link from '@docusaurus/Link';
+
 # Actions
 
 :::caution Requirements
@@ -41,10 +43,12 @@ action()
   .use(include('comments'));
 ```
 
-:::info
-All enhancers are listed in the
-[**actions' available enhancers API guide**](/docs/api/actions-enhancers).
-:::
+<Link
+  className="button bg--primary-gradient"
+  to="/docs/essentials/models"
+>
+  Available enhancers API guide
+</Link>
 
 ## Run
 
@@ -69,10 +73,12 @@ action()
   .run(all());
 ```
 
-:::info
-All runners are listed in the
-[**actions' available runners API guide**](/docs/api/actions-runners).
-:::
+<Link
+  className="button bg--primary-gradient"
+  to="/docs/essentials/models"
+>
+  Available runners API guide
+</Link>
 
 ## Conditionals
 

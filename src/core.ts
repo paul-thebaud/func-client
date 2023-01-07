@@ -9,6 +9,7 @@ import registerHook from '@/core/hooks/registerHook';
 import runHook from '@/core/hooks/runHook';
 import unregisterHook from '@/core/hooks/unregisterHook';
 import withoutHooks from '@/core/hooks/withoutHooks';
+import logger from '@/core/logger/logger';
 import onCreated from '@/core/model/hooks/onCreated';
 import onCreating from '@/core/model/hooks/onCreating';
 import onDestroyed from '@/core/model/hooks/onDestroyed';
@@ -89,4 +90,5 @@ export {
   registerHook,
   unregisterHook,
   withoutHooks,
+  logger,
 };

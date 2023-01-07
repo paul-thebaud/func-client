@@ -81,32 +81,42 @@ export default class JsonApiDeserializer extends JsonDeserializer
     resource: JsonApiNewResource,
     serializedKey: string,
   ) {
-    const extractIncluded = ({ type, id }: JsonApiResourceIdentifier) => {
-      const includedResource = extractedData.included.get(type, id);
-      if (includedResource) {
-        return includedResource;
-      }
-
-      const rootResource = wrap(extractedData.resources)
-        .find((r) => r.type === type && r.id === id);
-      if (rootResource) {
-        return rootResource;
-      }
-
-      throw new DeserializerError(
-        `Could not find included resource with type \`${type}\` and ID \`${id}\`. Your document seems malformed.`,
-      );
-    };
-
     const relationRef = resource.relationships?.[serializedKey]?.data;
     if (Array.isArray(relationRef)) {
-      return relationRef.map(extractIncluded);
+      return relationRef.map((r) => this.extractIncluded(extractedData, r));
     }
 
     if (relationRef) {
-      return extractIncluded(relationRef);
+      return this.extractIncluded(extractedData, relationRef);
     }
 
     return relationRef;
+  }
+
+  /**
+   * Extract an included JSON:API resource from extracted data.
+   *
+   * @param extractedData
+   * @param identifier
+   */
+  protected extractIncluded(
+    extractedData: JsonApiExtractedData,
+    identifier: JsonApiResourceIdentifier,
+  ) {
+    const includedResource = extractedData.included.get(identifier.type, identifier.id);
+    if (includedResource) {
+      return includedResource;
+    }
+
+    const rootResource = wrap(extractedData.resources).find(
+      (r) => (r.type === identifier.type && r.id === identifier.id),
+    );
+    if (rootResource) {
+      return rootResource;
+    }
+
+    throw new DeserializerError(
+      `Could not find included resource with type \`${identifier.type}\` and ID \`${identifier.id}\`. Your document seems malformed.`,
+    );
   }
 }
