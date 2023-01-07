@@ -1,5 +1,4 @@
 import { AdapterI } from '@/core';
-import paramsSerializer from '@/http/adapter/paramsSerializer';
 import ConflictError from '@/http/errors/conflictError';
 import ForbiddenError from '@/http/errors/forbiddenError';
 import InterruptedError from '@/http/errors/interruptedError';
@@ -38,12 +37,9 @@ export default abstract class HttpAdapter implements AdapterI<Response> {
   }
 
   public withOptions(options: HttpAdapterOptions) {
-    this.fetch = options.fetch ?? fetch;
-    this.paramsSerializer = options.paramsSerializer ?? paramsSerializer;
-    this.baseURL = options.baseURL;
-    this.requestTransformers = options.requestTransformers ?? [];
-    this.responseTransformers = options.responseTransformers ?? [];
-    this.errorTransformers = options.errorTransformers ?? [];
+    Object.assign(this, options);
+
+    return this;
   }
 
   /**

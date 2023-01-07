@@ -1,5 +1,4 @@
 import { RefsCacheMode, RefsCacheOptions } from '@/core/cache/types';
-import weakRefCacheMode from '@/core/cache/weakRefCacheMode';
 import { ModelId, ModelInstance } from '@/core/model/types';
 import { CacheI } from '@/core/types';
 import { IdentifiersMap } from '@/utilities';
@@ -15,7 +14,9 @@ export default class RefsCache implements CacheI {
   }
 
   public withOptions(options: RefsCacheOptions) {
-    this.mode = options.mode ?? weakRefCacheMode;
+    Object.assign(this, options);
+
+    return this;
   }
 
   public async find(type: string, id: ModelId) {
