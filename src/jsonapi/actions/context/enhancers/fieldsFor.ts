@@ -4,6 +4,15 @@ import prevParams from '@/http/actions/context/utilities/prevParams';
 import mergeParamList from '@/jsonapi/actions/context/utilities/mergeParamList';
 import { ArrayableVariadic, wrapVariadic } from '@/utilities';
 
+/**
+ * Select the given JSON:API fieldsets for the given model.
+ * The new fieldsets will be merged with the previous ones.
+ *
+ * @param model
+ * @param fieldset
+ *
+ * @category Enhancers
+ */
 export default function fieldsFor<M extends Model>(
   model: M,
   ...fieldset: ArrayableVariadic<ModelKey<M>>

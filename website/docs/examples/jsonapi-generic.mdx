@@ -3,17 +3,19 @@ sidebar_position: 2
 description: Generic CRUD functions setup using your own action factory.
 ---
 
-# Generic CRUD
+# JSON:API generic CRUD
 
 :::tip What you'll learn
-- Writing generic CRUD functions to use your models
+- Writing generic CRUD functions to use your models through a JSON:API backend
 :::
 
-## View many
+## Classic CRUD
+
+### View many
 
 ```typescript
 import { ModelRelationDotKey, Model, model, when, include } from 'func-client/core';
-import { filter, sortByDesc, paginate, allMeta } from 'func-client/jsonapi';
+import { filterBy, sortByDesc, paginate, allMeta } from 'func-client/jsonapi';
 import action from './action';
 import Post from './models/post';
 
@@ -29,7 +31,7 @@ export default async function fetchAll<M extends Model>(
 ) {
   return action()
     .use(model(useModel))
-    .use(when(query.search, (a, s) => a.use(filter('search', s))))
+    .use(when(query.search, (a, s) => a.use(filterBy('search', s))))
     .use(when(query.include, (a, i) => a.use(include(i))))
     .use(sortByDesc('createdAt'))
     .use(paginate({ number: query.page ?? 1 }))
@@ -37,13 +39,13 @@ export default async function fetchAll<M extends Model>(
 }
 
 // Somewhere in your app.
-const { data, meta } = await fetchAll(Post, {
+const { instances, meta } = await fetchAll(Post, {
   search: 'Hello',
   include: ['tags'],
 });
 ```
 
-## View one
+### View one
 
 ```typescript
 import { ModelRelationDotKey, ModelId, Model, find, when, include, oneOrFail } from 'func-client/core';
@@ -71,10 +73,10 @@ const { data, meta } = await fetchOne(Post, '123-abc', {
 });
 ```
 
-## Create or update one
+### Create or update one
 
 ```typescript
-import {changed, fill, include, ModelInstance, ModelRelationDotKey, ModelValues, one, reset, save, when} from 'func-client/core';
+import { changed, fill, include, ModelInstance, ModelRelationDotKey, ModelValues, one, reset, save, when } from 'func-client/core';
 import action from './action';
 import Post from './models/post';
 
@@ -93,7 +95,11 @@ export default async function saveOne<I extends ModelInstance>(
     await action()
       .use(save(useInstance))
       .use(when(query.include, (a, i) => a.use(include(i))))
-      .run(when(changed(useInstance), one()));
+      .run(when(
+        !useInstance.exists || changed(useInstance),
+        oneOrCurrent(),
+        () => useInstance,
+      ));
   } catch (error) {
     reset(useInstance);
 
@@ -114,7 +120,7 @@ await saveOne(post, {
 });
 ```
 
-## Delete one
+### Delete one
 
 ```javascript
 import { destroy, none } from 'func-client/core';

@@ -2,6 +2,9 @@ import { ModelInstance, ModelRelation } from '@/core';
 import { JsonSerializer } from '@/json';
 import { JsonApiDocument, JsonApiNewResource } from '@/jsonapi/types';
 
+/**
+ * Serializer implementation for JSON:API.
+ */
 export default class JsonApiSerializer extends JsonSerializer<JsonApiDocument> {
   /**
    * @inheritDoc

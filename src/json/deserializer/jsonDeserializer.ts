@@ -165,7 +165,7 @@ export default abstract class JsonDeserializer<
 
       if (isNil(identifier.type)) {
         throw new DeserializerError(
-          `No alternative found to deserialize resource's type with ID \`${identifier.id}\`.`,
+          `No alternative found to identify type of resource with ID \`${identifier.id}\`. You should either: target a model, define an explicit relation type or change your deserializer configuration to manage types extraction.`,
         );
       }
     }

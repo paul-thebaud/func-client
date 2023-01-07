@@ -154,3 +154,15 @@ aside, .table-of-contents__left-border {
 .chip.chip--danger {
     color: var(--ifm-color-danger-darkest);
 }
+
+[data-theme='dark'] .chip.chip--success {
+    color: var(--ifm-color-success-lightest);
+}
+
+[data-theme='dark'] .chip.chip--info {
+    color: var(--ifm-color-info-lightest);
+}
+
+[data-theme='dark'] .chip.chip--danger {
+    color: var(--ifm-color-danger-lightest);
+}

@@ -14,6 +14,8 @@ export type ModelConfig = {
   type: string;
   /**
    * Dedicated base URL. Will overwrite the default base URL.
+   *
+   * TODO Should this be moved?
    */
   baseURL?: string;
   /**
@@ -55,11 +57,7 @@ export type ModelProp<T = unknown> = {
   alias?: string | ((instance: ModelInstance, key: string) => Awaitable<string>) | undefined;
   /**
    * Avoid serializing the property (won't be sent to data source).
-   *
-   * TODO Rename this prop to something else ("localOnly"?). Keep readonly to avoid affectation.
    */
-  readonly?: boolean;
-  // TODO Doc.
   readOnly?: boolean;
 };
 

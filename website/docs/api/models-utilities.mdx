@@ -45,7 +45,7 @@ if (wasChanged) { /* do something */ }
 #### Arguments
 
 - [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
-- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/func-client/modules/core#modelkey) `keys`
+- [`{ArrayableVariadic<ModelKey<I>}`](/docs/api/func-client/modules/core#modelkey) `...keys`
 
 #### Returns
 
@@ -67,7 +67,7 @@ syncOriginal(post, ['title', 'description']);
 #### Arguments
 
 - [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
-- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/func-client/modules/core#modelkey) `keys`
+- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/api/func-client/modules/core#modelkey) `...keys`
 
 #### Returns
 
@@ -89,7 +89,7 @@ reset(post, ['title', 'description']);
 #### Arguments
 
 - [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
-- [`{Arrayable<ModelKey<I>> | undefined}`](/docs/api/func-client/modules/core#modelkey) `keys`
+- [`{ArrayableVariadic<ModelKey<I>>}`](/docs/api/func-client/modules/core#modelkey) `...keys`
 
 #### Returns
 
@@ -100,6 +100,7 @@ reset(post, ['title', 'description']);
 Check if the given relations are loaded on the instance or its related instances.
 Can check for sub relations using dot relation keys: will check each related instances regardless
 of the number of concerned instances.
+If no relations are provided, wont perform any check.
 
 #### Example
 
@@ -113,7 +114,7 @@ if (!isFullyLoaded) { /* do something */ }
 #### Arguments
 
 - [`{I extends ModelInstance}`](/docs/api/func-client/modules/core#modelinstance) `instance`
-- [`{Arrayable<ModelRelationDotKey<I>>}`](/docs/api/func-client/modules/core#modelrelationdotkey) `relations`
+- [`{ArrayableVariadic<ModelRelationDotKey<I>>}`](/docs/api/func-client/modules/core#modelrelationdotkey) `...relations`
 
 #### Returns
 
@@ -161,7 +162,7 @@ const PostModel = makeModel('posts', { /* definition */ });
 #### Arguments
 
 - [`{ModelConfig | string}`](/docs/api/func-client/modules/core#modelconfig) `config`
-- [`{ModelDefinition}`](/docs/api/func-client/modules/core#modeldefinition) `extendsFrom`
+- `{ModelDefinition}` `extendsFrom`
 
 #### Returns
 
@@ -181,7 +182,7 @@ const makeModel = makeModelFactory({ /* definition */ }, { /* config */ });
 
 #### Arguments
 
-- [`{ModelDefinition | undefined}`](/docs/api/func-client/modules/core#modeldefinition) `baseExtendsFrom`
+- `{ModelDefinition | undefined }` `baseExtendsFrom`
 - [`{ModelConfig | undefined}`](/docs/api/func-client/modules/core#modelconfig) `baseConfig` (omitting `type`)
 
 #### Returns

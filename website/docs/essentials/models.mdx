@@ -45,14 +45,12 @@ makeModel('Post', { /* definition */ })
   .extends({ /* another additional definition */ });
 ```
 
-:::tip
 This can be useful when sharing common features across models: creation
 timestamps, client side ID generation, etc.
 
 If you wish to learn more about the composition capabilities of models,
 you should read the
-[**advanced guide about models composition**](/docs/advanced/models-composition).
-:::
+[advanced guide about models composition](/docs/advanced/models-composition).
 
 ### Using models classes
 
@@ -68,23 +66,21 @@ console.log(post.isDraft); // true
 console.log(post.exists); // false
 ```
 
-:::info
-Most model's interaction (fetching, updating, etc.) are done through actions,
-so you may [**read the actions guide**](/docs/essentials/actions) to learn more
-about those.
-:::
+Please note that most model's interaction (fetching, updating, etc.) are done
+through actions, so you may [read the actions guide](/docs/essentials/actions)
+to learn more about those.
 
 :::info
-FuncClient also propose multiple utilities to work with models:
+FuncClient proposes multiple utilities to work with models:
 [**read the models utilities API guide**](/docs/api/models-utilities).
 :::
 
 ## Definition
 
 :::caution
-You must not use `id`, `lid`, `type` or `exists` as key of any
+You **must** not use `id`, `lid`, `type` or `exists` as key of any
 attributes/relations/properties as those keys are internally used by FuncClient
-or may be used by some dependencies (JSON:API adapter for example).
+or may be used by dependencies (e.g. JSON:API adapter).
 :::
 
 ### Attributes
@@ -99,15 +95,14 @@ import { attr, toDate } from 'func-client/core';
 attr<string>(); // Without config.
 attr(toDate()); // With a transformer.
 attr({ default: '', transformer: toDate() }); // With config.
-attr(toDate(), { readonly: true }); // With a transformer and config.
+attr(toDate(), { readOnly: true }); // With a transformer and config.
 attr({ default: () => [] }); // With a factory default (required for objects props).
 ```
 
-:::caution
 Note that FuncClient consider your attributes as non-nullable values by default.
 When one of your model contains nullable attributes, you may want to pass a type
-to the factory (`attr<string | null>()`) or set a default attribute value.
-:::
+to the factory (e.g. `attr<string | null>()`) or set a default attribute value
+(e.g. `attr({ default: '' })`).
 
 #### Configuration
 
@@ -117,15 +112,16 @@ You may customize your attribute with the following config:
 |---------------|----------------|-------------|---------------------------------------------------------------------------------------|
 | `transformer` | `Transform<T>` | `undefined` | The transformer for the prop's value when interacting with your backend.              |
 | `default`     | `T`            | `undefined` | The default value for the prop when initializing a model instance.                    |
-| `readonly`    | `boolean`      | `false`     | The value won't be serialized when sending the data to your backend.                  |
+| `readOnly`    | `boolean`      | `false`     | The value won't be serialized when sending the data to your data source.              |
 | `alias`       | `string`       | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend. |
 
 #### Transform
 
-You can use a transform to convert an attribute value when (de)serializing from/to your backend.
-There are two types or transformer within FuncClient:
+You can use a transform to convert an attribute value when (de)serializing
+from/to your data source. There are two types or transformer within FuncClient:
 
-- `FunctionTransform`: a function to call to transform the value whether we are serializing or deserializing it.
+- `FunctionTransform`: a function to call to transform the value whether
+we are serializing or deserializing it.
 - `ObjectTransform`: an object with two methods: `serialize` and `deserialize`.
 
 FuncClient propose you 4 transformers out of the box:
@@ -134,7 +130,7 @@ FuncClient propose you 4 transformers out of the box:
 [`toBoolean`](/docs/api/func-client/modules/core#toboolean) and
 [`toString`](/docs/api/func-client/modules/core#tostring).
 
-:::tip
+:::info
 You may need other transformers in your implementation, for example when you
 are using a library to manage dates (momentjs, dayjs, etc.). You may read the
 [**advanced guide on transformers**](/docs/advanced/custom-transformers)
@@ -164,11 +160,20 @@ import type User from './user';
 import type Comment from './comment';
 
 hasOne<User>(); // Without config.
-hasOne<User>({ readonly: true }); // With config.
+hasOne<User>({ readOnly: true }); // With config.
+hasOne<User>({ type: 'users' }); // With explicit type.
 
 hasMany<Comment>(); // Without config.
-hasMany<Comment>({ readonly: true }); // With config.
+hasMany<Comment>({ readOnly: true }); // With config.
+hasMany<Comment>({ type: 'comments' }); // With explicit type.
 ```
+
+Note that FuncClient consider your relations as non-nullable values by default.
+When one of your model contains nullable relations, you may want to pass a type
+to the factory (e.g. `hasOne<User | null>()`) or set a default relation value
+(e.g. `hasOne({ default: null as User | null })`).
+
+Also consider that non-loaded relations will have a value of `undefined`.
 
 :::tip
 When using TypeScript, you should define the type of the relation to get a
@@ -176,23 +181,16 @@ fully strongly typed model. We suggest you to use `import type` to avoid
 creating circular dependencies when having circular model relations.
 :::
 
-:::caution
-Note that FuncClient consider your relations as non-nullable values by default.
-When one of your model contains nullable relations, you may want to pass a type
-to the factory (`hasOne<User | null>()`) or set a default relation value.
-
-Also consider that non-loaded relations will have a value of `undefined`.
-:::
-
 #### Configuration
 
 You may customize your relation with the following config:
 
-| Key           | Type           | Defaults    | Description                                                                           |
-|---------------|----------------|-------------|---------------------------------------------------------------------------------------|
-| `default`     | `T`            | `undefined` | The default value for the prop when initializing a model instance.                    |
-| `readonly`    | `boolean`      | `false`     | The value won't be serialized when sending the data to your backend.                  |
-| `alias`       | `string`       | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend. |
+| Key           | Type           | Defaults    | Description                                                                                                |
+|---------------|----------------|-------------|------------------------------------------------------------------------------------------------------------|
+| `default`     | `T`            | `undefined` | The default value for the prop when initializing a model instance.                                         |
+| `readOnly`    | `boolean`      | `false`     | The value won't be serialized when sending the data to your data source.                                   |
+| `alias`       | `string`       | `undefined` | The key to (de)serialize the prop's value from/in when interacting with your backend.                      |
+| `type`       | `string`        | `undefined` | The explicit type of related model. Might be used by the deserializer to known which model to instantiate. |
 
 ### Custom properties
 
@@ -252,8 +250,8 @@ const unregisterThisHook = onSaving(User, async (user) => {
 ```
 
 :::info
-As you may notice above, hooks callback may be async and will be ran
-sequentially (one by one, not parallelized).
+Hooks callback may be async and will be ran sequentially
+(one by one, not parallelized).
 :::
 
 You can disable hook execution on a given model by using the `withoutHooks`

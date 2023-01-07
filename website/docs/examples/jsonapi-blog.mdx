@@ -3,11 +3,11 @@ sidebar_position: 1
 description: Blog articles with tags example. Model setup and action usage.
 ---
 
-# Blog CRUD
+# JSON:API blog CRUD
 
 :::tip What you'll learn
 - Defining blog and tag models
-- Use blog model for CRUD operations
+- Use blog model for CRUD operations on a JSON:API backend
 :::
 
 This is a simple example to implement a blog content management using
@@ -50,27 +50,26 @@ export default class Post extends makeModel('posts', {
 }
 ```
 
-## CRUD
+## Classic CRUD
 
 ### View many
 
 ```javascript
 import { model, when } from 'func-client/core';
-import { filter, sortByDesc, paginate, allMeta } from 'func-client/jsonapi';
+import { filterBy, sortByDesc, paginate, allMeta } from 'func-client/jsonapi';
 import action from './action';
 import Post from './models/post';
 
 export default async function fetchAllPost(query = {}) {
   return action()
     .use(model(Post))
-    .use(when(query.search, (a, s) => a.use(filter('search', s))))
+    .use(when(query.search, (a, s) => a.use(filterBy('search', s))))
     .use(sortByDesc('createdAt'))
     .use(paginate({ number: query.page ?? 1 }))
-    .run(allMeta())
+    .run(allMeta());
 }
 
-// Somewhere in your app.
-const { data, meta } = await fetchAllPost({ search: 'Hello' });
+const { instances, meta } = await fetchAllPost({ search: 'Hello' });
 ```
 
 ### View one
@@ -84,10 +83,9 @@ export default async function fetchOnePost(id) {
   return action()
     .use(find(Post, id))
     .use(include('tags'))
-    .run(oneOrFail())
+    .run(oneOrFail());
 }
 
-// Somewhere in your app.
 const post = await fetchOnePost('123-abc');
 ```
 
@@ -104,7 +102,11 @@ export default async function savePost(post, values = {}) {
   try {
     await action()
       .use(save(post))
-      .run(when(changed(post), one()));
+      .run(when(
+        !post.exists || changed(post),
+        oneOrCurrent(),
+        () => instance,
+      ));
   } catch (error) {
     reset(post);
 
@@ -114,7 +116,6 @@ export default async function savePost(post, values = {}) {
   return post;
 }
 
-// Somewhere in your app.
 const post = new Post();
 
 await savePost(post, {
@@ -136,7 +137,6 @@ export default async function deletePost(post) {
     .run(none());
 }
 
-// Somewhere in your app.
 const post = new Post();
 
 await deletePost(post);
@@ -172,7 +172,6 @@ export default function publishPost(post, query = {}) {
     .run(oneOrFail());
 }
 
-// Somewhere in your app.
 // Sends a GET to "/<your-base-url>/posts/actions/best-posts
 // and deserialize a list of Post instances.
 const posts = await bestPosts();

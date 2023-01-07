@@ -3,11 +3,15 @@ import makeRegistry from '@/blueprints/makeRegistry';
 import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSerializer } from '@/core';
 import { JsonRestAdapter, JsonRestDeserializer, JsonRestSerializer } from '@/jsonrest';
 
-type JsonRestFactoryConfig = {
+/**
+ * Create the dependencies and action factory to interact with a
+ * JSON REST backend.
+ *
+ * @param config
+ */
+export default function makeJsonRest(config: {
   baseURL?: string;
-};
-
-export default function makeJsonRest(config: JsonRestFactoryConfig = {}) {
+} = {}) {
   const cache = makeCache();
 
   const registry = makeRegistry();

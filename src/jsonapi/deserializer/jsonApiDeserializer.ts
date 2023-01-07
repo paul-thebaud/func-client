@@ -3,16 +3,25 @@ import { JsonDeserializer, JsonExtractedData } from '@/json';
 import { JsonApiDocument, JsonApiNewResource, JsonApiResource, JsonApiResourceIdentifier } from '@/jsonapi/types';
 import { IdentifiersMap, wrap } from '@/utilities';
 
+/**
+ * Extracted data from a JSON:API backend Response object.
+ */
 export type JsonApiExtractedData = JsonExtractedData<JsonApiNewResource> & {
   included: IdentifiersMap<JsonApiResource>;
   document: JsonApiDocument;
   response: Response;
 };
 
+/**
+ * Deserialized data from a JSON:API backend Response object.
+ */
 export type JsonApiDeserializedData<I extends ModelInstance = ModelInstance> =
   & DeserializedData<I>
   & { document: JsonApiDocument; response: Response; };
 
+/**
+ * Deserializer implementation for JSON:API.
+ */
 export default class JsonApiDeserializer extends JsonDeserializer
   <Response, JsonApiNewResource, JsonApiExtractedData, JsonApiDeserializedData> {
   /**

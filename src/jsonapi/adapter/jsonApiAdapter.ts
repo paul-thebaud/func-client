@@ -1,7 +1,13 @@
 import { HttpActionContext, HttpAdapter } from '@/http';
 import { isNone, optionalJoin } from '@/utilities';
 
+/**
+ * Adapter implementation for JSON:API.
+ */
 export default class JsonApiAdapter extends HttpAdapter {
+  /**
+   * @inheritDoc
+   */
   protected makeRequestInit(context: HttpActionContext) {
     const init = super.makeRequestInit(context);
 
@@ -20,6 +26,9 @@ export default class JsonApiAdapter extends HttpAdapter {
     return init;
   }
 
+  /**
+   * @inheritDoc
+   */
   protected makeRequestURLParams(context: HttpActionContext) {
     return optionalJoin([
       super.makeRequestURLParams(context),
@@ -27,6 +36,11 @@ export default class JsonApiAdapter extends HttpAdapter {
     ], '&');
   }
 
+  /**
+   * Create an adapted include URL param for given context.
+   *
+   * @param context
+   */
   protected makeIncludeParam(context: HttpActionContext) {
     return isNone(context.includes)
       ? undefined

@@ -5,22 +5,25 @@ description: Build actions, registering hooks, discover enhancers and runners.
 
 # Actions
 
-:::tip What you'll learn
-- Enhancing actions
-- Running actions
-- Registering hooks on actions
-:::
-
 :::caution Requirements
 Before reading this guide, you should have a working action factory. You can
 read the [**getting started guide**](/docs/getting-started#your-first-actions)
 to quickly create your own action factory.
 :::
 
+:::tip What you'll learn
+
+- Enhancing actions
+- Running actions
+- Registering hooks on actions
+
+:::
+
 ## Instantiation
 
 As stated in the [getting started guide](/docs/getting-started#running-actions),
-actions are instantiated through your action factory.
+actions are instantiated through your action factory. In this guide, we'll
+admit you have a setup action factory.
 
 ## Enhancements
 
@@ -28,6 +31,8 @@ An action instance may receive none to many enhancements, which will provide
 an appropriate context to run a request through data source.
 
 Each enhancer can be applied using the `use` action method.
+Note that those enhancers are not instantly applied to the action
+context, but during the action run step (or context computation).
 
 ```javascript
 action()
@@ -41,11 +46,6 @@ All enhancers are listed in the
 [**actions' available enhancers API guide**](/docs/api/actions-enhancers).
 :::
 
-:::caution
-Please note that context enhancer are not instantly applied to the action
-context, but during the action run step.
-:::
-
 ## Run
 
 An action instance can be run using the `run` method. The runner may use
@@ -54,8 +54,10 @@ enhancers or runners internally.
 When an action run, it does 3 things:
 
 - Dequeue all enhancers since the action instantiation and build context
-- Execute the runner and each of its internal enhancers/runners (this may update the context)
-- Return the runner's result (might be any value, including void or an error throwing)
+- Execute the runner and each of its internal enhancers/runners (this may update
+  the context)
+- Return the runner's result (might be any value, including void or an error
+  throwing)
 
 Internally, action running will also trigger [actions hooks](#hooks).
 
@@ -72,6 +74,54 @@ All runners are listed in the
 [**actions' available runners API guide**](/docs/api/actions-runners).
 :::
 
+## Conditionals
+
+Sometimes, you may need to conditionally apply an enhancer or run an action.
+As an example, you may want to sort results differently based on the user's
+defined sort's direction. This can be done easily using the `when` helper:
+
+```javascript
+import { when } from 'func-client/core';
+import { sortByDesc } from 'func-client/jsonapi';
+
+action()
+  .use(model(Post))
+  .use(when(
+    displayLatestFirst,
+    sortByDesc('createdAt'),
+  ));
+```
+
+`when` returns a new enhancer or runner depending on the given value's
+*truthiness*. It will execute the first enhancer/runner only if its value is
+*truthy*. You may pass the value as a factory function returning the value.
+You may also pass a second enhancer/runner which will only execute if the value
+is *falsy*.
+Each callback arguments will receive the action as their first argument and the
+value as their second argument. Each callback may also be async, as any
+enhancers and runners.
+
+Here are further examples:
+
+```javascript
+import { changed, create, oneOrFail, when } from 'func-client/core';
+
+const post = fill(new Post(), userInputData);
+
+action()
+  .use(create(post))
+  .use(when(
+    () => /* compute a special value */,
+    (a, specialTruthyValue) => /* do something */,
+    (a, specialFalsyValue) => /* do something */,
+  ))
+  .run(when(
+    changed(post),
+    oneOrFail(),
+    () => post,
+  ));
+```
+
 ## Hooks
 
 You may hook on multiple events which occurs on action instance using the hook
@@ -87,7 +137,13 @@ To register a hook callback, you must use the registration enhancer on your
 building action.
 
 ```javascript
-import { onPreparing, onRunning, onSuccess, onError, onFinally } from 'func-client/core';
+import {
+  onPreparing,
+  onRunning,
+  onSuccess,
+  onError,
+  onFinally
+} from 'func-client/core';
 
 action().use(onPreparing(() => /* ... */));
 action().use(onRunning(({ context }) => /* ... */));
@@ -96,7 +152,7 @@ action().use(onError(({ context, error }) => /* ... */));
 action().use(onFinally(({ context }) => /* ... */));
 ```
 
-:::tip
+:::info
 Hooks callback may be async and will be ran sequentially
 (one by one, not parallelized).
 :::
@@ -114,6 +170,7 @@ const users = await withoutHooks(action(), async (a) => {
 
 :::caution
 FuncClient may also register hooks internally when using some enhancers.
-Those provide some library features ([**models hooks**](/docs/essentials/models#hooks), etc.).
+Those provide some library features
+([**models hooks**](/docs/essentials/models#hooks), etc.).
 Be careful running actions without hooks, as those hooks will also be disable.
 :::

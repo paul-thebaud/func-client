@@ -4,11 +4,15 @@ import { Action, withAdapter, withCache, withDeserializer, withRegistry, withSer
 import { deepParamsSerializer } from '@/http';
 import { JsonApiAdapter, JsonApiDeserializer, JsonApiSerializer } from '@/jsonapi';
 
-type JsonApiFactoryConfig = {
+/**
+ * Create the dependencies and action factory to interact with a
+ * JSON:API backend.
+ *
+ * @param config
+ */
+export default function makeJsonApi(config: {
   baseURL?: string;
-};
-
-export default function makeJsonApi(config: JsonApiFactoryConfig = {}) {
+} = {}) {
   const cache = makeCache();
 
   const registry = makeRegistry();

@@ -44,6 +44,44 @@ await action().run(none());
 
 `{Promise<void>}`
 
+### `raw`
+
+<FunctionInfo requires="Adapter" />
+
+Run the action and retrieve the raw adapter's data.
+
+#### Example
+
+```javascript
+import { raw } from 'func-client/core';
+
+const response = await action().run(raw());
+```
+
+#### Returns
+
+`{Promise<AD>}` where `AD` is your adapter's data (e.g. a fetch Response
+object).
+
+### `rawJson`
+
+<FunctionInfo requires="Adapter" only="HTTP" />
+
+Run the action and retrieve the response JSON parsed data.
+
+#### Example
+
+```javascript
+import { rawJson } from 'func-client/http';
+
+const data = await action().run(rawJson());
+```
+
+#### Returns
+
+`{Promise<T>}` where `T` is the generic type passed to `rawJson`
+(defaults to `any`).
+
 ### `all`
 
 <FunctionInfo requires="Adapter, Deserializer, Model" />

@@ -1,20 +1,8 @@
 import type Action from '@/core/actions/action';
 import { HookCallback } from '@/core/hooks/types';
 import { Model, ModelId, ModelInstance } from '@/core/model/types';
-import { CacheI, DeserializedData, AdapterI, DeserializerI, SerializerI, RegistryI } from '@/core/types';
+import { AdapterI, CacheI, DeserializedData, DeserializerI, RegistryI, SerializerI } from '@/core/types';
 import { Awaitable } from '@/utilities';
-
-export type ActionMethod =
-  | 'get' | 'GET'
-  | 'delete' | 'DELETE'
-  | 'head' | 'HEAD'
-  | 'options' | 'OPTIONS'
-  | 'post' | 'POST'
-  | 'put' | 'PUT'
-  | 'patch' | 'PATCH'
-  | 'purge' | 'PURGE'
-  | 'link' | 'LINK'
-  | 'unlink' | 'UNLINK';
 
 export type ActionContext = {
   action?: 'READ' | 'CREATE' | 'UPDATE' | 'DESTROY';

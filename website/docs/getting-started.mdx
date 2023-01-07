@@ -107,7 +107,7 @@ It provides all the available tooling, such as a model registry, an instance
 cache, a serializer and deserializer and an adapter.
 
 You can read more details on this implementation on the
-[JSON:API details page](/docs/advanced/jsonapi-details).
+[JSON:API page](/docs/advanced/jsonapi).
 
 ```javascript title="action.js"
 import { makeJsonApi } from 'func-client/blueprints';
@@ -139,7 +139,7 @@ It provides all the available tooling, such as a model registry, an instance
 cache, a serializer and deserializer and an adapter.
 
 You can read more details on this implementation on the
-[JSON REST details page](/docs/advanced/jsonrest-details).
+[JSON REST page](/docs/advanced/jsonrest).
 
 ```javascript title="action.js"
 import { makeJsonRest } from 'func-client/blueprints';
@@ -268,7 +268,6 @@ const post = await action()
   .run(oneOrFail());
 
 // Make a POST call to "https://example.com/api/v1/services/posts/1/publish"
-// Admitting it returns: {"message":"Successfully published post."}
 const response = await action()
   .use(instance(post))
   .use(makePost('publish', {
@@ -276,7 +275,8 @@ const response = await action()
   }))
   .run(raw());
 
-console.log(response.status); // 204
+// This is a raw fetch Response object.
+console.log(response.status);
 ```
 
 This way, you can standardize all API calls across your application, even when
