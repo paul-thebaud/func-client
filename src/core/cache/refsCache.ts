@@ -1,4 +1,5 @@
-import { RefsCacheMode, RefsCacheConfig } from '@/core/cache/types';
+import { RefsCacheConfig, RefsCacheMode } from '@/core/cache/types';
+import weakRefCacheMode from '@/core/cache/weakRefCacheMode';
 import { ModelId, ModelInstance } from '@/core/model/types';
 import { CacheI } from '@/core/types';
 import { IdentifiersMap } from '@/utilities';
@@ -6,7 +7,7 @@ import { IdentifiersMap } from '@/utilities';
 export default class RefsCache implements CacheI {
   private readonly instances: IdentifiersMap<unknown>;
 
-  private mode!: RefsCacheMode<unknown>;
+  private mode: RefsCacheMode<unknown> = weakRefCacheMode;
 
   public constructor(config: RefsCacheConfig) {
     this.instances = new IdentifiersMap();

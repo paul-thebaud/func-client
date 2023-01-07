@@ -1,4 +1,5 @@
 import { AdapterI } from '@/core';
+import paramsSerializer from '@/http/adapter/paramsSerializer';
 import ConflictError from '@/http/errors/conflictError';
 import ForbiddenError from '@/http/errors/forbiddenError';
 import InterruptedError from '@/http/errors/interruptedError';
@@ -20,17 +21,17 @@ import {
 import { Dictionary, isNil, optionalJoin, sequentialTransform } from '@/utilities';
 
 export default abstract class HttpAdapter implements AdapterI<Response> {
-  private fetch!: typeof fetch;
+  private fetch = fetch;
 
-  private paramsSerializer!: HttpParamsSerializer;
+  private paramsSerializer: HttpParamsSerializer = paramsSerializer;
 
-  private baseURL!: string | undefined;
+  private baseURL: string | undefined = undefined;
 
-  private requestTransformers!: RequestTransformer[];
+  private requestTransformers: RequestTransformer[] = [];
 
-  private responseTransformers!: ResponseTransformer[];
+  private responseTransformers: ResponseTransformer[] = [];
 
-  private errorTransformers!: ErrorTransformer[];
+  private errorTransformers: ErrorTransformer[] = [];
 
   public constructor(config: HttpAdapterConfig) {
     this.configure(config);

@@ -1,7 +1,9 @@
 import { RefsCacheMode } from '@/core/cache/types';
 import { ModelInstance } from '@/core/model/types';
 
-export default {
+const weakRefCacheMode: RefsCacheMode<WeakRef<ModelInstance>> = {
   ref: (instance: ModelInstance) => new WeakRef(instance),
   deref: (ref: WeakRef<ModelInstance>) => ref.deref(),
-} as RefsCacheMode<WeakRef<ModelInstance>>;
+};
+
+export default weakRefCacheMode;
