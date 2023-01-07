@@ -3,6 +3,7 @@ import fieldsFor from '@/jsonapi/actions/context/enhancers/fieldsFor';
 import filterBy from '@/jsonapi/actions/context/enhancers/filterBy';
 import paginate from '@/jsonapi/actions/context/enhancers/paginate';
 import rawFilter from '@/jsonapi/actions/context/enhancers/rawFilter';
+import rawSort from '@/jsonapi/actions/context/enhancers/rawSort';
 import sortBy from '@/jsonapi/actions/context/enhancers/sortBy';
 import sortByDesc from '@/jsonapi/actions/context/enhancers/sortByDesc';
 import allMeta from '@/jsonapi/actions/context/runners/allMeta';
@@ -20,6 +21,7 @@ export {
   fieldsFor,
   rawFilter,
   filterBy,
+  rawSort,
   sortBy,
   sortByDesc,
   paginate,

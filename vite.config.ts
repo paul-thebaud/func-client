@@ -25,12 +25,13 @@ const makeRollupOptions = (ext: 'js' | 'cjs') => ({
     minifyInternalExports: false,
     chunkFileNames: '[name]',
     manualChunks(id: string) {
-      console.log(id);
       if (id.endsWith('func-client.ts')) {
         return 'func-client';
       }
 
-      const libModule = libChunks.find((m) => id.startsWith(m.dir));
+      const libModule = libChunks.find((m) => (
+        id === `${m.dir}.ts` || id.startsWith(`${m.dir}/`)
+      ));
       if (libModule) {
         return `${libModule.name}.${ext}`;
       }

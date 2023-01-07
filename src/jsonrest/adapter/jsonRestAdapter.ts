@@ -1,6 +1,7 @@
 import { HttpActionContext, HttpAdapter } from '@/http';
 
 export default class JsonRestAdapter extends HttpAdapter {
+  // TODO Manage include.
   protected makeRequestInit(context: HttpActionContext) {
     const init = super.makeRequestInit(context);
 
