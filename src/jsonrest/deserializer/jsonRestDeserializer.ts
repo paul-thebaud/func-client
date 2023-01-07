@@ -14,7 +14,7 @@ export default class JsonRestDeserializer extends JsonDeserializer<Response, Jso
    * @inheritDoc
    */
   protected async extractData(response: Response): Promise<JsonExtractedData<JsonRestNewResource>> {
-    const document: JsonRestDocument = await response.json();
+    const document: JsonRestDocument = response.status === 204 ? {} : await response.json();
 
     return {
       resources: document.data,

@@ -33,7 +33,7 @@ export default class JsonApiDeserializer extends JsonDeserializer
    * @inheritDoc
    */
   protected async extractData(response: Response) {
-    const document: JsonApiDocument = await response.json();
+    const document: JsonApiDocument = response.status === 204 ? {} : await response.json();
 
     const included = new IdentifiersMap<JsonApiResource>();
     document.included?.map((r) => included.set(r.type, r.id, r));
