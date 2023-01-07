@@ -20,7 +20,7 @@ export type HttpRequestConfig = {
   params?: Dictionary<any> | string;
   headers?: Dictionary<string>;
   // TODO "dataAs"?
-  body?: BodyInit;
+  body?: unknown;
   requestTransformers?: RequestTransformer[];
   responseTransformers?: ResponseTransformer[];
   errorTransformers?: ErrorTransformer[];
